@@ -1,0 +1,475 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/api/v1/accounts": {
+      "post": {
+        "operationId": "AccountsController_create_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAccountDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Accounts"
+        ]
+      },
+      "get": {
+        "operationId": "AccountsController_findAll_v1",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Accounts"
+        ]
+      }
+    },
+    "/api/v1/accounts/{id}": {
+      "get": {
+        "operationId": "AccountsController_findOne_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Accounts"
+        ]
+      },
+      "patch": {
+        "operationId": "AccountsController_update_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAccountDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Accounts"
+        ]
+      },
+      "delete": {
+        "operationId": "AccountsController_remove_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Accounts"
+        ]
+      }
+    },
+    "/api/v1/channels": {
+      "post": {
+        "operationId": "ChannelsController_create_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateChannelDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Channel created successfully"
+          },
+          "400": {
+            "description": "Validation error"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Create a new channel",
+        "tags": [
+          "channels"
+        ]
+      },
+      "get": {
+        "operationId": "ChannelsController_findAll_v1",
+        "parameters": [
+          {
+            "name": "offset",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return all channels"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get all channels",
+        "tags": [
+          "channels"
+        ]
+      }
+    },
+    "/api/v1/channels/{id}": {
+      "get": {
+        "operationId": "ChannelsController_findOne_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return the channel"
+          },
+          "404": {
+            "description": "Channel not found"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get a channel by id",
+        "tags": [
+          "channels"
+        ]
+      },
+      "patch": {
+        "operationId": "ChannelsController_update_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateChannelDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Channel updated successfully"
+          },
+          "404": {
+            "description": "Channel not found"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Update a channel",
+        "tags": [
+          "channels"
+        ]
+      },
+      "delete": {
+        "operationId": "ChannelsController_remove_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Channel deleted successfully"
+          },
+          "404": {
+            "description": "Channel not found"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Delete a channel",
+        "tags": [
+          "channels"
+        ]
+      }
+    },
+    "/api/v1/workflows": {
+      "post": {
+        "operationId": "WorkflowsController_create_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateWorkflowDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Workflows"
+        ]
+      },
+      "get": {
+        "operationId": "WorkflowsController_findAll_v1",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Workflows"
+        ]
+      }
+    },
+    "/api/v1/workflows/{id}": {
+      "get": {
+        "operationId": "WorkflowsController_findOne_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Workflows"
+        ]
+      },
+      "patch": {
+        "operationId": "WorkflowsController_update_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateWorkflowDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Workflows"
+        ]
+      },
+      "delete": {
+        "operationId": "WorkflowsController_remove_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Workflows"
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "Autobot API",
+    "description": "Autobot API description",
+    "version": "1.0",
+    "contact": {}
+  },
+  "tags": [
+    {
+      "name": "autobot",
+      "description": ""
+    }
+  ],
+  "servers": [],
+  "components": {
+    "schemas": {
+      "CreateAccountDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "UpdateAccountDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "CreateChannelDto": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "The type of the channel",
+            "example": "slack"
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the channel",
+            "example": "my-slack-channel"
+          },
+          "token": {
+            "type": "string",
+            "description": "Unique token for the channel",
+            "example": "xyz123"
+          }
+        },
+        "required": [
+          "type",
+          "name",
+          "token"
+        ]
+      },
+      "UpdateChannelDto": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "The type of the channel",
+            "example": "slack"
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the channel",
+            "example": "my-slack-channel"
+          },
+          "token": {
+            "type": "string",
+            "description": "Unique token for the channel",
+            "example": "xyz123"
+          }
+        }
+      },
+      "CreateWorkflowDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "UpdateWorkflowDto": {
+        "type": "object",
+        "properties": {}
+      }
+    }
+  }
+}
