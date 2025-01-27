@@ -3,7 +3,7 @@
   "paths": {
     "/api/v1/accounts": {
       "post": {
-        "operationId": "AccountsController_create_v1",
+        "operationId": "accountsCreateV1",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -25,7 +25,7 @@
         ]
       },
       "get": {
-        "operationId": "AccountsController_findAll_v1",
+        "operationId": "accountsFindAllV1",
         "parameters": [],
         "responses": {
           "200": {
@@ -39,7 +39,7 @@
     },
     "/api/v1/accounts/{id}": {
       "get": {
-        "operationId": "AccountsController_findOne_v1",
+        "operationId": "accountsFindOneV1",
         "parameters": [
           {
             "name": "id",
@@ -60,7 +60,7 @@
         ]
       },
       "patch": {
-        "operationId": "AccountsController_update_v1",
+        "operationId": "accountsUpdateV1",
         "parameters": [
           {
             "name": "id",
@@ -91,7 +91,7 @@
         ]
       },
       "delete": {
-        "operationId": "AccountsController_remove_v1",
+        "operationId": "accountsRemoveV1",
         "parameters": [
           {
             "name": "id",
@@ -114,7 +114,7 @@
     },
     "/api/v1/channels": {
       "post": {
-        "operationId": "ChannelsController_create_v1",
+        "operationId": "channelsCreateV1",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -128,24 +128,23 @@
         },
         "responses": {
           "201": {
-            "description": "Channel created successfully"
-          },
-          "400": {
-            "description": "Validation error"
+            "description": "Channel created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChannelDto"
+                }
+              }
+            }
           }
         },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
         "summary": "Create a new channel",
         "tags": [
-          "channels"
+          "Channels"
         ]
       },
       "get": {
-        "operationId": "ChannelsController_findAll_v1",
+        "operationId": "channelsFindPaginatedV1",
         "parameters": [
           {
             "name": "offset",
@@ -166,23 +165,43 @@
         ],
         "responses": {
           "200": {
-            "description": "Return all channels"
+            "description": "Return paginated channels",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "PaginatedChannels",
+                  "required": [
+                    "results"
+                  ],
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/PaginatedDto"
+                    },
+                    {
+                      "properties": {
+                        "results": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/ChannelDto"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
           }
         },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
         "summary": "Get all channels",
         "tags": [
-          "channels"
+          "Channels"
         ]
       }
     },
     "/api/v1/channels/{id}": {
       "get": {
-        "operationId": "ChannelsController_findOne_v1",
+        "operationId": "channelsFindOneV1",
         "parameters": [
           {
             "name": "id",
@@ -195,24 +214,23 @@
         ],
         "responses": {
           "200": {
-            "description": "Return the channel"
-          },
-          "404": {
-            "description": "Channel not found"
+            "description": "Return a channel",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChannelDto"
+                }
+              }
+            }
           }
         },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
         "summary": "Get a channel by id",
         "tags": [
-          "channels"
+          "Channels"
         ]
       },
       "patch": {
-        "operationId": "ChannelsController_update_v1",
+        "operationId": "channelsUpdateV1",
         "parameters": [
           {
             "name": "id",
@@ -235,24 +253,23 @@
         },
         "responses": {
           "200": {
-            "description": "Channel updated successfully"
-          },
-          "404": {
-            "description": "Channel not found"
+            "description": "Channel updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChannelDto"
+                }
+              }
+            }
           }
         },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
         "summary": "Update a channel",
         "tags": [
-          "channels"
+          "Channels"
         ]
       },
       "delete": {
-        "operationId": "ChannelsController_remove_v1",
+        "operationId": "channelsRemoveV1",
         "parameters": [
           {
             "name": "id",
@@ -264,27 +281,19 @@
           }
         ],
         "responses": {
-          "200": {
+          "204": {
             "description": "Channel deleted successfully"
-          },
-          "404": {
-            "description": "Channel not found"
           }
         },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
         "summary": "Delete a channel",
         "tags": [
-          "channels"
+          "Channels"
         ]
       }
     },
     "/api/v1/workflows": {
       "post": {
-        "operationId": "WorkflowsController_create_v1",
+        "operationId": "workflowsCreateV1",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -306,7 +315,7 @@
         ]
       },
       "get": {
-        "operationId": "WorkflowsController_findAll_v1",
+        "operationId": "workflowsFindAllV1",
         "parameters": [],
         "responses": {
           "200": {
@@ -320,7 +329,7 @@
     },
     "/api/v1/workflows/{id}": {
       "get": {
-        "operationId": "WorkflowsController_findOne_v1",
+        "operationId": "workflowsFindOneV1",
         "parameters": [
           {
             "name": "id",
@@ -341,7 +350,7 @@
         ]
       },
       "patch": {
-        "operationId": "WorkflowsController_update_v1",
+        "operationId": "workflowsUpdateV1",
         "parameters": [
           {
             "name": "id",
@@ -372,7 +381,7 @@
         ]
       },
       "delete": {
-        "operationId": "WorkflowsController_remove_v1",
+        "operationId": "workflowsRemoveV1",
         "parameters": [
           {
             "name": "id",
@@ -417,23 +426,36 @@
         "type": "object",
         "properties": {}
       },
+      "PaginatedDto": {
+        "type": "object",
+        "properties": {
+          "total": {
+            "type": "number"
+          },
+          "limit": {
+            "type": "number"
+          },
+          "offset": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "total",
+          "limit",
+          "offset"
+        ]
+      },
       "CreateChannelDto": {
         "type": "object",
         "properties": {
           "type": {
-            "type": "string",
-            "description": "The type of the channel",
-            "example": "slack"
+            "type": "string"
           },
           "name": {
-            "type": "string",
-            "description": "The name of the channel",
-            "example": "my-slack-channel"
+            "type": "string"
           },
           "token": {
-            "type": "string",
-            "description": "Unique token for the channel",
-            "example": "xyz123"
+            "type": "string"
           }
         },
         "required": [
@@ -442,23 +464,41 @@
           "token"
         ]
       },
+      "ChannelDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "type",
+          "name",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
       "UpdateChannelDto": {
         "type": "object",
         "properties": {
-          "type": {
-            "type": "string",
-            "description": "The type of the channel",
-            "example": "slack"
-          },
           "name": {
-            "type": "string",
-            "description": "The name of the channel",
-            "example": "my-slack-channel"
+            "type": "string"
           },
           "token": {
-            "type": "string",
-            "description": "Unique token for the channel",
-            "example": "xyz123"
+            "type": "string"
           }
         }
       },

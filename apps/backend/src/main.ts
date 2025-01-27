@@ -27,8 +27,18 @@ async function bootstrap() {
     .build();
 
   const document = SwaggerModule.createDocument(app, config, {
-    operationIdFactory: (_: string, methodKey: string, version?: string) => {
-      return [methodKey, version?.toUpperCase()].filter(Boolean).join('');
+    operationIdFactory: (
+      controllerKey: string,
+      methodKey: string,
+      version?: string,
+    ) => {
+      let controllerName = controllerKey.replace('Controller', '');
+      controllerName =
+        controllerName.charAt(0).toLowerCase() + controllerName.slice(1);
+      const methodName = methodKey.charAt(0).toUpperCase() + methodKey.slice(1);
+      const versionName = version?.toUpperCase();
+
+      return [controllerName, methodName, versionName].filter(Boolean).join('');
     },
   });
 
