@@ -1,17 +1,27 @@
-import * as React from 'react';
-import { createRoot } from 'react-dom/client';
+import { StrictMode } from 'react';
+import ReactDOM from 'react-dom/client';
+import { RouterProvider, createRouter } from '@tanstack/react-router';
 
-import './index.css';
-import { App } from './app';
-import { enableMocking } from './testing/mocks';
+// Import the generated route tree
+import { routeTree } from './routeTree.gen';
 
-const root = document.getElementById('root');
-if (!root) throw new Error('No root element found');
+// Create a new router instance
+const router = createRouter({ routeTree });
 
-enableMocking().then(() => {
-  createRoot(root).render(
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>,
+// Register the router instance for type safety
+declare module '@tanstack/react-router' {
+  interface Register {
+    router: typeof router;
+  }
+}
+
+// Render the app
+const rootElement = document.getElementById('root')!;
+if (!rootElement.innerHTML) {
+  const root = ReactDOM.createRoot(rootElement);
+  root.render(
+    <StrictMode>
+      <RouterProvider router={router} />
+    </StrictMode>
   );
-});
+}

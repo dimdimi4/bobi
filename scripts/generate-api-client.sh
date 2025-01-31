@@ -8,7 +8,7 @@ fi
 
 # Set paths
 SPEC_PATH="./apps/backend/openapi-spec.json"
-OUTPUT_PATH="./apps/frontend/src/lib/api"
+OUTPUT_PATH="./apps/frontend/src/data/api"
 
 # Check if spec file exists
 if [ ! -f "$SPEC_PATH" ]; then
