@@ -1,1 +1,7 @@
-{}
+{
+  "scripts": {
+    "gen": "npm run gen:api-client && npm run gen:api-schema",
+    "gen:api-client": "./scripts/generate-api-client.sh",
+    "gen:api-schema": "./scripts/generate-api-schema.sh"
+  }
+}

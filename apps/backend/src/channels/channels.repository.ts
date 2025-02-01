@@ -5,7 +5,7 @@ import { BadRequestException } from '@nestjs/common';
 
 import { ChannelDto } from './dto/channel.dto';
 import { Channel, ChannelDocument } from './schemas/channel.schema';
-import { PaginatedDto } from './dto/paginated.dto';
+import { PaginatedChannelsDto } from './dto/paginated-channels.dto';
 
 @Injectable()
 export class ChannelsRepository {
@@ -63,7 +63,7 @@ export class ChannelsRepository {
     accountId: string,
     offset = 0,
     limit = 10,
-  ): Promise<PaginatedDto<ChannelDto>> {
+  ): Promise<PaginatedChannelsDto> {
     const [documents, total] = await Promise.all([
       this.channelModel.find({ accountId }).skip(offset).limit(limit).exec(),
       this.channelModel.countDocuments({ accountId }),

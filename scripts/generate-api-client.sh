@@ -8,7 +8,7 @@ fi
 
 # Set paths
 SPEC_PATH="./apps/backend/openapi-spec.json"
-OUTPUT_PATH="./apps/frontend/src/data/api"
+OUTPUT_PATH="./apps/frontend/src/data/sources/api"
 
 # Check if spec file exists
 if [ ! -f "$SPEC_PATH" ]; then
@@ -17,6 +17,8 @@ if [ ! -f "$SPEC_PATH" ]; then
 fi
 
 # Create output directory if it doesn't exist
+echo "Cleaning up existing API client..."
+rm -rf "$OUTPUT_PATH"
 mkdir -p "$OUTPUT_PATH"
 
 # Generate API client

@@ -148,7 +148,7 @@
         "parameters": [
           {
             "name": "offset",
-            "required": true,
+            "required": false,
             "in": "query",
             "schema": {
               "type": "number"
@@ -156,7 +156,7 @@
           },
           {
             "name": "limit",
-            "required": true,
+            "required": false,
             "in": "query",
             "schema": {
               "type": "number"
@@ -169,25 +169,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "PaginatedChannels",
-                  "required": [
-                    "results"
-                  ],
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/PaginatedDto"
-                    },
-                    {
-                      "properties": {
-                        "results": {
-                          "type": "array",
-                          "items": {
-                            "$ref": "#/components/schemas/ChannelDto"
-                          }
-                        }
-                      }
-                    }
-                  ]
+                  "$ref": "#/components/schemas/PaginatedChannelsDto"
                 }
               }
             }
@@ -489,6 +471,32 @@
           "name",
           "createdAt",
           "updatedAt"
+        ]
+      },
+      "PaginatedChannelsDto": {
+        "type": "object",
+        "properties": {
+          "total": {
+            "type": "number"
+          },
+          "limit": {
+            "type": "number"
+          },
+          "offset": {
+            "type": "number"
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChannelDto"
+            }
+          }
+        },
+        "required": [
+          "total",
+          "limit",
+          "offset",
+          "results"
         ]
       },
       "UpdateChannelDto": {

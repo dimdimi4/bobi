@@ -12,16 +12,17 @@ import {
   ApiTags,
   ApiOperation,
   ApiOkResponse,
-  getSchemaPath,
   ApiExtraModels,
   ApiCreatedResponse,
   ApiNoContentResponse,
+  ApiQuery,
 } from '@nestjs/swagger';
 import { ChannelsService } from './channels.service';
 import { CreateChannelDto } from './dto/create-channel.dto';
 import { UpdateChannelDto } from './dto/update-channel.dto';
 import { ChannelDto } from './dto/channel.dto';
 import { PaginatedDto } from './dto/paginated.dto';
+import { PaginatedChannelsDto } from './dto/paginated-channels.dto';
 
 const accountId = '666666666666666666666666';
 
@@ -47,22 +48,10 @@ export class ChannelsController {
   @ApiOperation({ summary: 'Get all channels' })
   @ApiOkResponse({
     description: 'Return paginated channels',
-    schema: {
-      title: 'PaginatedChannels',
-      required: ['results'],
-      allOf: [
-        { $ref: getSchemaPath(PaginatedDto) },
-        {
-          properties: {
-            results: {
-              type: 'array',
-              items: { $ref: getSchemaPath(ChannelDto) },
-            },
-          },
-        },
-      ],
-    },
+    type: PaginatedChannelsDto,
   })
+  @ApiQuery({ name: 'offset', required: false })
+  @ApiQuery({ name: 'limit', required: false })
   async findPaginated(
     @Query('offset') offset?: number,
     @Query('limit') limit?: number,

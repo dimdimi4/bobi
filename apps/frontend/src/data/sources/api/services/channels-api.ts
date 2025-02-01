@@ -26,7 +26,7 @@ import type { ChannelDto } from '../models';
 // @ts-ignore
 import type { CreateChannelDto } from '../models';
 // @ts-ignore
-import type { PaginatedChannels } from '../models';
+import type { PaginatedChannelsDto } from '../models';
 // @ts-ignore
 import type { UpdateChannelDto } from '../models';
 /**
@@ -108,16 +108,12 @@ export const ChannelsApiAxiosParamCreator = function (configuration?: Configurat
         /**
          * 
          * @summary Get all channels
-         * @param {number} offset 
-         * @param {number} limit 
+         * @param {number} [offset] 
+         * @param {number} [limit] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        channelsFindPaginatedV1: async (offset: number, limit: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'offset' is not null or undefined
-            assertParamExists('channelsFindPaginatedV1', 'offset', offset)
-            // verify required parameter 'limit' is not null or undefined
-            assertParamExists('channelsFindPaginatedV1', 'limit', limit)
+        channelsFindPaginatedV1: async (offset?: number, limit?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/api/v1/channels`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -262,12 +258,12 @@ export const ChannelsApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Get all channels
-         * @param {number} offset 
-         * @param {number} limit 
+         * @param {number} [offset] 
+         * @param {number} [limit] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async channelsFindPaginatedV1(offset: number, limit: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedChannels>> {
+        async channelsFindPaginatedV1(offset?: number, limit?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedChannelsDto>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.channelsFindPaginatedV1(offset, limit, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['ChannelsApi.channelsFindPaginatedV1']?.[localVarOperationServerIndex]?.url;
@@ -333,12 +329,12 @@ export const ChannelsApiFactory = function (configuration?: Configuration, baseP
         /**
          * 
          * @summary Get all channels
-         * @param {number} offset 
-         * @param {number} limit 
+         * @param {number} [offset] 
+         * @param {number} [limit] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        channelsFindPaginatedV1(offset: number, limit: number, options?: RawAxiosRequestConfig): AxiosPromise<PaginatedChannels> {
+        channelsFindPaginatedV1(offset?: number, limit?: number, options?: RawAxiosRequestConfig): AxiosPromise<PaginatedChannelsDto> {
             return localVarFp.channelsFindPaginatedV1(offset, limit, options).then((request) => request(axios, basePath));
         },
         /**
@@ -399,13 +395,13 @@ export class ChannelsApi extends BaseAPI {
     /**
      * 
      * @summary Get all channels
-     * @param {number} offset 
-     * @param {number} limit 
+     * @param {number} [offset] 
+     * @param {number} [limit] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ChannelsApi
      */
-    public channelsFindPaginatedV1(offset: number, limit: number, options?: RawAxiosRequestConfig) {
+    public channelsFindPaginatedV1(offset?: number, limit?: number, options?: RawAxiosRequestConfig) {
         return ChannelsApiFp(this.configuration).channelsFindPaginatedV1(offset, limit, options).then((request) => request(this.axios, this.basePath));
     }
 
