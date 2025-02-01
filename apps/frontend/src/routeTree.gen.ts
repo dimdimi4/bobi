@@ -11,11 +11,18 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as CreateChannelImport } from './routes/create-channel'
 import { Route as ChannelsImport } from './routes/channels'
 import { Route as AboutImport } from './routes/about'
 import { Route as IndexImport } from './routes/index'
 
 // Create/Update Routes
+
+const CreateChannelRoute = CreateChannelImport.update({
+  id: '/create-channel',
+  path: '/create-channel',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const ChannelsRoute = ChannelsImport.update({
   id: '/channels',
@@ -60,6 +67,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ChannelsImport
       parentRoute: typeof rootRoute
     }
+    '/create-channel': {
+      id: '/create-channel'
+      path: '/create-channel'
+      fullPath: '/create-channel'
+      preLoaderRoute: typeof CreateChannelImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -69,12 +83,14 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/channels': typeof ChannelsRoute
+  '/create-channel': typeof CreateChannelRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/channels': typeof ChannelsRoute
+  '/create-channel': typeof CreateChannelRoute
 }
 
 export interface FileRoutesById {
@@ -82,14 +98,15 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/channels': typeof ChannelsRoute
+  '/create-channel': typeof CreateChannelRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/channels'
+  fullPaths: '/' | '/about' | '/channels' | '/create-channel'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/channels'
-  id: '__root__' | '/' | '/about' | '/channels'
+  to: '/' | '/about' | '/channels' | '/create-channel'
+  id: '__root__' | '/' | '/about' | '/channels' | '/create-channel'
   fileRoutesById: FileRoutesById
 }
 
@@ -97,12 +114,14 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   ChannelsRoute: typeof ChannelsRoute
+  CreateChannelRoute: typeof CreateChannelRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   ChannelsRoute: ChannelsRoute,
+  CreateChannelRoute: CreateChannelRoute,
 }
 
 export const routeTree = rootRoute
@@ -117,7 +136,8 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/about",
-        "/channels"
+        "/channels",
+        "/create-channel"
       ]
     },
     "/": {
@@ -128,6 +148,9 @@ export const routeTree = rootRoute
     },
     "/channels": {
       "filePath": "channels.tsx"
+    },
+    "/create-channel": {
+      "filePath": "create-channel.tsx"
     }
   }
 }
