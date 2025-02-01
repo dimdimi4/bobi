@@ -13,5 +13,4 @@ export class ChannelRepository {
   }
 }
 
-export const createChannelRepository = () =>
-  new ChannelRepository(new ChannelsApi());
+export const channelRepository = new ChannelRepository(new ChannelsApi());

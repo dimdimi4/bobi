@@ -1,1 +1,1 @@
-export { ChannelRepository } from './ChannelRepository';
+export { channelRepository } from './ChannelRepository';
