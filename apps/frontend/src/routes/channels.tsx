@@ -1,3 +1,4 @@
+import { Button, Container, Group, Title } from '@mantine/core';
 import { createFileRoute, Link } from '@tanstack/react-router';
 import { channelRepository } from '@/data/repositories/ChannelRepository';
 
@@ -12,9 +13,18 @@ function RouteComponent() {
   const { data } = Route.useLoaderData();
 
   return (
-    <div>
-      <h2>Channels</h2>
-      <Link to="/create-channel">Create Channel</Link>
+    <Container size="sm">
+      <Group justify="space-between">
+        <Title order={2}>Channels</Title>
+        <Button
+          variant="outline"
+          size="xs"
+          component={Link}
+          to="/create-channel"
+        >
+          Create Channel
+        </Button>
+      </Group>
       <ul>
         {data.results.map((channel) => (
           <li key={channel.id}>
@@ -22,6 +32,6 @@ function RouteComponent() {
           </li>
         ))}
       </ul>
-    </div>
+    </Container>
   );
 }

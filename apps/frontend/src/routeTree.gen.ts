@@ -13,8 +13,9 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as CreateChannelImport } from './routes/create-channel'
 import { Route as ChannelsImport } from './routes/channels'
-import { Route as AboutImport } from './routes/about'
 import { Route as IndexImport } from './routes/index'
+import { Route as AutomationIndexImport } from './routes/automation/index'
+import { Route as AutomationAddImport } from './routes/automation/add'
 
 // Create/Update Routes
 
@@ -30,15 +31,21 @@ const ChannelsRoute = ChannelsImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const AboutRoute = AboutImport.update({
-  id: '/about',
-  path: '/about',
-  getParentRoute: () => rootRoute,
-} as any)
-
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AutomationIndexRoute = AutomationIndexImport.update({
+  id: '/automation/',
+  path: '/automation/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AutomationAddRoute = AutomationAddImport.update({
+  id: '/automation/add',
+  path: '/automation/add',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -51,13 +58,6 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexImport
-      parentRoute: typeof rootRoute
-    }
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutImport
       parentRoute: typeof rootRoute
     }
     '/channels': {
@@ -74,6 +74,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CreateChannelImport
       parentRoute: typeof rootRoute
     }
+    '/automation/add': {
+      id: '/automation/add'
+      path: '/automation/add'
+      fullPath: '/automation/add'
+      preLoaderRoute: typeof AutomationAddImport
+      parentRoute: typeof rootRoute
+    }
+    '/automation/': {
+      id: '/automation/'
+      path: '/automation'
+      fullPath: '/automation'
+      preLoaderRoute: typeof AutomationIndexImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -81,47 +95,63 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
   '/channels': typeof ChannelsRoute
   '/create-channel': typeof CreateChannelRoute
+  '/automation/add': typeof AutomationAddRoute
+  '/automation': typeof AutomationIndexRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
   '/channels': typeof ChannelsRoute
   '/create-channel': typeof CreateChannelRoute
+  '/automation/add': typeof AutomationAddRoute
+  '/automation': typeof AutomationIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
   '/channels': typeof ChannelsRoute
   '/create-channel': typeof CreateChannelRoute
+  '/automation/add': typeof AutomationAddRoute
+  '/automation/': typeof AutomationIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/channels' | '/create-channel'
+  fullPaths:
+    | '/'
+    | '/channels'
+    | '/create-channel'
+    | '/automation/add'
+    | '/automation'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/channels' | '/create-channel'
-  id: '__root__' | '/' | '/about' | '/channels' | '/create-channel'
+  to: '/' | '/channels' | '/create-channel' | '/automation/add' | '/automation'
+  id:
+    | '__root__'
+    | '/'
+    | '/channels'
+    | '/create-channel'
+    | '/automation/add'
+    | '/automation/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AboutRoute: typeof AboutRoute
   ChannelsRoute: typeof ChannelsRoute
   CreateChannelRoute: typeof CreateChannelRoute
+  AutomationAddRoute: typeof AutomationAddRoute
+  AutomationIndexRoute: typeof AutomationIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AboutRoute: AboutRoute,
   ChannelsRoute: ChannelsRoute,
   CreateChannelRoute: CreateChannelRoute,
+  AutomationAddRoute: AutomationAddRoute,
+  AutomationIndexRoute: AutomationIndexRoute,
 }
 
 export const routeTree = rootRoute
@@ -135,22 +165,26 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/about",
         "/channels",
-        "/create-channel"
+        "/create-channel",
+        "/automation/add",
+        "/automation/"
       ]
     },
     "/": {
       "filePath": "index.tsx"
-    },
-    "/about": {
-      "filePath": "about.tsx"
     },
     "/channels": {
       "filePath": "channels.tsx"
     },
     "/create-channel": {
       "filePath": "create-channel.tsx"
+    },
+    "/automation/add": {
+      "filePath": "automation/add.tsx"
+    },
+    "/automation/": {
+      "filePath": "automation/index.tsx"
     }
   }
 }

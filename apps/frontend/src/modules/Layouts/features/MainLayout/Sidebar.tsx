@@ -1,5 +1,5 @@
 import { NavLink } from '@mantine/core';
-import { IconAffiliate, IconHome2, IconInfoHexagon } from '@tabler/icons-react';
+import { IconAffiliate, IconHome2, IconRobot } from '@tabler/icons-react';
 import { Link } from '@tanstack/react-router';
 
 export function Sidebar() {
@@ -12,15 +12,15 @@ export function Sidebar() {
         component={Link}
       />
       <NavLink
-        to="/about"
-        label="About"
-        leftSection={<IconInfoHexagon size={16} stroke={1.5} />}
-        component={Link}
-      />
-      <NavLink
         to="/channels"
         label="Channels"
         leftSection={<IconAffiliate size={16} stroke={1.5} />}
+        component={Link}
+      />
+      <NavLink
+        to="/automation"
+        label="Automation"
+        leftSection={<IconRobot size={16} stroke={1.5} />}
         component={Link}
       />
     </>

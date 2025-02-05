@@ -1,8 +1,8 @@
 import { createRouter, RouterProvider } from '@tanstack/react-router';
 import '@mantine/core/styles.css';
-import { MantineProvider } from '@mantine/core';
 
 import { routeTree } from '@/routeTree.gen';
+import { ThemeProvider } from './ThemeProvider';
 
 const router = createRouter({ routeTree });
 
@@ -15,8 +15,8 @@ declare module '@tanstack/react-router' {
 
 export function App() {
   return (
-    <MantineProvider>
+    <ThemeProvider>
       <RouterProvider router={router} />
-    </MantineProvider>
+    </ThemeProvider>
   );
 }
