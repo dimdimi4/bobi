@@ -8,11 +8,6 @@ import {
 
 import { AppNode, type AppState } from './types';
 
-const initialEdges = [
-  { id: 'e1-2', source: '1', target: '2' },
-  { id: 'e2-3', source: '2', target: '3' },
-] as Edge[];
-
 const initialNodes = [
   {
     id: '1',
@@ -22,8 +17,9 @@ const initialNodes = [
   },
   {
     id: '2',
-    data: { label: 'Default' },
-    position: { x: 100, y: 125 },
+    type: 'start',
+    data: { label: '/start', number: 225 },
+    position: { x: 100, y: 100 },
   },
   {
     id: '3',
@@ -32,6 +28,11 @@ const initialNodes = [
     position: { x: 250, y: 250 },
   },
 ] as AppNode[];
+
+const initialEdges = [
+  { id: 'e1-2', source: '1', target: '2' },
+  { id: 'e2-3', source: '2', target: '3' },
+] as Edge[];
 
 export const useStore = create<AppState>((set, get) => ({
   nodes: initialNodes,

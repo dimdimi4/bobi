@@ -1,0 +1,41 @@
+.EditorNode {
+  width: 280px;
+  position: relative;
+  overflow: initial
+}
+
+.EditorNodeStart {
+  border-left: 4px solid var(--mantine-primary-color-9);
+}
+
+.EditorNodeEnd {
+  border-right: 4px solid var(--mantine-primary-color-9);
+}
+
+.HandleContainer {
+  position: relative;
+}
+
+.HandleElement {
+  --handle-width: 18px;
+  --handle-height: 18px;
+
+  width: var(--handle-width);
+  height: var(--handle-height);
+  background: var(--mantine-primary-color-9);
+  border-radius: 50%;
+
+  &:hover {
+    background-color: var(--mantine-primary-color-7);
+  }
+}
+
+.BodyContainer {
+  position: relative;
+}
+
+.BodyContainerContent {
+  padding: var(--mantine-spacing-xs);
+  border-radius: var(--mantine-radius-sm);
+  background-color: var(--mantine-color-gray-1);
+}
