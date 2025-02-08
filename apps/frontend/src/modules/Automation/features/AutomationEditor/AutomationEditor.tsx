@@ -8,17 +8,28 @@ import { AppState, useStore } from './store';
 
 import { EditorContainer } from './ui/EditorContainer';
 import { StartNode } from './nodes/StartNode';
+import { EndNode } from './nodes/EndNode';
+import { ActionNode } from './nodes/ActionNode';
+import { ConditionNode } from './nodes/ConditionNode';
+import { Message2Node, MessageNode } from './nodes/MessageNode';
 
 const selector = (state: AppState) => ({
   nodes: state.nodes,
   edges: state.edges,
+  selectedNode: state.selectedNode,
   onNodesChange: state.onNodesChange,
   onEdgesChange: state.onEdgesChange,
   onConnect: state.onConnect,
+  onNodeSelect: state.onNodeSelect,
 });
 
 const nodeTypes = {
   start: StartNode,
+  end: EndNode,
+  action: ActionNode,
+  condition: ConditionNode,
+  message: MessageNode,
+  message2: Message2Node,
 };
 
 export function AutomationEditor({
@@ -28,9 +39,15 @@ export function AutomationEditor({
   opened: boolean;
   onClose: () => void;
 }) {
-  const { nodes, edges, onNodesChange, onEdgesChange, onConnect } = useStore(
-    useShallow(selector)
-  );
+  const {
+    nodes,
+    edges,
+    selectedNode,
+    onNodesChange,
+    onEdgesChange,
+    onConnect,
+    onNodeSelect,
+  } = useStore(useShallow(selector));
 
   return (
     <Drawer
@@ -60,6 +77,8 @@ export function AutomationEditor({
             onNodesChange={onNodesChange}
             onEdgesChange={onEdgesChange}
             onConnect={onConnect}
+            onNodeClick={(_, node) => onNodeSelect(node)}
+            selectNodesOnDrag={false}
             snapToGrid
           >
             <Background bgColor="var(--mantine-color-gray-1)" />
@@ -67,6 +86,7 @@ export function AutomationEditor({
           </ReactFlow>
         </EditorContainer.Body>
       </EditorContainer>
+      <p>{selectedNode?.id}</p>
     </Drawer>
   );
 }

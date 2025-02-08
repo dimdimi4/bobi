@@ -1,9 +1,8 @@
 import { PropsWithChildren } from 'react';
-import { Card, Group, Menu, Text } from '@mantine/core';
+import { Card, Group, Text } from '@mantine/core';
 import { Handle, Position } from '@xyflow/react';
 
 import styles from './EditorNode.module.css';
-import { IconChecklist, IconPlayerPlay } from '@tabler/icons-react';
 
 type EditorNodeProps = {
   start?: boolean;
@@ -80,37 +79,36 @@ function InputHandle({ text = 'Start when...' }: { text: string }) {
   );
 }
 
-function OutputHandle({ text = 'Then' }: { text: string }) {
+function OutputHandle({
+  text,
+  id = 'right',
+  altHandle,
+  children,
+}: PropsWithChildren<{
+  id: string;
+  text?: string;
+  altHandle?: boolean;
+}>) {
+  const classes = [styles.HandleElement];
+
+  if (altHandle) {
+    classes.push(styles.HandleElementAlternative);
+  }
+
   return (
     <HandleContainer>
-      <Menu
-        shadow="md"
-        width={150}
-        withinPortal={false}
-        withArrow
-        position="right"
-        trigger="click"
-      >
-        <Menu.Target>
-          <Handle
-            id="right"
-            type="source"
-            position={Position.Right}
-            className={styles.HandleElement}
-          />
-        </Menu.Target>
-        <Menu.Dropdown>
-          <Menu.Item leftSection={<IconPlayerPlay size={14} />}>
-            Action
-          </Menu.Item>
-          <Menu.Item leftSection={<IconChecklist size={14} />}>
-            Condition
-          </Menu.Item>
-        </Menu.Dropdown>
-      </Menu>
-      <Group justify="flex-end">
-        <HandleText text={text} />
-      </Group>
+      <Handle
+        id={id}
+        type="source"
+        position={Position.Right}
+        className={classes.join(' ')}
+      />
+      {children}
+      {text && (
+        <Group justify="flex-end">
+          <HandleText text={text} />
+        </Group>
+      )}
     </HandleContainer>
   );
 }

@@ -1,7 +1,21 @@
 .EditorNode {
   width: 280px;
   position: relative;
-  overflow: initial
+  overflow: initial;
+}
+
+:global(.selected) .EditorNode {
+  &:before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    width: calc(100% + 4px);
+    height: calc(100% + 4px);
+    border: 2px solid var(--mantine-primary-color-9);
+    border-radius: var(--mantine-radius-md);
+    z-index: 0;
+  }
 }
 
 .EditorNodeStart {
@@ -27,6 +41,14 @@
 
   &:hover {
     background-color: var(--mantine-primary-color-7);
+  }
+}
+
+.HandleElementAlternative {
+  background: var(--mantine-color-orange-9);
+
+  &:hover {
+    background-color: var(--mantine-color-orange-7);
   }
 }
 
