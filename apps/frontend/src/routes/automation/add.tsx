@@ -10,19 +10,12 @@ export const Route = createFileRoute('/automation/add')({
 
 function RouteComponent() {
   const router = useRouter();
-  const [opened, { open, close }] = useDisclosure(false);
-
-  useEffect(() => {
-    open();
-  }, []);
 
   const handleClose = () => {
-    close();
-
     setTimeout(() => {
       router.navigate({ to: '/automation' });
     }, 200);
   };
 
-  return <AutomationEditor opened={opened} onClose={handleClose} />;
+  return <AutomationEditor opened onClose={handleClose} />;
 }

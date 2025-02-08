@@ -3,18 +3,50 @@
   background-color: var(--mantine-color-gray-0);
   display: flex;
   flex-direction: column;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 200;
 }
 
 .header {
-  padding: var(--mantine-spacing-md);
-  background-color: var(--mantine-color-gray-0);
-  border-bottom: 1px solid var(--mantine-color-gray-2);
+  padding: var(--mantine-spacing-xs);
+  background-color: var(--mantine-color-white);
+  border: 1px solid var(--mantine-color-gray-2);
+  border-radius: var(--mantine-radius-md);
   box-shadow: var(--mantine-shadow-xl);
+  right: 0;
+  top: 0;
+  left: 0;
+}
+
+.side-panel {
+  padding: var(--mantine-spacing-xs);
+  background-color: var(--mantine-color-white);
+  border: 1px solid var(--mantine-color-gray-2);
+  border-radius: var(--mantine-radius-md);
+  box-shadow: var(--mantine-shadow-xl);
+  right: 0;
+  top: 65px;
+  bottom: 0;
+  width: 40%;
+  transform: translateX(100%);
+  transition: transform 0.15s ease-in-out, opacity 0.15s ease-in-out;
+  opacity: 0;
+
+  &--open {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }
 
 .body {
   flex: 1;
   width: 100%;
+  position: relative;
+  overflow: hidden;
 }
 
 .footer {
