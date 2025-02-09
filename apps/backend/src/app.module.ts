@@ -5,7 +5,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 
 import { AccountsModule } from './accounts/accounts.module';
 import { ChannelsModule } from './channels/channels.module';
-import { WorkflowsModule } from './workflows/workflows.module';
+import { AutomationsModule } from './automations/automations.module';
 
 @Module({
   imports: [
@@ -20,7 +20,7 @@ import { WorkflowsModule } from './workflows/workflows.module';
     }),
     AccountsModule,
     ChannelsModule,
-    WorkflowsModule,
+    AutomationsModule,
   ],
   providers: [
     {

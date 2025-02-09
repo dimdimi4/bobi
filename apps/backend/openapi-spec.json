@@ -19,10 +19,7 @@
           "201": {
             "description": ""
           }
-        },
-        "tags": [
-          "Accounts"
-        ]
+        }
       },
       "get": {
         "operationId": "accountsFindAllV1",
@@ -31,10 +28,7 @@
           "200": {
             "description": ""
           }
-        },
-        "tags": [
-          "Accounts"
-        ]
+        }
       }
     },
     "/api/v1/accounts/{id}": {
@@ -54,10 +48,7 @@
           "200": {
             "description": ""
           }
-        },
-        "tags": [
-          "Accounts"
-        ]
+        }
       },
       "patch": {
         "operationId": "accountsUpdateV1",
@@ -85,10 +76,7 @@
           "200": {
             "description": ""
           }
-        },
-        "tags": [
-          "Accounts"
-        ]
+        }
       },
       "delete": {
         "operationId": "accountsRemoveV1",
@@ -106,15 +94,13 @@
           "200": {
             "description": ""
           }
-        },
-        "tags": [
-          "Accounts"
-        ]
+        }
       }
     },
     "/api/v1/channels": {
       "post": {
         "operationId": "channelsCreateV1",
+        "summary": "Create a new channel",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -138,13 +124,13 @@
             }
           }
         },
-        "summary": "Create a new channel",
         "tags": [
           "Channels"
         ]
       },
       "get": {
         "operationId": "channelsFindPaginatedV1",
+        "summary": "Get all channels",
         "parameters": [
           {
             "name": "offset",
@@ -175,7 +161,6 @@
             }
           }
         },
-        "summary": "Get all channels",
         "tags": [
           "Channels"
         ]
@@ -184,6 +169,7 @@
     "/api/v1/channels/{id}": {
       "get": {
         "operationId": "channelsFindOneV1",
+        "summary": "Get a channel by id",
         "parameters": [
           {
             "name": "id",
@@ -206,13 +192,13 @@
             }
           }
         },
-        "summary": "Get a channel by id",
         "tags": [
           "Channels"
         ]
       },
       "patch": {
         "operationId": "channelsUpdateV1",
+        "summary": "Update a channel",
         "parameters": [
           {
             "name": "id",
@@ -245,13 +231,13 @@
             }
           }
         },
-        "summary": "Update a channel",
         "tags": [
           "Channels"
         ]
       },
       "delete": {
         "operationId": "channelsRemoveV1",
+        "summary": "Delete a channel",
         "parameters": [
           {
             "name": "id",
@@ -267,37 +253,44 @@
             "description": "Channel deleted successfully"
           }
         },
-        "summary": "Delete a channel",
         "tags": [
           "Channels"
         ]
       }
     },
-    "/api/v1/workflows": {
+    "/api/v1/automations": {
       "post": {
-        "operationId": "workflowsCreateV1",
+        "operationId": "automationsCreateV1",
+        "summary": "Create a new automation",
         "parameters": [],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateWorkflowDto"
+                "$ref": "#/components/schemas/CreateAutomationDto"
               }
             }
           }
         },
         "responses": {
           "201": {
-            "description": ""
+            "description": "Automation created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AutomationDto"
+                }
+              }
+            }
           }
         },
         "tags": [
-          "Workflows"
+          "Automations"
         ]
       },
       "get": {
-        "operationId": "workflowsFindAllV1",
+        "operationId": "automationsFindAllV1",
         "parameters": [],
         "responses": {
           "200": {
@@ -305,13 +298,13 @@
           }
         },
         "tags": [
-          "Workflows"
+          "Automations"
         ]
       }
     },
-    "/api/v1/workflows/{id}": {
+    "/api/v1/automations/{id}": {
       "get": {
-        "operationId": "workflowsFindOneV1",
+        "operationId": "automationsFindOneV1",
         "parameters": [
           {
             "name": "id",
@@ -328,11 +321,11 @@
           }
         },
         "tags": [
-          "Workflows"
+          "Automations"
         ]
       },
       "patch": {
-        "operationId": "workflowsUpdateV1",
+        "operationId": "automationsUpdateV1",
         "parameters": [
           {
             "name": "id",
@@ -348,7 +341,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateWorkflowDto"
+                "$ref": "#/components/schemas/UpdateAutomationDto"
               }
             }
           }
@@ -359,11 +352,11 @@
           }
         },
         "tags": [
-          "Workflows"
+          "Automations"
         ]
       },
       "delete": {
-        "operationId": "workflowsRemoveV1",
+        "operationId": "automationsRemoveV1",
         "parameters": [
           {
             "name": "id",
@@ -380,7 +373,7 @@
           }
         },
         "tags": [
-          "Workflows"
+          "Automations"
         ]
       }
     }
@@ -510,13 +503,35 @@
           }
         }
       },
-      "CreateWorkflowDto": {
+      "CreateAutomationDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The name of the automation",
+            "example": "My Automation"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "AutomationDto": {
         "type": "object",
         "properties": {}
       },
-      "UpdateWorkflowDto": {
+      "UpdateAutomationDto": {
         "type": "object",
-        "properties": {}
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The name of the automation",
+            "example": "My Automation"
+          }
+        },
+        "required": [
+          "name"
+        ]
       }
     }
   }
