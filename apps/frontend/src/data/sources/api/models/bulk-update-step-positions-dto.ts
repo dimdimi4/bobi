@@ -15,15 +15,19 @@
 
 // May contain unused imports in some cases
 // @ts-ignore
-import type { StepTelegramCheckSubscription } from './step-telegram-check-subscription';
-// May contain unused imports in some cases
-// @ts-ignore
-import type { StepTelegramSendMessage } from './step-telegram-send-message';
+import type { UpdateStepPositionsDto } from './update-step-positions-dto';
 
 /**
- * @type AutomationStepsInner
+ * 
  * @export
+ * @interface BulkUpdateStepPositionsDto
  */
-export type AutomationStepsInner = StepTelegramCheckSubscription | StepTelegramSendMessage;
-
+export interface BulkUpdateStepPositionsDto {
+    /**
+     * 
+     * @type {Array<UpdateStepPositionsDto>}
+     * @memberof BulkUpdateStepPositionsDto
+     */
+    'steps': Array<UpdateStepPositionsDto>;
+}
 

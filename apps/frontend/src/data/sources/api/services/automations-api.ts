@@ -24,13 +24,17 @@ import { BASE_PATH, COLLECTION_FORMATS, type RequestArgs, BaseAPI, RequiredError
 // @ts-ignore
 import type { Automation } from '../models';
 // @ts-ignore
-import type { CreateAutomationDto } from '../models';
+import type { AutomationConnection } from '../models';
+// @ts-ignore
+import type { AutomationTask } from '../models';
+// @ts-ignore
+import type { AutomationsPaginatedDto } from '../models';
+// @ts-ignore
+import type { BulkUpdateStepPositionsDto } from '../models';
 // @ts-ignore
 import type { CreateStepDto } from '../models';
 // @ts-ignore
-import type { PaginatedAutomationsDto } from '../models';
-// @ts-ignore
-import type { UpdateAutomationDto } from '../models';
+import type { MutateAutomationDto } from '../models';
 /**
  * AutomationsApi - axios parameter creator
  * @export
@@ -40,15 +44,93 @@ export const AutomationsApiAxiosParamCreator = function (configuration?: Configu
         /**
          * 
          * @param {string} id 
+         * @param {BulkUpdateStepPositionsDto} bulkUpdateStepPositionsDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        automationsBulkUpdateStepPositionsV1: async (id: string, bulkUpdateStepPositionsDto: BulkUpdateStepPositionsDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('automationsBulkUpdateStepPositionsV1', 'id', id)
+            // verify required parameter 'bulkUpdateStepPositionsDto' is not null or undefined
+            assertParamExists('automationsBulkUpdateStepPositionsV1', 'bulkUpdateStepPositionsDto', bulkUpdateStepPositionsDto)
+            const localVarPath = `/api/v1/automations/{id}/bulk-update-step-positions`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(bulkUpdateStepPositionsDto, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {string} id 
+         * @param {AutomationConnection} automationConnection 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        automationsCreateConnectionV1: async (id: string, automationConnection: AutomationConnection, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('automationsCreateConnectionV1', 'id', id)
+            // verify required parameter 'automationConnection' is not null or undefined
+            assertParamExists('automationsCreateConnectionV1', 'automationConnection', automationConnection)
+            const localVarPath = `/api/v1/automations/{id}/connections`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(automationConnection, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {string} id 
          * @param {CreateStepDto} createStepDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        automationsAddStepV1: async (id: string, createStepDto: CreateStepDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        automationsCreateStepV1: async (id: string, createStepDto: CreateStepDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
-            assertParamExists('automationsAddStepV1', 'id', id)
+            assertParamExists('automationsCreateStepV1', 'id', id)
             // verify required parameter 'createStepDto' is not null or undefined
-            assertParamExists('automationsAddStepV1', 'createStepDto', createStepDto)
+            assertParamExists('automationsCreateStepV1', 'createStepDto', createStepDto)
             const localVarPath = `/api/v1/automations/{id}/steps`
                 .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -78,13 +160,13 @@ export const AutomationsApiAxiosParamCreator = function (configuration?: Configu
         },
         /**
          * 
-         * @param {CreateAutomationDto} createAutomationDto 
+         * @param {MutateAutomationDto} mutateAutomationDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        automationsCreateV1: async (createAutomationDto: CreateAutomationDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'createAutomationDto' is not null or undefined
-            assertParamExists('automationsCreateV1', 'createAutomationDto', createAutomationDto)
+        automationsCreateV1: async (mutateAutomationDto: MutateAutomationDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'mutateAutomationDto' is not null or undefined
+            assertParamExists('automationsCreateV1', 'mutateAutomationDto', mutateAutomationDto)
             const localVarPath = `/api/v1/automations`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -104,7 +186,44 @@ export const AutomationsApiAxiosParamCreator = function (configuration?: Configu
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(createAutomationDto, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(mutateAutomationDto, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {string} id 
+         * @param {string} connectionId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        automationsDeleteConnectionV1: async (id: string, connectionId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('automationsDeleteConnectionV1', 'id', id)
+            // verify required parameter 'connectionId' is not null or undefined
+            assertParamExists('automationsDeleteConnectionV1', 'connectionId', connectionId)
+            const localVarPath = `/api/v1/automations/{id}/connections/{connectionId}`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
+                .replace(`{${"connectionId"}}`, encodeURIComponent(String(connectionId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -257,18 +376,18 @@ export const AutomationsApiAxiosParamCreator = function (configuration?: Configu
          * 
          * @param {string} id 
          * @param {string} stepId 
-         * @param {object} body 
+         * @param {AutomationTask} automationTask 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        automationsUpdateStepV1: async (id: string, stepId: string, body: object, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        automationsUpdateStepTaskV1: async (id: string, stepId: string, automationTask: AutomationTask, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
-            assertParamExists('automationsUpdateStepV1', 'id', id)
+            assertParamExists('automationsUpdateStepTaskV1', 'id', id)
             // verify required parameter 'stepId' is not null or undefined
-            assertParamExists('automationsUpdateStepV1', 'stepId', stepId)
-            // verify required parameter 'body' is not null or undefined
-            assertParamExists('automationsUpdateStepV1', 'body', body)
-            const localVarPath = `/api/v1/automations/{id}/steps/{stepId}`
+            assertParamExists('automationsUpdateStepTaskV1', 'stepId', stepId)
+            // verify required parameter 'automationTask' is not null or undefined
+            assertParamExists('automationsUpdateStepTaskV1', 'automationTask', automationTask)
+            const localVarPath = `/api/v1/automations/{id}/steps/{stepId}/task`
                 .replace(`{${"id"}}`, encodeURIComponent(String(id)))
                 .replace(`{${"stepId"}}`, encodeURIComponent(String(stepId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -289,7 +408,7 @@ export const AutomationsApiAxiosParamCreator = function (configuration?: Configu
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(body, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(automationTask, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -299,15 +418,15 @@ export const AutomationsApiAxiosParamCreator = function (configuration?: Configu
         /**
          * 
          * @param {string} id 
-         * @param {UpdateAutomationDto} updateAutomationDto 
+         * @param {MutateAutomationDto} mutateAutomationDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        automationsUpdateV1: async (id: string, updateAutomationDto: UpdateAutomationDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        automationsUpdateV1: async (id: string, mutateAutomationDto: MutateAutomationDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             assertParamExists('automationsUpdateV1', 'id', id)
-            // verify required parameter 'updateAutomationDto' is not null or undefined
-            assertParamExists('automationsUpdateV1', 'updateAutomationDto', updateAutomationDto)
+            // verify required parameter 'mutateAutomationDto' is not null or undefined
+            assertParamExists('automationsUpdateV1', 'mutateAutomationDto', mutateAutomationDto)
             const localVarPath = `/api/v1/automations/{id}`
                 .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -328,7 +447,7 @@ export const AutomationsApiAxiosParamCreator = function (configuration?: Configu
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(updateAutomationDto, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(mutateAutomationDto, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -348,26 +467,65 @@ export const AutomationsApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @param {string} id 
-         * @param {CreateStepDto} createStepDto 
+         * @param {BulkUpdateStepPositionsDto} bulkUpdateStepPositionsDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async automationsAddStepV1(id: string, createStepDto: CreateStepDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Automation>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.automationsAddStepV1(id, createStepDto, options);
+        async automationsBulkUpdateStepPositionsV1(id: string, bulkUpdateStepPositionsDto: BulkUpdateStepPositionsDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Automation>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.automationsBulkUpdateStepPositionsV1(id, bulkUpdateStepPositionsDto, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['AutomationsApi.automationsAddStepV1']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['AutomationsApi.automationsBulkUpdateStepPositionsV1']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
-         * @param {CreateAutomationDto} createAutomationDto 
+         * @param {string} id 
+         * @param {AutomationConnection} automationConnection 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async automationsCreateV1(createAutomationDto: CreateAutomationDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Automation>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.automationsCreateV1(createAutomationDto, options);
+        async automationsCreateConnectionV1(id: string, automationConnection: AutomationConnection, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Automation>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.automationsCreateConnectionV1(id, automationConnection, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AutomationsApi.automationsCreateConnectionV1']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {string} id 
+         * @param {CreateStepDto} createStepDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async automationsCreateStepV1(id: string, createStepDto: CreateStepDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Automation>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.automationsCreateStepV1(id, createStepDto, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AutomationsApi.automationsCreateStepV1']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {MutateAutomationDto} mutateAutomationDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async automationsCreateV1(mutateAutomationDto: MutateAutomationDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Automation>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.automationsCreateV1(mutateAutomationDto, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['AutomationsApi.automationsCreateV1']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {string} id 
+         * @param {string} connectionId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async automationsDeleteConnectionV1(id: string, connectionId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Automation>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.automationsDeleteConnectionV1(id, connectionId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AutomationsApi.automationsDeleteConnectionV1']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -402,7 +560,7 @@ export const AutomationsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async automationsFindPaginatedV1(offset?: number, limit?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaginatedAutomationsDto>> {
+        async automationsFindPaginatedV1(offset?: number, limit?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AutomationsPaginatedDto>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.automationsFindPaginatedV1(offset, limit, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['AutomationsApi.automationsFindPaginatedV1']?.[localVarOperationServerIndex]?.url;
@@ -424,25 +582,25 @@ export const AutomationsApiFp = function(configuration?: Configuration) {
          * 
          * @param {string} id 
          * @param {string} stepId 
-         * @param {object} body 
+         * @param {AutomationTask} automationTask 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async automationsUpdateStepV1(id: string, stepId: string, body: object, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Automation>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.automationsUpdateStepV1(id, stepId, body, options);
+        async automationsUpdateStepTaskV1(id: string, stepId: string, automationTask: AutomationTask, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Automation>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.automationsUpdateStepTaskV1(id, stepId, automationTask, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['AutomationsApi.automationsUpdateStepV1']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['AutomationsApi.automationsUpdateStepTaskV1']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
          * @param {string} id 
-         * @param {UpdateAutomationDto} updateAutomationDto 
+         * @param {MutateAutomationDto} mutateAutomationDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async automationsUpdateV1(id: string, updateAutomationDto: UpdateAutomationDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Automation>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.automationsUpdateV1(id, updateAutomationDto, options);
+        async automationsUpdateV1(id: string, mutateAutomationDto: MutateAutomationDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Automation>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.automationsUpdateV1(id, mutateAutomationDto, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['AutomationsApi.automationsUpdateV1']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -460,21 +618,51 @@ export const AutomationsApiFactory = function (configuration?: Configuration, ba
         /**
          * 
          * @param {string} id 
+         * @param {BulkUpdateStepPositionsDto} bulkUpdateStepPositionsDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        automationsBulkUpdateStepPositionsV1(id: string, bulkUpdateStepPositionsDto: BulkUpdateStepPositionsDto, options?: RawAxiosRequestConfig): AxiosPromise<Automation> {
+            return localVarFp.automationsBulkUpdateStepPositionsV1(id, bulkUpdateStepPositionsDto, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {string} id 
+         * @param {AutomationConnection} automationConnection 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        automationsCreateConnectionV1(id: string, automationConnection: AutomationConnection, options?: RawAxiosRequestConfig): AxiosPromise<Automation> {
+            return localVarFp.automationsCreateConnectionV1(id, automationConnection, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {string} id 
          * @param {CreateStepDto} createStepDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        automationsAddStepV1(id: string, createStepDto: CreateStepDto, options?: RawAxiosRequestConfig): AxiosPromise<Automation> {
-            return localVarFp.automationsAddStepV1(id, createStepDto, options).then((request) => request(axios, basePath));
+        automationsCreateStepV1(id: string, createStepDto: CreateStepDto, options?: RawAxiosRequestConfig): AxiosPromise<Automation> {
+            return localVarFp.automationsCreateStepV1(id, createStepDto, options).then((request) => request(axios, basePath));
         },
         /**
          * 
-         * @param {CreateAutomationDto} createAutomationDto 
+         * @param {MutateAutomationDto} mutateAutomationDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        automationsCreateV1(createAutomationDto: CreateAutomationDto, options?: RawAxiosRequestConfig): AxiosPromise<Automation> {
-            return localVarFp.automationsCreateV1(createAutomationDto, options).then((request) => request(axios, basePath));
+        automationsCreateV1(mutateAutomationDto: MutateAutomationDto, options?: RawAxiosRequestConfig): AxiosPromise<Automation> {
+            return localVarFp.automationsCreateV1(mutateAutomationDto, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {string} id 
+         * @param {string} connectionId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        automationsDeleteConnectionV1(id: string, connectionId: string, options?: RawAxiosRequestConfig): AxiosPromise<Automation> {
+            return localVarFp.automationsDeleteConnectionV1(id, connectionId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -502,7 +690,7 @@ export const AutomationsApiFactory = function (configuration?: Configuration, ba
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        automationsFindPaginatedV1(offset?: number, limit?: number, options?: RawAxiosRequestConfig): AxiosPromise<PaginatedAutomationsDto> {
+        automationsFindPaginatedV1(offset?: number, limit?: number, options?: RawAxiosRequestConfig): AxiosPromise<AutomationsPaginatedDto> {
             return localVarFp.automationsFindPaginatedV1(offset, limit, options).then((request) => request(axios, basePath));
         },
         /**
@@ -518,22 +706,22 @@ export const AutomationsApiFactory = function (configuration?: Configuration, ba
          * 
          * @param {string} id 
          * @param {string} stepId 
-         * @param {object} body 
+         * @param {AutomationTask} automationTask 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        automationsUpdateStepV1(id: string, stepId: string, body: object, options?: RawAxiosRequestConfig): AxiosPromise<Automation> {
-            return localVarFp.automationsUpdateStepV1(id, stepId, body, options).then((request) => request(axios, basePath));
+        automationsUpdateStepTaskV1(id: string, stepId: string, automationTask: AutomationTask, options?: RawAxiosRequestConfig): AxiosPromise<Automation> {
+            return localVarFp.automationsUpdateStepTaskV1(id, stepId, automationTask, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @param {string} id 
-         * @param {UpdateAutomationDto} updateAutomationDto 
+         * @param {MutateAutomationDto} mutateAutomationDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        automationsUpdateV1(id: string, updateAutomationDto: UpdateAutomationDto, options?: RawAxiosRequestConfig): AxiosPromise<Automation> {
-            return localVarFp.automationsUpdateV1(id, updateAutomationDto, options).then((request) => request(axios, basePath));
+        automationsUpdateV1(id: string, mutateAutomationDto: MutateAutomationDto, options?: RawAxiosRequestConfig): AxiosPromise<Automation> {
+            return localVarFp.automationsUpdateV1(id, mutateAutomationDto, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -548,24 +736,60 @@ export class AutomationsApi extends BaseAPI {
     /**
      * 
      * @param {string} id 
+     * @param {BulkUpdateStepPositionsDto} bulkUpdateStepPositionsDto 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AutomationsApi
+     */
+    public automationsBulkUpdateStepPositionsV1(id: string, bulkUpdateStepPositionsDto: BulkUpdateStepPositionsDto, options?: RawAxiosRequestConfig) {
+        return AutomationsApiFp(this.configuration).automationsBulkUpdateStepPositionsV1(id, bulkUpdateStepPositionsDto, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {string} id 
+     * @param {AutomationConnection} automationConnection 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AutomationsApi
+     */
+    public automationsCreateConnectionV1(id: string, automationConnection: AutomationConnection, options?: RawAxiosRequestConfig) {
+        return AutomationsApiFp(this.configuration).automationsCreateConnectionV1(id, automationConnection, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {string} id 
      * @param {CreateStepDto} createStepDto 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof AutomationsApi
      */
-    public automationsAddStepV1(id: string, createStepDto: CreateStepDto, options?: RawAxiosRequestConfig) {
-        return AutomationsApiFp(this.configuration).automationsAddStepV1(id, createStepDto, options).then((request) => request(this.axios, this.basePath));
+    public automationsCreateStepV1(id: string, createStepDto: CreateStepDto, options?: RawAxiosRequestConfig) {
+        return AutomationsApiFp(this.configuration).automationsCreateStepV1(id, createStepDto, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
-     * @param {CreateAutomationDto} createAutomationDto 
+     * @param {MutateAutomationDto} mutateAutomationDto 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof AutomationsApi
      */
-    public automationsCreateV1(createAutomationDto: CreateAutomationDto, options?: RawAxiosRequestConfig) {
-        return AutomationsApiFp(this.configuration).automationsCreateV1(createAutomationDto, options).then((request) => request(this.axios, this.basePath));
+    public automationsCreateV1(mutateAutomationDto: MutateAutomationDto, options?: RawAxiosRequestConfig) {
+        return AutomationsApiFp(this.configuration).automationsCreateV1(mutateAutomationDto, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {string} id 
+     * @param {string} connectionId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AutomationsApi
+     */
+    public automationsDeleteConnectionV1(id: string, connectionId: string, options?: RawAxiosRequestConfig) {
+        return AutomationsApiFp(this.configuration).automationsDeleteConnectionV1(id, connectionId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -618,25 +842,25 @@ export class AutomationsApi extends BaseAPI {
      * 
      * @param {string} id 
      * @param {string} stepId 
-     * @param {object} body 
+     * @param {AutomationTask} automationTask 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof AutomationsApi
      */
-    public automationsUpdateStepV1(id: string, stepId: string, body: object, options?: RawAxiosRequestConfig) {
-        return AutomationsApiFp(this.configuration).automationsUpdateStepV1(id, stepId, body, options).then((request) => request(this.axios, this.basePath));
+    public automationsUpdateStepTaskV1(id: string, stepId: string, automationTask: AutomationTask, options?: RawAxiosRequestConfig) {
+        return AutomationsApiFp(this.configuration).automationsUpdateStepTaskV1(id, stepId, automationTask, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
      * @param {string} id 
-     * @param {UpdateAutomationDto} updateAutomationDto 
+     * @param {MutateAutomationDto} mutateAutomationDto 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof AutomationsApi
      */
-    public automationsUpdateV1(id: string, updateAutomationDto: UpdateAutomationDto, options?: RawAxiosRequestConfig) {
-        return AutomationsApiFp(this.configuration).automationsUpdateV1(id, updateAutomationDto, options).then((request) => request(this.axios, this.basePath));
+    public automationsUpdateV1(id: string, mutateAutomationDto: MutateAutomationDto, options?: RawAxiosRequestConfig) {
+        return AutomationsApiFp(this.configuration).automationsUpdateV1(id, mutateAutomationDto, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

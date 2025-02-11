@@ -17,20 +17,14 @@
 /**
  * 
  * @export
- * @interface StepPosition
+ * @interface MutateAutomationDto
  */
-export interface StepPosition {
+export interface MutateAutomationDto {
     /**
      * 
-     * @type {number}
-     * @memberof StepPosition
+     * @type {string}
+     * @memberof MutateAutomationDto
      */
-    'x': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof StepPosition
-     */
-    'y': number;
+    'name': string;
 }
 

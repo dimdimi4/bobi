@@ -17,38 +17,38 @@
 /**
  * 
  * @export
- * @interface Connection
+ * @interface AutomationConnection
  */
-export interface Connection {
+export interface AutomationConnection {
     /**
      * 
      * @type {string}
-     * @memberof Connection
+     * @memberof AutomationConnection
      */
     'id': string;
     /**
      * 
      * @type {string}
-     * @memberof Connection
+     * @memberof AutomationConnection
      */
     'sourceStepId': string;
     /**
      * 
      * @type {string}
-     * @memberof Connection
+     * @memberof AutomationConnection
      */
-    'sourceHandleId': string;
+    'sourceHandleId'?: string;
     /**
      * 
      * @type {string}
-     * @memberof Connection
+     * @memberof AutomationConnection
      */
     'targetStepId': string;
     /**
      * 
      * @type {string}
-     * @memberof Connection
+     * @memberof AutomationConnection
      */
-    'targetHandleId': string;
+    'targetHandleId'?: string;
 }
 

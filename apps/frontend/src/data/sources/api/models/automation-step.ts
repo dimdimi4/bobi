@@ -15,28 +15,34 @@
 
 // May contain unused imports in some cases
 // @ts-ignore
-import type { AutomationConnection } from './automation-connection';
+import type { AutomationStepPosition } from './automation-step-position';
 // May contain unused imports in some cases
 // @ts-ignore
-import type { AutomationStep } from './automation-step';
+import type { AutomationTask } from './automation-task';
 
 /**
  * 
  * @export
- * @interface CreateStepDto
+ * @interface AutomationStep
  */
-export interface CreateStepDto {
+export interface AutomationStep {
     /**
      * 
-     * @type {AutomationStep}
-     * @memberof CreateStepDto
+     * @type {string}
+     * @memberof AutomationStep
      */
-    'step': AutomationStep;
+    'id': string;
     /**
      * 
-     * @type {AutomationConnection}
-     * @memberof CreateStepDto
+     * @type {AutomationStepPosition}
+     * @memberof AutomationStep
      */
-    'connection'?: AutomationConnection;
+    'position': AutomationStepPosition;
+    /**
+     * 
+     * @type {AutomationTask}
+     * @memberof AutomationStep
+     */
+    'task': AutomationTask;
 }
 

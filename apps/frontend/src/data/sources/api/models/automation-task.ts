@@ -13,18 +13,21 @@
  */
 
 
+// May contain unused imports in some cases
+// @ts-ignore
+import type { TelegramSendMessageTask } from './telegram-send-message-task';
 
 /**
  * 
  * @export
- * @interface CreateAutomationDto
+ * @interface AutomationTask
  */
-export interface CreateAutomationDto {
+export interface AutomationTask {
     /**
      * 
-     * @type {string}
-     * @memberof CreateAutomationDto
+     * @type {TelegramSendMessageTask}
+     * @memberof AutomationTask
      */
-    'name': string;
+    'telegram_sendMessage'?: TelegramSendMessageTask;
 }
 

@@ -20,31 +20,31 @@ import type { Automation } from './automation';
 /**
  * 
  * @export
- * @interface PaginatedAutomationsDto
+ * @interface AutomationsPaginatedDto
  */
-export interface PaginatedAutomationsDto {
+export interface AutomationsPaginatedDto {
     /**
      * 
      * @type {number}
-     * @memberof PaginatedAutomationsDto
+     * @memberof AutomationsPaginatedDto
      */
     'total': number;
     /**
      * 
      * @type {number}
-     * @memberof PaginatedAutomationsDto
+     * @memberof AutomationsPaginatedDto
      */
     'limit': number;
     /**
      * 
      * @type {number}
-     * @memberof PaginatedAutomationsDto
+     * @memberof AutomationsPaginatedDto
      */
     'offset': number;
     /**
      * 
      * @type {Array<Automation>}
-     * @memberof PaginatedAutomationsDto
+     * @memberof AutomationsPaginatedDto
      */
     'results': Array<Automation>;
 }

@@ -15,10 +15,10 @@
 
 // May contain unused imports in some cases
 // @ts-ignore
-import type { AutomationStepsInner } from './automation-steps-inner';
+import type { AutomationConnection } from './automation-connection';
 // May contain unused imports in some cases
 // @ts-ignore
-import type { Connection } from './connection';
+import type { AutomationStep } from './automation-step';
 
 /**
  * 
@@ -31,18 +31,36 @@ export interface Automation {
      * @type {string}
      * @memberof Automation
      */
+    'id': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Automation
+     */
     'name': string;
     /**
      * 
-     * @type {Array<AutomationStepsInner>}
+     * @type {Array<AutomationStep>}
      * @memberof Automation
      */
-    'steps': Array<AutomationStepsInner>;
+    'steps': Array<AutomationStep>;
     /**
      * 
-     * @type {Array<Connection>}
+     * @type {Array<AutomationConnection>}
      * @memberof Automation
      */
-    'connections': Array<Connection>;
+    'connections': Array<AutomationConnection>;
+    /**
+     * 
+     * @type {string}
+     * @memberof Automation
+     */
+    'createdAt': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Automation
+     */
+    'updatedAt': string;
 }
 

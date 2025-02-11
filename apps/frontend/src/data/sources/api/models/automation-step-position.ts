@@ -17,19 +17,19 @@
 /**
  * 
  * @export
- * @interface StepPositionDto
+ * @interface AutomationStepPosition
  */
-export interface StepPositionDto {
+export interface AutomationStepPosition {
     /**
      * 
      * @type {number}
-     * @memberof StepPositionDto
+     * @memberof AutomationStepPosition
      */
     'x': number;
     /**
      * 
      * @type {number}
-     * @memberof StepPositionDto
+     * @memberof AutomationStepPosition
      */
     'y': number;
 }

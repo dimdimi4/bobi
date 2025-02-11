@@ -17,14 +17,20 @@
 /**
  * 
  * @export
- * @interface UpdateAutomationDto
+ * @interface TelegramSendMessageTask
  */
-export interface UpdateAutomationDto {
+export interface TelegramSendMessageTask {
     /**
      * 
      * @type {string}
-     * @memberof UpdateAutomationDto
+     * @memberof TelegramSendMessageTask
      */
-    'name': string;
+    'message': string;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof TelegramSendMessageTask
+     */
+    'quickReplies': Array<string>;
 }
 
