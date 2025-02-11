@@ -1,9 +1,7 @@
 import { IsString } from 'class-validator';
-import { AutomationDto } from './automation.dto';
-import { ApiProperty } from '@nestjs/swagger';
+import { Automation } from '../schemas/automation.schema';
 
-export class CreateAutomationDto implements Pick<AutomationDto, 'name'> {
-  @ApiProperty()
+export class CreateAutomationDto implements Pick<Automation, 'name'> {
   @IsString()
   name: string;
 }

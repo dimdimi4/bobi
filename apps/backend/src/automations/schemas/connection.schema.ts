@@ -1,6 +1,8 @@
 import { SchemaFactory, Schema, Prop } from '@nestjs/mongoose';
+import { Expose } from 'class-transformer';
 
 @Schema({ _id: false })
+@Expose()
 export class Connection {
   @Prop({
     type: String,

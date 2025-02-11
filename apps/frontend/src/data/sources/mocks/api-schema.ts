@@ -77,23 +77,23 @@ export interface paths {
         patch: operations["channelsUpdateV1"];
         trace?: never;
     };
-    "/api/v1/workflows": {
+    "/api/v1/automations": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        get: operations["workflowsFindAllV1"];
+        get: operations["automationsFindPaginatedV1"];
         put?: never;
-        post: operations["workflowsCreateV1"];
+        post: operations["automationsCreateV1"];
         delete?: never;
         options?: never;
         head?: never;
         patch?: never;
         trace?: never;
     };
-    "/api/v1/workflows/{id}": {
+    "/api/v1/automations/{id}": {
         parameters: {
             query?: never;
             header?: never;
@@ -102,13 +102,50 @@ export interface paths {
             };
             cookie?: never;
         };
-        get: operations["workflowsFindOneV1"];
+        get: operations["automationsFindOneV1"];
         put?: never;
         post?: never;
-        delete: operations["workflowsRemoveV1"];
+        delete: operations["automationsRemoveV1"];
         options?: never;
         head?: never;
-        patch: operations["workflowsUpdateV1"];
+        patch: operations["automationsUpdateV1"];
+        trace?: never;
+    };
+    "/api/v1/automations/{id}/steps": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["automationsAddStepV1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/automations/{id}/steps/{stepId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+                stepId: string;
+            };
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete: operations["automationsDeleteStepV1"];
+        options?: never;
+        head?: never;
+        patch: operations["automationsUpdateStepV1"];
         trace?: never;
     };
 }
@@ -133,6 +170,8 @@ export interface components {
             name: string;
             createdAt: string;
             updatedAt: string;
+            accountId: string;
+            token: string;
         };
         PaginatedChannelsDto: {
             total: number;
@@ -144,8 +183,68 @@ export interface components {
             name?: string;
             token?: string;
         };
-        CreateWorkflowDto: Record<string, never>;
-        UpdateWorkflowDto: Record<string, never>;
+        CreateAutomationDto: {
+            name: string;
+        };
+        StepPosition: {
+            x: number;
+            y: number;
+        };
+        Step: {
+            id: string;
+            position: components["schemas"]["StepPosition"];
+            /**
+             * @description Discriminator field to determine the type of step
+             * @enum {string}
+             */
+            type: "StepTelegramSendMessage" | "StepTelegramCheckSubscription";
+        };
+        StepTelegramSendMessage: {
+            /**
+             * @description Discriminator field to determine the type of step
+             * @enum {string}
+             */
+            type: "StepTelegramSendMessage";
+            message: string;
+        };
+        StepTelegramCheckSubscription: {
+            /**
+             * @description Discriminator field to determine the type of step
+             * @enum {string}
+             */
+            type: "StepTelegramCheckSubscription";
+            channelId: string;
+        };
+        Connection: {
+            id: string;
+            sourceStepId: string;
+            sourceHandleId: string;
+            targetStepId: string;
+            targetHandleId: string;
+        };
+        Automation: {
+            name: string;
+            steps: (components["schemas"]["StepTelegramSendMessage"] | components["schemas"]["StepTelegramCheckSubscription"])[];
+            connections: components["schemas"]["Connection"][];
+        };
+        PaginatedAutomationsDto: {
+            total: number;
+            limit: number;
+            offset: number;
+            results: components["schemas"]["Automation"][];
+        };
+        UpdateAutomationDto: {
+            name: string;
+        };
+        StepPositionDto: {
+            x: number;
+            y: number;
+        };
+        CreateStepDto: {
+            position: components["schemas"]["StepPositionDto"];
+            type: string;
+        };
+        UpdateStepDto: Record<string, never>;
     };
     responses: never;
     parameters: never;
@@ -168,7 +267,9 @@ export interface operations {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    "application/json": string;
+                };
             };
         };
     };
@@ -189,7 +290,9 @@ export interface operations {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    "application/json": string;
+                };
             };
         };
     };
@@ -208,7 +311,9 @@ export interface operations {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    "application/json": string;
+                };
             };
         };
     };
@@ -227,7 +332,9 @@ export interface operations {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    "application/json": string;
+                };
             };
         };
     };
@@ -250,7 +357,9 @@ export interface operations {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    "application/json": string;
+                };
             };
         };
     };
@@ -334,6 +443,12 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
             /** @description Channel deleted successfully */
             204: {
                 headers: {
@@ -369,24 +484,30 @@ export interface operations {
             };
         };
     };
-    workflowsFindAllV1: {
+    automationsFindPaginatedV1: {
         parameters: {
-            query?: never;
+            query?: {
+                offset?: number;
+                limit?: number;
+            };
             header?: never;
             path?: never;
             cookie?: never;
         };
         requestBody?: never;
         responses: {
+            /** @description Returns a paginated list of automations. */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    "application/json": components["schemas"]["PaginatedAutomationsDto"];
+                };
             };
         };
     };
-    workflowsCreateV1: {
+    automationsCreateV1: {
         parameters: {
             query?: never;
             header?: never;
@@ -395,19 +516,22 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["CreateWorkflowDto"];
+                "application/json": components["schemas"]["CreateAutomationDto"];
             };
         };
         responses: {
+            /** @description The automation has been successfully created. */
             201: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    "application/json": components["schemas"]["Automation"];
+                };
             };
         };
     };
-    workflowsFindOneV1: {
+    automationsFindOneV1: {
         parameters: {
             query?: never;
             header?: never;
@@ -418,7 +542,17 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
+            /** @description Returns the automation with the specified ID. */
             200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Automation"];
+                };
+            };
+            /** @description Automation not found. */
+            404: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -426,7 +560,7 @@ export interface operations {
             };
         };
     };
-    workflowsRemoveV1: {
+    automationsRemoveV1: {
         parameters: {
             query?: never;
             header?: never;
@@ -437,7 +571,17 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
+            /** @description The automation has been successfully deleted. */
             200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Automation"];
+                };
+            };
+            /** @description Automation not found. */
+            404: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -445,7 +589,7 @@ export interface operations {
             };
         };
     };
-    workflowsUpdateV1: {
+    automationsUpdateV1: {
         parameters: {
             query?: never;
             header?: never;
@@ -456,11 +600,118 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["UpdateWorkflowDto"];
+                "application/json": components["schemas"]["UpdateAutomationDto"];
             };
         };
         responses: {
+            /** @description The automation has been successfully updated. */
             200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Automation"];
+                };
+            };
+            /** @description Automation not found. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    automationsAddStepV1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateStepDto"];
+            };
+        };
+        responses: {
+            /** @description The step has been successfully added to the automation. */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Automation"];
+                };
+            };
+            /** @description Automation not found. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    automationsDeleteStepV1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+                stepId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description The step has been successfully deleted. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Automation"];
+                };
+            };
+            /** @description Automation or step not found. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    automationsUpdateStepV1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+                stepId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateStepDto"];
+            };
+        };
+        responses: {
+            /** @description The step has been successfully updated. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Automation"];
+                };
+            };
+            /** @description Automation or step not found. */
+            404: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -480,9 +731,12 @@ export enum ApiPaths {
     channelsFindOneV1 = "/api/v1/channels/:id",
     channelsUpdateV1 = "/api/v1/channels/:id",
     channelsRemoveV1 = "/api/v1/channels/:id",
-    workflowsCreateV1 = "/api/v1/workflows",
-    workflowsFindAllV1 = "/api/v1/workflows",
-    workflowsFindOneV1 = "/api/v1/workflows/:id",
-    workflowsUpdateV1 = "/api/v1/workflows/:id",
-    workflowsRemoveV1 = "/api/v1/workflows/:id"
+    automationsCreateV1 = "/api/v1/automations",
+    automationsFindPaginatedV1 = "/api/v1/automations",
+    automationsFindOneV1 = "/api/v1/automations/:id",
+    automationsUpdateV1 = "/api/v1/automations/:id",
+    automationsRemoveV1 = "/api/v1/automations/:id",
+    automationsAddStepV1 = "/api/v1/automations/:id/steps",
+    automationsUpdateStepV1 = "/api/v1/automations/:id/steps/:stepId",
+    automationsDeleteStepV1 = "/api/v1/automations/:id/steps/:stepId"
 }

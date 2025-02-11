@@ -1,10 +1,12 @@
-import { Model } from 'mongoose';
-import { plainToInstance } from 'class-transformer';
+import { FilterQuery, Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 
-import { AutomationDto } from './dto/automation.dto';
 import { Automation, AutomationDocument } from './schemas/automation.schema';
+
+import { PaginatedAutomationsDto } from './dto/paginated-automations.dto';
+import { CreateAutomationDto } from './dto/create-automation.dto';
+import { UpdateAutomationDto } from './dto/update-automation.dto';
 
 @Injectable()
 export class AutomationsRepository {
@@ -13,77 +15,68 @@ export class AutomationsRepository {
     private readonly automationModel: Model<AutomationDocument>,
   ) {}
 
-  private toDto(document: AutomationDocument): AutomationDto {
-    return plainToInstance(
-      AutomationDto,
-      { ...document.toObject(), id: document._id.toString() },
-      {
-        excludeExtraneousValues: true,
-      },
-    );
-  }
-
-  private toEntities(documents: AutomationDocument[]): AutomationDto[] {
-    return documents.map((doc) => this.toDto(doc));
+  private secureMatch(accountId: string, match?: FilterQuery<Automation>) {
+    return { ...match, accountId };
   }
 
   async create(
     accountId: string,
-    automation: Partial<Automation>,
-  ): Promise<AutomationDto> {
+    automationDto: CreateAutomationDto,
+  ): Promise<Automation> {
     const createdAutomation = new this.automationModel({
-      ...automation,
+      ...automationDto,
       accountId,
     });
-    const savedAutomation = await createdAutomation.save();
-    return this.toDto(savedAutomation);
+    return await createdAutomation.save();
   }
 
-  async findById(accountId: string, id: string): Promise<AutomationDto | null> {
-    const automation = await this.automationModel
-      .findOne({ _id: id, accountId })
+  async findOne(accountId: string, id: string): Promise<Automation | null> {
+    return await this.automationModel
+      .findOne(this.secureMatch(accountId, { _id: id }))
       .exec();
-    return automation ? this.toDto(automation) : null;
   }
 
   async findPaginated(
     accountId: string,
     offset = 0,
     limit = 10,
-  ): Promise<{
-    total: number;
-    limit: number;
-    offset: number;
-    results: AutomationDto[];
-  }> {
+  ): Promise<PaginatedAutomationsDto> {
     const [documents, total] = await Promise.all([
-      this.automationModel.find({ accountId }).skip(offset).limit(limit).exec(),
-      this.automationModel.countDocuments({ accountId }),
+      this.automationModel
+        .find(this.secureMatch(accountId))
+        .skip(offset)
+        .limit(limit)
+        .exec(),
+      this.automationModel.countDocuments(this.secureMatch(accountId)),
     ]);
 
     return {
       total,
       limit,
       offset,
-      results: this.toEntities(documents),
+      results: documents,
     };
   }
 
   async update(
     accountId: string,
     id: string,
-    automation: Partial<Automation>,
-  ): Promise<AutomationDto | null> {
-    const updatedAutomation = await this.automationModel
-      .findOneAndUpdate({ _id: id, accountId }, automation, { new: true })
+    automationDto: UpdateAutomationDto,
+  ): Promise<Automation | null> {
+    return await this.automationModel
+      .findOneAndUpdate(
+        this.secureMatch(accountId, { _id: id }),
+        automationDto,
+        {
+          new: true,
+        },
+      )
       .exec();
-    return updatedAutomation ? this.toDto(updatedAutomation) : null;
   }
 
-  async delete(accountId: string, id: string): Promise<AutomationDto | null> {
-    const deletedAutomation = await this.automationModel
-      .findOneAndDelete({ _id: id, accountId })
+  async delete(accountId: string, id: string): Promise<Automation | null> {
+    return await this.automationModel
+      .findOneAndDelete(this.secureMatch(accountId, { _id: id }))
       .exec();
-    return deletedAutomation ? this.toDto(deletedAutomation) : null;
   }
 }

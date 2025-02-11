@@ -17,50 +17,38 @@
 /**
  * 
  * @export
- * @interface ChannelDto
+ * @interface Connection
  */
-export interface ChannelDto {
+export interface Connection {
     /**
      * 
      * @type {string}
-     * @memberof ChannelDto
+     * @memberof Connection
      */
     'id': string;
     /**
      * 
      * @type {string}
-     * @memberof ChannelDto
+     * @memberof Connection
      */
-    'type': string;
+    'sourceStepId': string;
     /**
      * 
      * @type {string}
-     * @memberof ChannelDto
+     * @memberof Connection
      */
-    'name': string;
+    'sourceHandleId': string;
     /**
      * 
      * @type {string}
-     * @memberof ChannelDto
+     * @memberof Connection
      */
-    'createdAt': string;
+    'targetStepId': string;
     /**
      * 
      * @type {string}
-     * @memberof ChannelDto
+     * @memberof Connection
      */
-    'updatedAt': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ChannelDto
-     */
-    'accountId': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ChannelDto
-     */
-    'token': string;
+    'targetHandleId': string;
 }
 

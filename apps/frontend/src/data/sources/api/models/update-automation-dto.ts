@@ -14,7 +14,17 @@
 
 
 
-export * from './services/automations-api';
-export * from './services/channels-api';
-export * from './services/default-api';
+/**
+ * 
+ * @export
+ * @interface UpdateAutomationDto
+ */
+export interface UpdateAutomationDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateAutomationDto
+     */
+    'name': string;
+}
 

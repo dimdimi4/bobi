@@ -22,10 +22,10 @@ import { DUMMY_BASE_URL, assertParamExists, setApiKeyToObject, setBasicAuthToObj
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS, type RequestArgs, BaseAPI, RequiredError, operationServerMap } from '../base';
 /**
- * WorkflowsApi - axios parameter creator
+ * DefaultApi - axios parameter creator
  * @export
  */
-export const WorkflowsApiAxiosParamCreator = function (configuration?: Configuration) {
+export const DefaultApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
          * 
@@ -33,10 +33,10 @@ export const WorkflowsApiAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        workflowsCreateV1: async (body: object, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        accountsCreateV1: async (body: object, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'body' is not null or undefined
-            assertParamExists('workflowsCreateV1', 'body', body)
-            const localVarPath = `/api/v1/workflows`;
+            assertParamExists('accountsCreateV1', 'body', body)
+            const localVarPath = `/api/v1/accounts`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -67,8 +67,8 @@ export const WorkflowsApiAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        workflowsFindAllV1: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/api/v1/workflows`;
+        accountsFindAllV1: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v1/accounts`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -97,10 +97,10 @@ export const WorkflowsApiAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        workflowsFindOneV1: async (id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        accountsFindOneV1: async (id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
-            assertParamExists('workflowsFindOneV1', 'id', id)
-            const localVarPath = `/api/v1/workflows/{id}`
+            assertParamExists('accountsFindOneV1', 'id', id)
+            const localVarPath = `/api/v1/accounts/{id}`
                 .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -130,10 +130,10 @@ export const WorkflowsApiAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        workflowsRemoveV1: async (id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        accountsRemoveV1: async (id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
-            assertParamExists('workflowsRemoveV1', 'id', id)
-            const localVarPath = `/api/v1/workflows/{id}`
+            assertParamExists('accountsRemoveV1', 'id', id)
+            const localVarPath = `/api/v1/accounts/{id}`
                 .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -164,12 +164,12 @@ export const WorkflowsApiAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        workflowsUpdateV1: async (id: string, body: object, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        accountsUpdateV1: async (id: string, body: object, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
-            assertParamExists('workflowsUpdateV1', 'id', id)
+            assertParamExists('accountsUpdateV1', 'id', id)
             // verify required parameter 'body' is not null or undefined
-            assertParamExists('workflowsUpdateV1', 'body', body)
-            const localVarPath = `/api/v1/workflows/{id}`
+            assertParamExists('accountsUpdateV1', 'body', body)
+            const localVarPath = `/api/v1/accounts/{id}`
                 .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -200,11 +200,11 @@ export const WorkflowsApiAxiosParamCreator = function (configuration?: Configura
 };
 
 /**
- * WorkflowsApi - functional programming interface
+ * DefaultApi - functional programming interface
  * @export
  */
-export const WorkflowsApiFp = function(configuration?: Configuration) {
-    const localVarAxiosParamCreator = WorkflowsApiAxiosParamCreator(configuration)
+export const DefaultApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = DefaultApiAxiosParamCreator(configuration)
     return {
         /**
          * 
@@ -212,10 +212,10 @@ export const WorkflowsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async workflowsCreateV1(body: object, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.workflowsCreateV1(body, options);
+        async accountsCreateV1(body: object, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.accountsCreateV1(body, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['WorkflowsApi.workflowsCreateV1']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['DefaultApi.accountsCreateV1']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -223,22 +223,10 @@ export const WorkflowsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async workflowsFindAllV1(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.workflowsFindAllV1(options);
+        async accountsFindAllV1(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.accountsFindAllV1(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['WorkflowsApi.workflowsFindAllV1']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @param {string} id 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async workflowsFindOneV1(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.workflowsFindOneV1(id, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['WorkflowsApi.workflowsFindOneV1']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['DefaultApi.accountsFindAllV1']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -247,10 +235,22 @@ export const WorkflowsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async workflowsRemoveV1(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.workflowsRemoveV1(id, options);
+        async accountsFindOneV1(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.accountsFindOneV1(id, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['WorkflowsApi.workflowsRemoveV1']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['DefaultApi.accountsFindOneV1']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async accountsRemoveV1(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.accountsRemoveV1(id, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DefaultApi.accountsRemoveV1']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -260,21 +260,21 @@ export const WorkflowsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async workflowsUpdateV1(id: string, body: object, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.workflowsUpdateV1(id, body, options);
+        async accountsUpdateV1(id: string, body: object, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.accountsUpdateV1(id, body, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['WorkflowsApi.workflowsUpdateV1']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['DefaultApi.accountsUpdateV1']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
 
 /**
- * WorkflowsApi - factory interface
+ * DefaultApi - factory interface
  * @export
  */
-export const WorkflowsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-    const localVarFp = WorkflowsApiFp(configuration)
+export const DefaultApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = DefaultApiFp(configuration)
     return {
         /**
          * 
@@ -282,25 +282,16 @@ export const WorkflowsApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        workflowsCreateV1(body: object, options?: RawAxiosRequestConfig): AxiosPromise<void> {
-            return localVarFp.workflowsCreateV1(body, options).then((request) => request(axios, basePath));
+        accountsCreateV1(body: object, options?: RawAxiosRequestConfig): AxiosPromise<string> {
+            return localVarFp.accountsCreateV1(body, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        workflowsFindAllV1(options?: RawAxiosRequestConfig): AxiosPromise<void> {
-            return localVarFp.workflowsFindAllV1(options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @param {string} id 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        workflowsFindOneV1(id: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
-            return localVarFp.workflowsFindOneV1(id, options).then((request) => request(axios, basePath));
+        accountsFindAllV1(options?: RawAxiosRequestConfig): AxiosPromise<string> {
+            return localVarFp.accountsFindAllV1(options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -308,8 +299,17 @@ export const WorkflowsApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        workflowsRemoveV1(id: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
-            return localVarFp.workflowsRemoveV1(id, options).then((request) => request(axios, basePath));
+        accountsFindOneV1(id: string, options?: RawAxiosRequestConfig): AxiosPromise<string> {
+            return localVarFp.accountsFindOneV1(id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        accountsRemoveV1(id: string, options?: RawAxiosRequestConfig): AxiosPromise<string> {
+            return localVarFp.accountsRemoveV1(id, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -318,49 +318,38 @@ export const WorkflowsApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        workflowsUpdateV1(id: string, body: object, options?: RawAxiosRequestConfig): AxiosPromise<void> {
-            return localVarFp.workflowsUpdateV1(id, body, options).then((request) => request(axios, basePath));
+        accountsUpdateV1(id: string, body: object, options?: RawAxiosRequestConfig): AxiosPromise<string> {
+            return localVarFp.accountsUpdateV1(id, body, options).then((request) => request(axios, basePath));
         },
     };
 };
 
 /**
- * WorkflowsApi - object-oriented interface
+ * DefaultApi - object-oriented interface
  * @export
- * @class WorkflowsApi
+ * @class DefaultApi
  * @extends {BaseAPI}
  */
-export class WorkflowsApi extends BaseAPI {
+export class DefaultApi extends BaseAPI {
     /**
      * 
      * @param {object} body 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof WorkflowsApi
+     * @memberof DefaultApi
      */
-    public workflowsCreateV1(body: object, options?: RawAxiosRequestConfig) {
-        return WorkflowsApiFp(this.configuration).workflowsCreateV1(body, options).then((request) => request(this.axios, this.basePath));
+    public accountsCreateV1(body: object, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).accountsCreateV1(body, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof WorkflowsApi
+     * @memberof DefaultApi
      */
-    public workflowsFindAllV1(options?: RawAxiosRequestConfig) {
-        return WorkflowsApiFp(this.configuration).workflowsFindAllV1(options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @param {string} id 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof WorkflowsApi
-     */
-    public workflowsFindOneV1(id: string, options?: RawAxiosRequestConfig) {
-        return WorkflowsApiFp(this.configuration).workflowsFindOneV1(id, options).then((request) => request(this.axios, this.basePath));
+    public accountsFindAllV1(options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).accountsFindAllV1(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -368,10 +357,21 @@ export class WorkflowsApi extends BaseAPI {
      * @param {string} id 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof WorkflowsApi
+     * @memberof DefaultApi
      */
-    public workflowsRemoveV1(id: string, options?: RawAxiosRequestConfig) {
-        return WorkflowsApiFp(this.configuration).workflowsRemoveV1(id, options).then((request) => request(this.axios, this.basePath));
+    public accountsFindOneV1(id: string, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).accountsFindOneV1(id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {string} id 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public accountsRemoveV1(id: string, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).accountsRemoveV1(id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -380,10 +380,10 @@ export class WorkflowsApi extends BaseAPI {
      * @param {object} body 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof WorkflowsApi
+     * @memberof DefaultApi
      */
-    public workflowsUpdateV1(id: string, body: object, options?: RawAxiosRequestConfig) {
-        return WorkflowsApiFp(this.configuration).workflowsUpdateV1(id, body, options).then((request) => request(this.axios, this.basePath));
+    public accountsUpdateV1(id: string, body: object, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).accountsUpdateV1(id, body, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

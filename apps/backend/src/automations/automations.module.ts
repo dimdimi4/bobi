@@ -1,16 +1,20 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 
-import {
-  StepTelegramMessageSchema,
-  StepTelegramMessage,
-} from './schemas/step.telegram-message.schema';
-
-import { AutomationsController } from './controllers/automations.controller';
-import { AutomationController } from './controllers/automation.controller';
+import { AutomationsController } from './automations.controller';
 
 import { Automation, AutomationSchema } from './schemas/automation.schema';
 import { AutomationsRepository } from './automations.repository';
+import {
+  StepTelegramSendMessage,
+  StepTelegramSendMessageSchema,
+} from './automation-steps/schemas/telegram-send-message.schema';
+import {
+  StepTelegramCheckSubscription,
+  StepTelegramCheckSubscriptionSchema,
+} from './automation-steps/schemas/telegram-check-subscription.schema';
+import { AutomationStepsRepository } from './automation-steps/automation-steps.repository';
+import { AutomationStepsController } from './automation-steps/automation-steps.controller';
 
 @Module({
   imports: [
@@ -20,14 +24,18 @@ import { AutomationsRepository } from './automations.repository';
         schema: AutomationSchema,
         discriminators: [
           {
-            name: StepTelegramMessage.name,
-            schema: StepTelegramMessageSchema,
+            name: StepTelegramSendMessage.name,
+            schema: StepTelegramSendMessageSchema,
+          },
+          {
+            name: StepTelegramCheckSubscription.name,
+            schema: StepTelegramCheckSubscriptionSchema,
           },
         ],
       },
     ]),
   ],
-  controllers: [AutomationsController, AutomationController],
-  providers: [AutomationsRepository],
+  controllers: [AutomationsController, AutomationStepsController],
+  providers: [AutomationsRepository, AutomationStepsRepository],
 })
 export class AutomationsModule {}

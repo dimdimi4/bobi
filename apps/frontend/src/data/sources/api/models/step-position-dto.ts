@@ -14,7 +14,23 @@
 
 
 
-export * from './services/automations-api';
-export * from './services/channels-api';
-export * from './services/default-api';
+/**
+ * 
+ * @export
+ * @interface StepPositionDto
+ */
+export interface StepPositionDto {
+    /**
+     * 
+     * @type {number}
+     * @memberof StepPositionDto
+     */
+    'x': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof StepPositionDto
+     */
+    'y': number;
+}
 

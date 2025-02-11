@@ -17,7 +17,14 @@
         },
         "responses": {
           "201": {
-            "description": ""
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
           }
         }
       },
@@ -26,7 +33,14 @@
         "parameters": [],
         "responses": {
           "200": {
-            "description": ""
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
           }
         }
       }
@@ -46,7 +60,14 @@
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
           }
         }
       },
@@ -74,7 +95,14 @@
         },
         "responses": {
           "200": {
-            "description": ""
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
           }
         }
       },
@@ -92,7 +120,14 @@
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
           }
         }
       }
@@ -249,6 +284,9 @@
           }
         ],
         "responses": {
+          "200": {
+            "description": ""
+          },
           "204": {
             "description": "Channel deleted successfully"
           }
@@ -261,7 +299,6 @@
     "/api/v1/automations": {
       "post": {
         "operationId": "automationsCreateV1",
-        "summary": "Create a new automation",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -275,11 +312,11 @@
         },
         "responses": {
           "201": {
-            "description": "Automation created successfully",
+            "description": "The automation has been successfully created.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AutomationDto"
+                  "$ref": "#/components/schemas/Automation"
                 }
               }
             }
@@ -290,11 +327,38 @@
         ]
       },
       "get": {
-        "operationId": "automationsFindAllV1",
-        "parameters": [],
+        "operationId": "automationsFindPaginatedV1",
+        "parameters": [
+          {
+            "name": "offset",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 0,
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "maximum": 100,
+              "type": "number"
+            }
+          }
+        ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "Returns a paginated list of automations.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedAutomationsDto"
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -317,7 +381,17 @@
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "Returns the automation with the specified ID.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Automation"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Automation not found."
           }
         },
         "tags": [
@@ -348,7 +422,17 @@
         },
         "responses": {
           "200": {
-            "description": ""
+            "description": "The automation has been successfully updated.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Automation"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Automation not found."
           }
         },
         "tags": [
@@ -369,7 +453,150 @@
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "The automation has been successfully deleted.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Automation"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Automation not found."
+          }
+        },
+        "tags": [
+          "Automations"
+        ]
+      }
+    },
+    "/api/v1/automations/{id}/steps": {
+      "post": {
+        "operationId": "automationsAddStepV1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateStepDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The step has been successfully added to the automation.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Automation"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Automation not found."
+          }
+        },
+        "tags": [
+          "Automations"
+        ]
+      }
+    },
+    "/api/v1/automations/{id}/steps/{stepId}": {
+      "patch": {
+        "operationId": "automationsUpdateStepV1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "stepId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateStepDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The step has been successfully updated.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Automation"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Automation or step not found."
+          }
+        },
+        "tags": [
+          "Automations"
+        ]
+      },
+      "delete": {
+        "operationId": "automationsDeleteStepV1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "stepId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The step has been successfully deleted.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Automation"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Automation or step not found."
           }
         },
         "tags": [
@@ -456,6 +683,12 @@
           },
           "updatedAt": {
             "type": "string"
+          },
+          "accountId": {
+            "type": "string"
+          },
+          "token": {
+            "type": "string"
           }
         },
         "required": [
@@ -463,7 +696,9 @@
           "type",
           "name",
           "createdAt",
-          "updatedAt"
+          "updatedAt",
+          "accountId",
+          "token"
         ]
       },
       "PaginatedChannelsDto": {
@@ -507,31 +742,209 @@
         "type": "object",
         "properties": {
           "name": {
-            "type": "string",
-            "description": "The name of the automation",
-            "example": "My Automation"
+            "type": "string"
           }
         },
         "required": [
           "name"
         ]
       },
-      "AutomationDto": {
+      "StepPosition": {
         "type": "object",
-        "properties": {}
+        "properties": {
+          "x": {
+            "type": "number"
+          },
+          "y": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "x",
+          "y"
+        ]
+      },
+      "StepTelegramSendMessage": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "StepTelegramSendMessage"
+            ],
+            "description": "Discriminator field to determine the type of step"
+          },
+          "id": {
+            "type": "string"
+          },
+          "position": {
+            "$ref": "#/components/schemas/StepPosition"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "position",
+          "message"
+        ]
+      },
+      "StepTelegramCheckSubscription": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "StepTelegramCheckSubscription"
+            ],
+            "description": "Discriminator field to determine the type of step"
+          },
+          "id": {
+            "type": "string"
+          },
+          "position": {
+            "$ref": "#/components/schemas/StepPosition"
+          },
+          "channelId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "position",
+          "channelId"
+        ]
+      },
+      "Connection": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "sourceStepId": {
+            "type": "string"
+          },
+          "sourceHandleId": {
+            "type": "string"
+          },
+          "targetStepId": {
+            "type": "string"
+          },
+          "targetHandleId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "sourceStepId",
+          "targetStepId"
+        ]
+      },
+      "Automation": {
+        "type": "object",
+        "properties": {
+          "steps": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/StepTelegramSendMessage"
+                },
+                {
+                  "$ref": "#/components/schemas/StepTelegramCheckSubscription"
+                }
+              ]
+            }
+          },
+          "name": {
+            "type": "string"
+          },
+          "connections": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Connection"
+            }
+          }
+        },
+        "required": [
+          "steps",
+          "name",
+          "connections"
+        ]
+      },
+      "PaginatedAutomationsDto": {
+        "type": "object",
+        "properties": {
+          "total": {
+            "type": "number"
+          },
+          "limit": {
+            "type": "number"
+          },
+          "offset": {
+            "type": "number"
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Automation"
+            }
+          }
+        },
+        "required": [
+          "total",
+          "limit",
+          "offset",
+          "results"
+        ]
       },
       "UpdateAutomationDto": {
         "type": "object",
         "properties": {
           "name": {
-            "type": "string",
-            "description": "The name of the automation",
-            "example": "My Automation"
+            "type": "string"
           }
         },
         "required": [
           "name"
         ]
+      },
+      "StepPositionDto": {
+        "type": "object",
+        "properties": {
+          "x": {
+            "type": "number"
+          },
+          "y": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "x",
+          "y"
+        ]
+      },
+      "CreateStepDto": {
+        "type": "object",
+        "properties": {
+          "position": {
+            "$ref": "#/components/schemas/StepPositionDto"
+          },
+          "type": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "position",
+          "type"
+        ]
+      },
+      "UpdateStepDto": {
+        "type": "object",
+        "properties": {}
       }
     }
   }

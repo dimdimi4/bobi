@@ -14,7 +14,23 @@
 
 
 
-export * from './services/automations-api';
-export * from './services/channels-api';
-export * from './services/default-api';
+/**
+ * 
+ * @export
+ * @interface StepPosition
+ */
+export interface StepPosition {
+    /**
+     * 
+     * @type {number}
+     * @memberof StepPosition
+     */
+    'x': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof StepPosition
+     */
+    'y': number;
+}
 
