@@ -312,7 +312,7 @@
         },
         "responses": {
           "201": {
-            "description": "The automation has been successfully created.",
+            "description": "",
             "content": {
               "application/json": {
                 "schema": {
@@ -351,7 +351,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Returns a paginated list of automations.",
+            "description": "",
             "content": {
               "application/json": {
                 "schema": {
@@ -381,7 +381,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Returns the automation with the specified ID.",
+            "description": "",
             "content": {
               "application/json": {
                 "schema": {
@@ -389,9 +389,6 @@
                 }
               }
             }
-          },
-          "404": {
-            "description": "Automation not found."
           }
         },
         "tags": [
@@ -422,7 +419,7 @@
         },
         "responses": {
           "200": {
-            "description": "The automation has been successfully updated.",
+            "description": "",
             "content": {
               "application/json": {
                 "schema": {
@@ -430,9 +427,6 @@
                 }
               }
             }
-          },
-          "404": {
-            "description": "Automation not found."
           }
         },
         "tags": [
@@ -453,7 +447,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The automation has been successfully deleted.",
+            "description": "",
             "content": {
               "application/json": {
                 "schema": {
@@ -461,9 +455,6 @@
                 }
               }
             }
-          },
-          "404": {
-            "description": "Automation not found."
           }
         },
         "tags": [
@@ -496,7 +487,7 @@
         },
         "responses": {
           "201": {
-            "description": "The step has been successfully added to the automation.",
+            "description": "",
             "content": {
               "application/json": {
                 "schema": {
@@ -504,9 +495,6 @@
                 }
               }
             }
-          },
-          "404": {
-            "description": "Automation not found."
           }
         },
         "tags": [
@@ -514,7 +502,7 @@
         ]
       }
     },
-    "/api/v1/automations/{id}/steps/{stepId}": {
+    "/api/v1/automations/{stepId}": {
       "patch": {
         "operationId": "automationsUpdateStepV1",
         "parameters": [
@@ -547,7 +535,7 @@
         },
         "responses": {
           "200": {
-            "description": "The step has been successfully updated.",
+            "description": "",
             "content": {
               "application/json": {
                 "schema": {
@@ -555,9 +543,6 @@
                 }
               }
             }
-          },
-          "404": {
-            "description": "Automation or step not found."
           }
         },
         "tags": [
@@ -586,7 +571,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The step has been successfully deleted.",
+            "description": "",
             "content": {
               "application/json": {
                 "schema": {
@@ -594,9 +579,6 @@
                 }
               }
             }
-          },
-          "404": {
-            "description": "Automation or step not found."
           }
         },
         "tags": [
@@ -749,7 +731,7 @@
           "name"
         ]
       },
-      "StepPosition": {
+      "AutomationStepPosition": {
         "type": "object",
         "properties": {
           "x": {
@@ -764,61 +746,41 @@
           "y"
         ]
       },
-      "StepTelegramSendMessage": {
+      "TelegramSendMessageTask": {
+        "type": "object",
+        "properties": {}
+      },
+      "AutomationTask": {
         "type": "object",
         "properties": {
-          "type": {
-            "type": "string",
-            "enum": [
-              "StepTelegramSendMessage"
-            ],
-            "description": "Discriminator field to determine the type of step"
-          },
+          "telegram_sendMessage": {
+            "$ref": "#/components/schemas/TelegramSendMessageTask"
+          }
+        },
+        "required": [
+          "telegram_sendMessage"
+        ]
+      },
+      "AutomationStep": {
+        "type": "object",
+        "properties": {
           "id": {
             "type": "string"
           },
           "position": {
-            "$ref": "#/components/schemas/StepPosition"
+            "$ref": "#/components/schemas/AutomationStepPosition"
           },
-          "message": {
-            "type": "string"
+          "task": {
+            "$ref": "#/components/schemas/AutomationTask"
           }
         },
         "required": [
-          "type",
           "id",
           "position",
-          "message"
+          "task"
         ]
       },
-      "StepTelegramCheckSubscription": {
-        "type": "object",
-        "properties": {
-          "type": {
-            "type": "string",
-            "enum": [
-              "StepTelegramCheckSubscription"
-            ],
-            "description": "Discriminator field to determine the type of step"
-          },
-          "id": {
-            "type": "string"
-          },
-          "position": {
-            "$ref": "#/components/schemas/StepPosition"
-          },
-          "channelId": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "type",
-          "id",
-          "position",
-          "channelId"
-        ]
-      },
-      "Connection": {
+      "AutomationConnection": {
         "type": "object",
         "properties": {
           "id": {
@@ -846,32 +808,29 @@
       "Automation": {
         "type": "object",
         "properties": {
-          "steps": {
-            "type": "array",
-            "items": {
-              "oneOf": [
-                {
-                  "$ref": "#/components/schemas/StepTelegramSendMessage"
-                },
-                {
-                  "$ref": "#/components/schemas/StepTelegramCheckSubscription"
-                }
-              ]
-            }
+          "id": {
+            "type": "string"
           },
           "name": {
             "type": "string"
           },
+          "steps": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AutomationStep"
+            }
+          },
           "connections": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Connection"
+              "$ref": "#/components/schemas/AutomationConnection"
             }
           }
         },
         "required": [
-          "steps",
+          "id",
           "name",
+          "steps",
           "connections"
         ]
       },
@@ -912,7 +871,7 @@
           "name"
         ]
       },
-      "StepPositionDto": {
+      "AutomationStepPositionDto": {
         "type": "object",
         "properties": {
           "x": {
@@ -931,7 +890,7 @@
         "type": "object",
         "properties": {
           "position": {
-            "$ref": "#/components/schemas/StepPositionDto"
+            "$ref": "#/components/schemas/AutomationStepPositionDto"
           },
           "type": {
             "type": "string"

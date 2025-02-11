@@ -5,16 +5,7 @@ import { AutomationsController } from './automations.controller';
 
 import { Automation, AutomationSchema } from './schemas/automation.schema';
 import { AutomationsRepository } from './automations.repository';
-import {
-  StepTelegramSendMessage,
-  StepTelegramSendMessageSchema,
-} from './automation-steps/schemas/telegram-send-message.schema';
-import {
-  StepTelegramCheckSubscription,
-  StepTelegramCheckSubscriptionSchema,
-} from './automation-steps/schemas/telegram-check-subscription.schema';
-import { AutomationStepsRepository } from './automation-steps/automation-steps.repository';
-import { AutomationStepsController } from './automation-steps/automation-steps.controller';
+import { AutomationsService } from './automations.service';
 
 @Module({
   imports: [
@@ -22,20 +13,10 @@ import { AutomationStepsController } from './automation-steps/automation-steps.c
       {
         name: Automation.name,
         schema: AutomationSchema,
-        discriminators: [
-          {
-            name: StepTelegramSendMessage.name,
-            schema: StepTelegramSendMessageSchema,
-          },
-          {
-            name: StepTelegramCheckSubscription.name,
-            schema: StepTelegramCheckSubscriptionSchema,
-          },
-        ],
       },
     ]),
   ],
-  controllers: [AutomationsController, AutomationStepsController],
-  providers: [AutomationsRepository, AutomationStepsRepository],
+  controllers: [AutomationsController],
+  providers: [AutomationsRepository, AutomationsService],
 })
 export class AutomationsModule {}

@@ -4,9 +4,15 @@ import { InjectModel } from '@nestjs/mongoose';
 
 import { Automation, AutomationDocument } from './schemas/automation.schema';
 
-import { PaginatedAutomationsDto } from './dto/paginated-automations.dto';
-import { CreateAutomationDto } from './dto/create-automation.dto';
-import { UpdateAutomationDto } from './dto/update-automation.dto';
+import { CreateAutomationDto, UpdateAutomationDto } from './dto/automation.dto';
+import {
+  AutomationConnectionDto,
+  AutomationStepDto,
+  BulkUpdateStepPositionsDto,
+  CreateConnectionDto,
+  CreateStepDto,
+  UpdateStepTaskDto,
+} from './dto/steps.dto';
 
 @Injectable()
 export class AutomationsRepository {
@@ -15,32 +21,28 @@ export class AutomationsRepository {
     private readonly automationModel: Model<AutomationDocument>,
   ) {}
 
-  private secureMatch(accountId: string, match?: FilterQuery<Automation>) {
+  private secureMatch(
+    accountId: string,
+    match?: FilterQuery<AutomationDocument>,
+  ): FilterQuery<AutomationDocument> {
     return { ...match, accountId };
   }
 
-  async create(
-    accountId: string,
-    automationDto: CreateAutomationDto,
-  ): Promise<Automation> {
+  create(accountId: string, automationDto: CreateAutomationDto) {
     const createdAutomation = new this.automationModel({
       ...automationDto,
       accountId,
     });
-    return await createdAutomation.save();
+    return createdAutomation.save();
   }
 
-  async findOne(accountId: string, id: string): Promise<Automation | null> {
-    return await this.automationModel
+  findOne(accountId: string, id: string) {
+    return this.automationModel
       .findOne(this.secureMatch(accountId, { _id: id }))
       .exec();
   }
 
-  async findPaginated(
-    accountId: string,
-    offset = 0,
-    limit = 10,
-  ): Promise<PaginatedAutomationsDto> {
+  async listPaginated(accountId: string, offset = 0, limit = 10) {
     const [documents, total] = await Promise.all([
       this.automationModel
         .find(this.secureMatch(accountId))
@@ -52,21 +54,17 @@ export class AutomationsRepository {
 
     return {
       total,
-      limit,
       offset,
+      limit,
       results: documents,
     };
   }
 
-  async update(
-    accountId: string,
-    id: string,
-    automationDto: UpdateAutomationDto,
-  ): Promise<Automation | null> {
-    return await this.automationModel
+  update(accountId: string, id: string, automationDto: UpdateAutomationDto) {
+    return this.automationModel
       .findOneAndUpdate(
         this.secureMatch(accountId, { _id: id }),
-        automationDto,
+        { $set: automationDto },
         {
           new: true,
         },
@@ -74,9 +72,108 @@ export class AutomationsRepository {
       .exec();
   }
 
-  async delete(accountId: string, id: string): Promise<Automation | null> {
-    return await this.automationModel
+  delete(accountId: string, id: string) {
+    return this.automationModel
       .findOneAndDelete(this.secureMatch(accountId, { _id: id }))
       .exec();
+  }
+
+  createStep(
+    accountId: string,
+    id: string,
+    { step, connection }: CreateStepDto,
+  ) {
+    const pushFields: {
+      steps: AutomationStepDto;
+      connections?: AutomationConnectionDto;
+    } = {
+      steps: step,
+    };
+
+    if (connection) {
+      pushFields.connections = connection;
+    }
+
+    return this.automationModel
+      .findOneAndUpdate(
+        this.secureMatch(accountId, { _id: id }),
+        { $push: pushFields },
+        { new: true },
+      )
+      .exec();
+  }
+
+  updateStepTask(
+    accountId: string,
+    id: string,
+    stepId: string,
+    task: UpdateStepTaskDto,
+  ) {
+    return this.automationModel
+      .findOneAndUpdate(
+        this.secureMatch(accountId, { _id: id, 'steps.id': stepId }),
+        { $set: { 'steps.$.task': task } },
+        { new: true },
+      )
+      .exec();
+  }
+
+  async bulkUpdateStepPositions(
+    accountId: string,
+    id: string,
+    stepPositions: BulkUpdateStepPositionsDto,
+  ) {
+    const updates = {};
+    stepPositions.steps.forEach(({ stepId, position }) => {
+      updates[`steps.$[elem${stepId}].position`] = position;
+    });
+
+    return this.automationModel.findOneAndUpdate(
+      this.secureMatch(accountId, { _id: id }),
+      { $set: updates },
+      {
+        arrayFilters: stepPositions.steps.map(({ stepId }) => ({
+          [`elem${stepId}.id`]: stepId,
+        })),
+        new: true,
+      },
+    );
+  }
+
+  deleteStep(accountId: string, id: string, stepId: string) {
+    return this.automationModel
+      .findOneAndUpdate(
+        this.secureMatch(accountId, { _id: id, 'steps.id': stepId }),
+        {
+          $pull: {
+            steps: { id: stepId },
+            connections: {
+              $or: [{ sourceStepId: stepId }, { targetStepId: stepId }],
+            },
+          },
+        },
+        { new: true },
+      )
+      .exec();
+  }
+
+  createConnection(
+    accountId: string,
+    id: string,
+    connection: CreateConnectionDto,
+  ) {
+    return this.automationModel.findOneAndUpdate(
+      this.secureMatch(accountId, { _id: id }),
+      { $push: { connections: connection } },
+      { new: true },
+    );
+  }
+
+  deleteConnection(accountId: string, id: string, connectionId: string) {
+    return this.automationModel.findOneAndUpdate(
+      this.secureMatch(accountId, { _id: id }),
+      { $pull: { connections: { id: connectionId } } },
+      { new: true },
+    );
   }
 }
