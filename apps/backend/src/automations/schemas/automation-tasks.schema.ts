@@ -1,4 +1,5 @@
 import { Prop as MongooseProp, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { IsArray, IsString, ValidateNested } from 'class-validator';
 
 @Schema({ _id: false })
 export class TelegramSendMessageTask {
@@ -6,12 +7,14 @@ export class TelegramSendMessageTask {
     type: String,
     required: true,
   })
+  @IsString()
   message: string;
 
   @MongooseProp({
     type: [String],
     required: true,
   })
+  @IsArray()
   quickReplies: string[];
 }
 
@@ -25,6 +28,7 @@ export class AutomationTask {
     type: TelegramSendMessageTask,
     required: false,
   })
+  @ValidateNested()
   telegram_sendMessage?: TelegramSendMessageTask;
 }
 

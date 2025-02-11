@@ -305,7 +305,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateAutomationDto"
+                "$ref": "#/components/schemas/MutateAutomationDto"
               }
             }
           }
@@ -355,7 +355,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PaginatedAutomationsDto"
+                  "$ref": "#/components/schemas/AutomationsPaginatedDto"
                 }
               }
             }
@@ -412,7 +412,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateAutomationDto"
+                "$ref": "#/components/schemas/MutateAutomationDto"
               }
             }
           }
@@ -464,7 +464,7 @@
     },
     "/api/v1/automations/{id}/steps": {
       "post": {
-        "operationId": "automationsAddStepV1",
+        "operationId": "automationsCreateStepV1",
         "parameters": [
           {
             "name": "id",
@@ -502,9 +502,49 @@
         ]
       }
     },
-    "/api/v1/automations/{stepId}": {
+    "/api/v1/automations/{id}/bulk-update-step-positions": {
       "patch": {
-        "operationId": "automationsUpdateStepV1",
+        "operationId": "automationsBulkUpdateStepPositionsV1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BulkUpdateStepPositionsDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Automation"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Automations"
+        ]
+      }
+    },
+    "/api/v1/automations/{id}/steps/{stepId}/task": {
+      "patch": {
+        "operationId": "automationsUpdateStepTaskV1",
         "parameters": [
           {
             "name": "id",
@@ -528,7 +568,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateStepDto"
+                "$ref": "#/components/schemas/AutomationTask"
               }
             }
           }
@@ -548,7 +588,9 @@
         "tags": [
           "Automations"
         ]
-      },
+      }
+    },
+    "/api/v1/automations/{id}/steps/{stepId}": {
       "delete": {
         "operationId": "automationsDeleteStepV1",
         "parameters": [
@@ -562,6 +604,84 @@
           },
           {
             "name": "stepId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Automation"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Automations"
+        ]
+      }
+    },
+    "/api/v1/automations/{id}/connections": {
+      "post": {
+        "operationId": "automationsCreateConnectionV1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AutomationConnection"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Automation"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Automations"
+        ]
+      }
+    },
+    "/api/v1/automations/{id}/connections/{connectionId}": {
+      "delete": {
+        "operationId": "automationsDeleteConnectionV1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "connectionId",
             "required": true,
             "in": "path",
             "schema": {
@@ -720,7 +840,7 @@
           }
         }
       },
-      "CreateAutomationDto": {
+      "MutateAutomationDto": {
         "type": "object",
         "properties": {
           "name": {
@@ -748,7 +868,21 @@
       },
       "TelegramSendMessageTask": {
         "type": "object",
-        "properties": {}
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "quickReplies": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "message",
+          "quickReplies"
+        ]
       },
       "AutomationTask": {
         "type": "object",
@@ -756,10 +890,7 @@
           "telegram_sendMessage": {
             "$ref": "#/components/schemas/TelegramSendMessageTask"
           }
-        },
-        "required": [
-          "telegram_sendMessage"
-        ]
+        }
       },
       "AutomationStep": {
         "type": "object",
@@ -825,16 +956,26 @@
             "items": {
               "$ref": "#/components/schemas/AutomationConnection"
             }
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
           }
         },
         "required": [
           "id",
           "name",
           "steps",
-          "connections"
+          "connections",
+          "createdAt",
+          "updatedAt"
         ]
       },
-      "PaginatedAutomationsDto": {
+      "AutomationsPaginatedDto": {
         "type": "object",
         "properties": {
           "total": {
@@ -860,50 +1001,48 @@
           "results"
         ]
       },
-      "UpdateAutomationDto": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "name"
-        ]
-      },
-      "AutomationStepPositionDto": {
-        "type": "object",
-        "properties": {
-          "x": {
-            "type": "number"
-          },
-          "y": {
-            "type": "number"
-          }
-        },
-        "required": [
-          "x",
-          "y"
-        ]
-      },
       "CreateStepDto": {
         "type": "object",
         "properties": {
-          "position": {
-            "$ref": "#/components/schemas/AutomationStepPositionDto"
+          "step": {
+            "$ref": "#/components/schemas/AutomationStep"
           },
-          "type": {
-            "type": "string"
+          "connection": {
+            "$ref": "#/components/schemas/AutomationConnection"
           }
         },
         "required": [
-          "position",
-          "type"
+          "step"
         ]
       },
-      "UpdateStepDto": {
+      "UpdateStepPositionsDto": {
         "type": "object",
-        "properties": {}
+        "properties": {
+          "stepId": {
+            "type": "string"
+          },
+          "position": {
+            "$ref": "#/components/schemas/AutomationStepPosition"
+          }
+        },
+        "required": [
+          "stepId",
+          "position"
+        ]
+      },
+      "BulkUpdateStepPositionsDto": {
+        "type": "object",
+        "properties": {
+          "steps": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UpdateStepPositionsDto"
+            }
+          }
+        },
+        "required": [
+          "steps"
+        ]
       }
     }
   }

@@ -3,20 +3,18 @@ import { plainToInstance } from 'class-transformer';
 
 import { AutomationsRepository } from './automations.repository';
 
-import { Automation, AutomationDocument } from './schemas/automation.schema';
+import {
+  Automation,
+  AutomationConnection,
+  AutomationDocument,
+} from './schemas/automation.schema';
 
-import {
-  BulkUpdateStepPositionsDto,
-  CreateConnectionDto,
-  CreateStepDto,
-  UpdateStepTaskDto,
-} from './dto/steps.dto';
 import { PaginationQueryDto } from './dto/pagination.query.dto';
-import {
-  AutomationsPaginatedDto,
-  CreateAutomationDto,
-  UpdateAutomationDto,
-} from './dto/automation.dto';
+import { AutomationsPaginatedDto } from './dto/automations-paginated.dto';
+import { AutomationTask } from './schemas/automation-tasks.schema';
+import { MutateAutomationDto } from './dto/mutate-automation.dto';
+import { BulkUpdateStepPositionsDto } from './dto/bulk-update-step-positions.dto';
+import { CreateStepDto } from './dto/create-step.dto';
 
 @Injectable()
 export class AutomationsService {
@@ -36,10 +34,10 @@ export class AutomationsService {
     return automations.map((m) => this.toEntity(m));
   }
 
-  async create(accountId: string, createAutomationDto: CreateAutomationDto) {
+  async create(accountId: string, mutateAutomationDto: MutateAutomationDto) {
     const automation = await this.automationsRepository.create(
       accountId,
-      createAutomationDto,
+      mutateAutomationDto,
     );
 
     return this.toEntity(automation);
@@ -72,12 +70,12 @@ export class AutomationsService {
   async update(
     accountId: string,
     id: string,
-    updateAutomationDto: UpdateAutomationDto,
+    mutateAutomationDto: MutateAutomationDto,
   ) {
     const automation = await this.automationsRepository.update(
       accountId,
       id,
-      updateAutomationDto,
+      mutateAutomationDto,
     );
     return this.toEntity(automation);
   }
@@ -90,7 +88,11 @@ export class AutomationsService {
     return this.toEntity(automation);
   }
 
-  async addStep(accountId: string, id: string, createStepDto: CreateStepDto) {
+  async createStep(
+    accountId: string,
+    id: string,
+    createStepDto: CreateStepDto,
+  ) {
     const automation = await this.automationsRepository.createStep(
       accountId,
       id,
@@ -103,7 +105,7 @@ export class AutomationsService {
     accountId: string,
     id: string,
     stepId: string,
-    task: UpdateStepTaskDto,
+    task: AutomationTask,
   ) {
     const automation = await this.automationsRepository.updateStepTask(
       accountId,
@@ -139,12 +141,12 @@ export class AutomationsService {
   async createConnection(
     accountId: string,
     id: string,
-    createConnectionDto: CreateConnectionDto,
+    connection: AutomationConnection,
   ) {
     const automation = await this.automationsRepository.createConnection(
       accountId,
       id,
-      createConnectionDto,
+      connection,
     );
     return this.toEntity(automation);
   }

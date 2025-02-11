@@ -4,6 +4,12 @@ import { HydratedDocument } from 'mongoose';
 import { Prop as MongooseProp, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { v7 as uuidv7 } from 'uuid';
 import { AutomationTask } from './automation-tasks.schema';
+import {
+  IsNumber,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from 'class-validator';
 
 @Schema({ _id: false })
 export class AutomationStepPosition {
@@ -11,12 +17,14 @@ export class AutomationStepPosition {
     type: Number,
     required: true,
   })
+  @IsNumber()
   x: number;
 
   @MongooseProp({
     type: Number,
     required: true,
   })
+  @IsNumber()
   y: number;
 }
 
@@ -26,18 +34,21 @@ export class AutomationStep {
     type: String,
     required: true,
   })
+  @IsString()
   id: string;
 
   @MongooseProp({
     type: AutomationStepPosition,
     required: true,
   })
+  @ValidateNested()
   position: AutomationStepPosition;
 
   @MongooseProp({
     type: AutomationTask,
     required: true,
   })
+  @ValidateNested()
   task: AutomationTask;
 }
 
@@ -47,30 +58,37 @@ export class AutomationConnection {
     type: String,
     required: true,
   })
+  @IsString()
   id: string;
 
   @MongooseProp({
     type: String,
     required: true,
   })
+  @IsString()
   sourceStepId: string;
 
   @MongooseProp({
     type: String,
     required: false,
   })
+  @IsString()
+  @IsOptional()
   sourceHandleId?: string;
 
   @MongooseProp({
     type: String,
     required: true,
   })
+  @IsString()
   targetStepId: string;
 
   @MongooseProp({
     type: String,
     required: false,
   })
+  @IsString()
+  @IsOptional()
   targetHandleId?: string;
 }
 

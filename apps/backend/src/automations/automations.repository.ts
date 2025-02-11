@@ -2,17 +2,15 @@ import { FilterQuery, Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 
-import { Automation, AutomationDocument } from './schemas/automation.schema';
-
-import { CreateAutomationDto, UpdateAutomationDto } from './dto/automation.dto';
 import {
-  AutomationConnectionDto,
-  AutomationStepDto,
-  BulkUpdateStepPositionsDto,
-  CreateConnectionDto,
-  CreateStepDto,
-  UpdateStepTaskDto,
-} from './dto/steps.dto';
+  Automation,
+  AutomationDocument,
+  AutomationStep,
+  AutomationConnection,
+} from './schemas/automation.schema';
+import { AutomationTask } from './schemas/automation-tasks.schema';
+import { MutateAutomationDto } from './dto/mutate-automation.dto';
+import { BulkUpdateStepPositionsDto } from './dto/bulk-update-step-positions.dto';
 
 @Injectable()
 export class AutomationsRepository {
@@ -28,9 +26,9 @@ export class AutomationsRepository {
     return { ...match, accountId };
   }
 
-  create(accountId: string, automationDto: CreateAutomationDto) {
+  create(accountId: string, automationDto: MutateAutomationDto) {
     const createdAutomation = new this.automationModel({
-      ...automationDto,
+      name: automationDto.name,
       accountId,
     });
     return createdAutomation.save();
@@ -60,7 +58,7 @@ export class AutomationsRepository {
     };
   }
 
-  update(accountId: string, id: string, automationDto: UpdateAutomationDto) {
+  update(accountId: string, id: string, automationDto: MutateAutomationDto) {
     return this.automationModel
       .findOneAndUpdate(
         this.secureMatch(accountId, { _id: id }),
@@ -81,11 +79,14 @@ export class AutomationsRepository {
   createStep(
     accountId: string,
     id: string,
-    { step, connection }: CreateStepDto,
+    {
+      step,
+      connection,
+    }: { step: AutomationStep; connection?: AutomationConnection },
   ) {
     const pushFields: {
-      steps: AutomationStepDto;
-      connections?: AutomationConnectionDto;
+      steps: AutomationStep;
+      connections?: AutomationConnection;
     } = {
       steps: step,
     };
@@ -107,7 +108,7 @@ export class AutomationsRepository {
     accountId: string,
     id: string,
     stepId: string,
-    task: UpdateStepTaskDto,
+    task: AutomationTask,
   ) {
     return this.automationModel
       .findOneAndUpdate(
@@ -118,12 +119,12 @@ export class AutomationsRepository {
       .exec();
   }
 
-  async bulkUpdateStepPositions(
+  bulkUpdateStepPositions(
     accountId: string,
     id: string,
     stepPositions: BulkUpdateStepPositionsDto,
   ) {
-    const updates = {};
+    const updates: Record<string, unknown> = {};
     stepPositions.steps.forEach(({ stepId, position }) => {
       updates[`steps.$[elem${stepId}].position`] = position;
     });
@@ -160,7 +161,7 @@ export class AutomationsRepository {
   createConnection(
     accountId: string,
     id: string,
-    connection: CreateConnectionDto,
+    connection: AutomationConnection,
   ) {
     return this.automationModel.findOneAndUpdate(
       this.secureMatch(accountId, { _id: id }),

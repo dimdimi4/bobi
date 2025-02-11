@@ -10,16 +10,15 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
-import { PaginationQueryDto } from './dto/pagination.query.dto';
-import {
-  BulkUpdateStepPositionsDto,
-  CreateConnectionDto,
-  CreateStepDto,
-  UpdateStepTaskDto,
-} from './dto/steps.dto';
 import { AutomationsService } from './automations.service';
-import { CreateAutomationDto } from './dto/automation.dto';
-import { UpdateAutomationDto } from './dto/automation.dto';
+
+import { AutomationConnection } from './schemas/automation.schema';
+import { AutomationTask } from './schemas/automation-tasks.schema';
+
+import { PaginationQueryDto } from './dto/pagination.query.dto';
+import { MutateAutomationDto } from './dto/mutate-automation.dto';
+import { BulkUpdateStepPositionsDto } from './dto/bulk-update-step-positions.dto';
+import { CreateStepDto } from './dto/create-step.dto';
 
 const accountId = '666666666666666666666666';
 
@@ -29,8 +28,8 @@ export class AutomationsController {
   constructor(private readonly automationsService: AutomationsService) {}
 
   @Post()
-  create(@Body() createAutomationDto: CreateAutomationDto) {
-    return this.automationsService.create(accountId, createAutomationDto);
+  create(@Body() mutateAutomationDto: MutateAutomationDto) {
+    return this.automationsService.create(accountId, mutateAutomationDto);
   }
 
   @Get()
@@ -46,9 +45,9 @@ export class AutomationsController {
   @Patch(':id')
   update(
     @Param('id') id: string,
-    @Body() updateAutomationDto: UpdateAutomationDto,
+    @Body() mutateAutomationDto: MutateAutomationDto,
   ) {
-    return this.automationsService.update(accountId, id, updateAutomationDto);
+    return this.automationsService.update(accountId, id, mutateAutomationDto);
   }
 
   @Delete(':id')
@@ -57,19 +56,19 @@ export class AutomationsController {
   }
 
   @Post(':id/steps')
-  async addStep(@Param('id') id: string, @Body() createStepDto: CreateStepDto) {
-    return this.automationsService.addStep(accountId, id, createStepDto);
+  createStep(@Param('id') id: string, @Body() createStepDto: CreateStepDto) {
+    return this.automationsService.createStep(accountId, id, createStepDto);
   }
 
   @Patch(':id/bulk-update-step-positions')
   async bulkUpdateStepPositions(
     @Param('id') id: string,
-    @Body() updateStepDto: BulkUpdateStepPositionsDto,
+    @Body() stepPositions: BulkUpdateStepPositionsDto,
   ) {
     return this.automationsService.bulkUpdateStepPositions(
       accountId,
       id,
-      updateStepDto,
+      stepPositions,
     );
   }
 
@@ -77,14 +76,9 @@ export class AutomationsController {
   async updateStepTask(
     @Param('id') id: string,
     @Param('stepId') stepId: string,
-    @Body() updateStepDto: UpdateStepTaskDto,
+    @Body() task: AutomationTask,
   ) {
-    return this.automationsService.updateStepTask(
-      accountId,
-      id,
-      stepId,
-      updateStepDto,
-    );
+    return this.automationsService.updateStepTask(accountId, id, stepId, task);
   }
 
   @Delete(':id/steps/:stepId')
@@ -95,13 +89,9 @@ export class AutomationsController {
   @Post(':id/connections')
   async createConnection(
     @Param('id') id: string,
-    @Body() createConnectionDto: CreateConnectionDto,
+    @Body() connection: AutomationConnection,
   ) {
-    return this.automationsService.createConnection(
-      accountId,
-      id,
-      createConnectionDto,
-    );
+    return this.automationsService.createConnection(accountId, id, connection);
   }
 
   @Delete(':id/connections/:connectionId')
