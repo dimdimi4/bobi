@@ -6,16 +6,16 @@ import {
   type OnConnect,
 } from '@xyflow/react';
 
-export type AppNode = Node;
+export type EditorNode = Node;
 
-export type AppState = {
-  nodes: AppNode[];
+export type EditorState = {
+  nodes: EditorNode[];
   edges: Edge[];
-  selectedNode: AppNode | null;
-  onNodesChange: OnNodesChange<AppNode>;
+  selectedNode: EditorNode | null;
+  onNodesChange: OnNodesChange<EditorNode>;
   onEdgesChange: OnEdgesChange;
   onConnect: OnConnect;
-  onNodeSelect: (node?: AppNode) => void;
-  setNodes: (nodes: AppNode[]) => void;
+  onNodeSelect: (node?: EditorNode) => void;
+  setNodes: (nodes: EditorNode[]) => void;
   setEdges: (edges: Edge[]) => void;
 };

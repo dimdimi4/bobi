@@ -1,2 +1,2 @@
 export { useStore } from './use-store';
-export type { AppNode, AppState } from './types';
+export type { EditorNode, EditorState } from './types';
