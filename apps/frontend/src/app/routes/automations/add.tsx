@@ -1,10 +1,8 @@
-import { useEffect } from 'react';
-import { useDisclosure } from '@mantine/hooks';
 import { createFileRoute, useRouter } from '@tanstack/react-router';
 
 import { AutomationEditor } from '@/modules/Automation/features/AutomationEditor';
 
-export const Route = createFileRoute('/automation/add')({
+export const Route = createFileRoute('/automations/add')({
   component: RouteComponent,
 });
 
@@ -13,9 +11,9 @@ function RouteComponent() {
 
   const handleClose = () => {
     setTimeout(() => {
-      router.navigate({ to: '/automation' });
+      router.navigate({ to: '/automations' });
     }, 200);
   };
 
-  return <AutomationEditor opened onClose={handleClose} />;
+  return <AutomationEditor onExit={handleClose} />;
 }

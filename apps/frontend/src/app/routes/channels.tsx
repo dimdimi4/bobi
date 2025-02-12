@@ -1,16 +1,15 @@
 import { Button, Container, Group, Title } from '@mantine/core';
 import { createFileRoute, Link } from '@tanstack/react-router';
-import { channelRepository } from '@/data/repositories/ChannelRepository';
+import { channelsQueryOptions } from '@/data/repositories/channel-repository';
 
 export const Route = createFileRoute('/channels')({
   component: RouteComponent,
-  loader: async () => {
-    return channelRepository.getChannels();
-  },
+  loader: ({ context: { queryClient } }) =>
+    queryClient.ensureQueryData(channelsQueryOptions),
 });
 
 function RouteComponent() {
-  const { data } = Route.useLoaderData();
+  const data = Route.useLoaderData();
 
   return (
     <Container size="sm">

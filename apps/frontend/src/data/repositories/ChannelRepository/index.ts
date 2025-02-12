@@ -1,1 +1,0 @@
-export { channelRepository } from './ChannelRepository';

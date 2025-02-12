@@ -1,4 +1,7 @@
+import { queryOptions } from '@tanstack/react-query';
+
 import { ChannelsApi } from '@/data/sources/api';
+import { api } from '@/shared/lib/api-client';
 
 export class ChannelRepository {
   private channelsApi: ChannelsApi;
@@ -13,4 +16,11 @@ export class ChannelRepository {
   }
 }
 
-export const channelRepository = new ChannelRepository(new ChannelsApi());
+export const channelRepository = new ChannelRepository(
+  new ChannelsApi(undefined, '', api)
+);
+
+export const channelsQueryOptions = queryOptions({
+  queryKey: ['channels'],
+  queryFn: () => channelRepository.getChannels(),
+});

@@ -40,20 +40,15 @@ const nodeTypes = {
   message2: Message2Node,
 };
 
-export function AutomationEditor({
-  onClose,
-}: {
-  opened: boolean;
-  onClose: () => void;
-}) {
+export function AutomationEditor({ onExit }: { onExit: () => void }) {
   return (
     <ReactFlowProvider>
-      <AutomationEditorInner onClose={onClose} />
+      <AutomationEditorInner onExit={onExit} />
     </ReactFlowProvider>
   );
 }
 
-function AutomationEditorInner({ onClose }: { onClose: () => void }) {
+function AutomationEditorInner({ onExit }: { onExit: () => void }) {
   const {
     nodes,
     edges,
@@ -118,7 +113,7 @@ function AutomationEditorInner({ onClose }: { onClose: () => void }) {
                     variant="subtle"
                     color="gray"
                     size="xs"
-                    onClick={onClose}
+                    onClick={onExit}
                   >
                     Exit Editor
                   </Button>
@@ -127,10 +122,10 @@ function AutomationEditorInner({ onClose }: { onClose: () => void }) {
                   </Badge>
                 </Group>
                 <Group justify="flex-end" gap="xs">
-                  <Button variant="default" size="xs" onClick={onClose}>
+                  <Button variant="default" size="xs" onClick={onExit}>
                     Discard Changes
                   </Button>
-                  <Button variant="filled" size="xs" onClick={onClose}>
+                  <Button variant="filled" size="xs" onClick={onExit}>
                     Apply Changes
                   </Button>
                 </Group>

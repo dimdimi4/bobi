@@ -18,8 +18,8 @@ export function Sidebar() {
         component={Link}
       />
       <NavLink
-        to="/automation"
-        label="Automation"
+        to="/automations"
+        label="Automations"
         leftSection={<IconRobot size={16} stroke={1.5} />}
         component={Link}
       />

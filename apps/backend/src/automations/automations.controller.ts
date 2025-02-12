@@ -34,6 +34,7 @@ export class AutomationsController {
 
   @Get()
   findPaginated(@Query() query: PaginationQueryDto) {
+    console.log(query);
     return this.automationsService.findPaginated(accountId, query);
   }
 

@@ -10,12 +10,14 @@
 
 // Import Routes
 
-import { Route as rootRoute } from './routes/__root'
-import { Route as CreateChannelImport } from './routes/create-channel'
-import { Route as ChannelsImport } from './routes/channels'
-import { Route as IndexImport } from './routes/index'
-import { Route as AutomationIndexImport } from './routes/automation/index'
-import { Route as AutomationAddImport } from './routes/automation/add'
+import { Route as rootRoute } from './app/routes/__root'
+import { Route as CreateChannelImport } from './app/routes/create-channel'
+import { Route as ChannelsImport } from './app/routes/channels'
+import { Route as IndexImport } from './app/routes/index'
+import { Route as AutomationsIndexImport } from './app/routes/automations/index'
+import { Route as AutomationsAddImport } from './app/routes/automations/add'
+import { Route as AutomationsIdViewImport } from './app/routes/automations/$id.view'
+import { Route as AutomationsIdEditImport } from './app/routes/automations/$id.edit'
 
 // Create/Update Routes
 
@@ -37,15 +39,27 @@ const IndexRoute = IndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const AutomationIndexRoute = AutomationIndexImport.update({
-  id: '/automation/',
-  path: '/automation/',
+const AutomationsIndexRoute = AutomationsIndexImport.update({
+  id: '/automations/',
+  path: '/automations/',
   getParentRoute: () => rootRoute,
 } as any)
 
-const AutomationAddRoute = AutomationAddImport.update({
-  id: '/automation/add',
-  path: '/automation/add',
+const AutomationsAddRoute = AutomationsAddImport.update({
+  id: '/automations/add',
+  path: '/automations/add',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AutomationsIdViewRoute = AutomationsIdViewImport.update({
+  id: '/automations/$id/view',
+  path: '/automations/$id/view',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AutomationsIdEditRoute = AutomationsIdEditImport.update({
+  id: '/automations/$id/edit',
+  path: '/automations/$id/edit',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -74,18 +88,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CreateChannelImport
       parentRoute: typeof rootRoute
     }
-    '/automation/add': {
-      id: '/automation/add'
-      path: '/automation/add'
-      fullPath: '/automation/add'
-      preLoaderRoute: typeof AutomationAddImport
+    '/automations/add': {
+      id: '/automations/add'
+      path: '/automations/add'
+      fullPath: '/automations/add'
+      preLoaderRoute: typeof AutomationsAddImport
       parentRoute: typeof rootRoute
     }
-    '/automation/': {
-      id: '/automation/'
-      path: '/automation'
-      fullPath: '/automation'
-      preLoaderRoute: typeof AutomationIndexImport
+    '/automations/': {
+      id: '/automations/'
+      path: '/automations'
+      fullPath: '/automations'
+      preLoaderRoute: typeof AutomationsIndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/automations/$id/edit': {
+      id: '/automations/$id/edit'
+      path: '/automations/$id/edit'
+      fullPath: '/automations/$id/edit'
+      preLoaderRoute: typeof AutomationsIdEditImport
+      parentRoute: typeof rootRoute
+    }
+    '/automations/$id/view': {
+      id: '/automations/$id/view'
+      path: '/automations/$id/view'
+      fullPath: '/automations/$id/view'
+      preLoaderRoute: typeof AutomationsIdViewImport
       parentRoute: typeof rootRoute
     }
   }
@@ -97,16 +125,20 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/channels': typeof ChannelsRoute
   '/create-channel': typeof CreateChannelRoute
-  '/automation/add': typeof AutomationAddRoute
-  '/automation': typeof AutomationIndexRoute
+  '/automations/add': typeof AutomationsAddRoute
+  '/automations': typeof AutomationsIndexRoute
+  '/automations/$id/edit': typeof AutomationsIdEditRoute
+  '/automations/$id/view': typeof AutomationsIdViewRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/channels': typeof ChannelsRoute
   '/create-channel': typeof CreateChannelRoute
-  '/automation/add': typeof AutomationAddRoute
-  '/automation': typeof AutomationIndexRoute
+  '/automations/add': typeof AutomationsAddRoute
+  '/automations': typeof AutomationsIndexRoute
+  '/automations/$id/edit': typeof AutomationsIdEditRoute
+  '/automations/$id/view': typeof AutomationsIdViewRoute
 }
 
 export interface FileRoutesById {
@@ -114,8 +146,10 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/channels': typeof ChannelsRoute
   '/create-channel': typeof CreateChannelRoute
-  '/automation/add': typeof AutomationAddRoute
-  '/automation/': typeof AutomationIndexRoute
+  '/automations/add': typeof AutomationsAddRoute
+  '/automations/': typeof AutomationsIndexRoute
+  '/automations/$id/edit': typeof AutomationsIdEditRoute
+  '/automations/$id/view': typeof AutomationsIdViewRoute
 }
 
 export interface FileRouteTypes {
@@ -124,17 +158,28 @@ export interface FileRouteTypes {
     | '/'
     | '/channels'
     | '/create-channel'
-    | '/automation/add'
-    | '/automation'
+    | '/automations/add'
+    | '/automations'
+    | '/automations/$id/edit'
+    | '/automations/$id/view'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/channels' | '/create-channel' | '/automation/add' | '/automation'
+  to:
+    | '/'
+    | '/channels'
+    | '/create-channel'
+    | '/automations/add'
+    | '/automations'
+    | '/automations/$id/edit'
+    | '/automations/$id/view'
   id:
     | '__root__'
     | '/'
     | '/channels'
     | '/create-channel'
-    | '/automation/add'
-    | '/automation/'
+    | '/automations/add'
+    | '/automations/'
+    | '/automations/$id/edit'
+    | '/automations/$id/view'
   fileRoutesById: FileRoutesById
 }
 
@@ -142,16 +187,20 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ChannelsRoute: typeof ChannelsRoute
   CreateChannelRoute: typeof CreateChannelRoute
-  AutomationAddRoute: typeof AutomationAddRoute
-  AutomationIndexRoute: typeof AutomationIndexRoute
+  AutomationsAddRoute: typeof AutomationsAddRoute
+  AutomationsIndexRoute: typeof AutomationsIndexRoute
+  AutomationsIdEditRoute: typeof AutomationsIdEditRoute
+  AutomationsIdViewRoute: typeof AutomationsIdViewRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ChannelsRoute: ChannelsRoute,
   CreateChannelRoute: CreateChannelRoute,
-  AutomationAddRoute: AutomationAddRoute,
-  AutomationIndexRoute: AutomationIndexRoute,
+  AutomationsAddRoute: AutomationsAddRoute,
+  AutomationsIndexRoute: AutomationsIndexRoute,
+  AutomationsIdEditRoute: AutomationsIdEditRoute,
+  AutomationsIdViewRoute: AutomationsIdViewRoute,
 }
 
 export const routeTree = rootRoute
@@ -167,8 +216,10 @@ export const routeTree = rootRoute
         "/",
         "/channels",
         "/create-channel",
-        "/automation/add",
-        "/automation/"
+        "/automations/add",
+        "/automations/",
+        "/automations/$id/edit",
+        "/automations/$id/view"
       ]
     },
     "/": {
@@ -180,11 +231,17 @@ export const routeTree = rootRoute
     "/create-channel": {
       "filePath": "create-channel.tsx"
     },
-    "/automation/add": {
-      "filePath": "automation/add.tsx"
+    "/automations/add": {
+      "filePath": "automations/add.tsx"
     },
-    "/automation/": {
-      "filePath": "automation/index.tsx"
+    "/automations/": {
+      "filePath": "automations/index.tsx"
+    },
+    "/automations/$id/edit": {
+      "filePath": "automations/$id.edit.tsx"
+    },
+    "/automations/$id/view": {
+      "filePath": "automations/$id.view.tsx"
     }
   }
 }
