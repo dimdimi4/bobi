@@ -24,15 +24,13 @@ export const automationsRepository = new AutomationsRepository(
   new AutomationsApi(undefined, '', api)
 );
 
-const KEY = 'automations';
-
 export const automationsQueryOptions = queryOptions({
-  queryKey: [KEY],
+  queryKey: [AutomationsRepository.name],
   queryFn: () => automationsRepository.getAutomations(),
 });
 
 export const automationQueryOptions = (id: string) =>
   queryOptions({
-    queryKey: [KEY, id],
+    queryKey: [AutomationsRepository.name, id],
     queryFn: () => automationsRepository.getAutomation(id),
   });
