@@ -305,7 +305,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/MutateAutomationDto"
+                "$ref": "#/components/schemas/CreateAutomationDto"
               }
             }
           }
@@ -316,7 +316,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Automation"
+                  "$ref": "#/components/schemas/AutomationResponseDto"
                 }
               }
             }
@@ -385,7 +385,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Automation"
+                  "$ref": "#/components/schemas/AutomationResponseDto"
                 }
               }
             }
@@ -412,7 +412,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/MutateAutomationDto"
+                "$ref": "#/components/schemas/UpdateAutomationDto"
               }
             }
           }
@@ -423,7 +423,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Automation"
+                  "$ref": "#/components/schemas/AutomationResponseDto"
                 }
               }
             }
@@ -447,14 +447,7 @@
         ],
         "responses": {
           "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Automation"
-                }
-              }
-            }
+            "description": ""
           }
         },
         "tags": [
@@ -491,7 +484,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Automation"
+                  "$ref": "#/components/schemas/AutomationResponseDto"
                 }
               }
             }
@@ -502,7 +495,7 @@
         ]
       }
     },
-    "/api/v1/automations/{id}/bulk-update-step-positions": {
+    "/api/v1/automations/{id}/update-steps-positions": {
       "patch": {
         "operationId": "automationsUpdateStepsPositionsV1",
         "parameters": [
@@ -531,7 +524,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Automation"
+                  "$ref": "#/components/schemas/AutomationResponseDto"
                 }
               }
             }
@@ -579,7 +572,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Automation"
+                  "$ref": "#/components/schemas/AutomationResponseDto"
                 }
               }
             }
@@ -617,7 +610,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Automation"
+                  "$ref": "#/components/schemas/AutomationResponseDto"
                 }
               }
             }
@@ -657,7 +650,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Automation"
+                  "$ref": "#/components/schemas/AutomationResponseDto"
                 }
               }
             }
@@ -695,7 +688,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Automation"
+                  "$ref": "#/components/schemas/AutomationResponseDto"
                 }
               }
             }
@@ -840,15 +833,86 @@
           }
         }
       },
-      "MutateAutomationDto": {
+      "AutomationTriggerMessage": {
+        "type": "object",
+        "properties": {
+          "condition": {
+            "type": "string"
+          },
+          "message": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "condition",
+          "message"
+        ]
+      },
+      "AutomationTrigger": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "$ref": "#/components/schemas/AutomationTriggerMessage"
+          }
+        },
+        "required": [
+          "message"
+        ]
+      },
+      "CreateAutomationDto": {
         "type": "object",
         "properties": {
           "name": {
             "type": "string"
+          },
+          "trigger": {
+            "$ref": "#/components/schemas/AutomationTrigger"
           }
         },
         "required": [
           "name"
+        ]
+      },
+      "Automation": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "publishedVersionId": {
+            "type": "string"
+          },
+          "draftVersionId": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ACTIVE",
+              "INACTIVE"
+            ]
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "status",
+          "createdAt",
+          "updatedAt"
         ]
       },
       "AutomationStepPosition": {
@@ -936,14 +1000,14 @@
           "targetStepId"
         ]
       },
-      "Automation": {
+      "AutomationVersion": {
         "type": "object",
         "properties": {
           "id": {
             "type": "string"
           },
-          "name": {
-            "type": "string"
+          "trigger": {
+            "$ref": "#/components/schemas/AutomationTrigger"
           },
           "steps": {
             "type": "array",
@@ -957,6 +1021,10 @@
               "$ref": "#/components/schemas/AutomationConnection"
             }
           },
+          "publishedAt": {
+            "format": "date-time",
+            "type": "string"
+          },
           "createdAt": {
             "format": "date-time",
             "type": "string"
@@ -968,11 +1036,28 @@
         },
         "required": [
           "id",
-          "name",
+          "trigger",
           "steps",
           "connections",
           "createdAt",
           "updatedAt"
+        ]
+      },
+      "AutomationResponseDto": {
+        "type": "object",
+        "properties": {
+          "automation": {
+            "$ref": "#/components/schemas/Automation"
+          },
+          "publishedVersion": {
+            "$ref": "#/components/schemas/AutomationVersion"
+          },
+          "draftVersion": {
+            "$ref": "#/components/schemas/AutomationVersion"
+          }
+        },
+        "required": [
+          "automation"
         ]
       },
       "AutomationsPaginatedDto": {
@@ -1001,6 +1086,17 @@
           "results"
         ]
       },
+      "UpdateAutomationDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
       "CreateStepDto": {
         "type": "object",
         "properties": {
@@ -1015,7 +1111,7 @@
           "step"
         ]
       },
-      "UpdateStepPositionsDto": {
+      "StepPositionDto": {
         "type": "object",
         "properties": {
           "stepId": {
@@ -1036,7 +1132,7 @@
           "steps": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/UpdateStepPositionsDto"
+              "$ref": "#/components/schemas/StepPositionDto"
             }
           }
         },
