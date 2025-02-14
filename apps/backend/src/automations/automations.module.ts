@@ -5,11 +5,13 @@ import { AutomationsController } from './automations.controller';
 
 import { Automation, AutomationSchema } from './schemas/automation.schema';
 import {
-  AutomationFlow,
-  AutomationFlowSchema,
+  AutomationVersion,
+  AutomationVersionSchema,
 } from './schemas/automation-version';
 
-import { AutomationFlowRepository } from './repositories/automation-flow.repository';
+import { AutomationsRepository } from './repositories/automation.repository';
+import { AutomationVersionRepository } from './repositories/automation-version.repository';
+
 import { AutomationsService } from './automations.service';
 
 @Module({
@@ -20,12 +22,16 @@ import { AutomationsService } from './automations.service';
         schema: AutomationSchema,
       },
       {
-        name: AutomationFlow.name,
-        schema: AutomationFlowSchema,
+        name: AutomationVersion.name,
+        schema: AutomationVersionSchema,
       },
     ]),
   ],
   controllers: [AutomationsController],
-  providers: [AutomationFlowRepository, AutomationsService],
+  providers: [
+    AutomationsService,
+    AutomationsRepository,
+    AutomationVersionRepository,
+  ],
 })
 export class AutomationsModule {}
