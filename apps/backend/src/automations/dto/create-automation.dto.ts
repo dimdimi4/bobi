@@ -2,7 +2,7 @@ import { IsOptional, IsString, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
 
 import { Automation } from '../schemas/automation.schema';
-import { AutomationVersion } from '../schemas/automation-version';
+import { AutomationVersion } from '../schemas/automation-version.schema';
 import { AutomationTrigger } from '../schemas/automation-trigger.schema';
 
 export class CreateAutomationDto

@@ -5,7 +5,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import {
   AutomationVersion,
   AutomationVersionDocument,
-} from '../schemas/automation-version';
+} from '../schemas/automation-version.schema';
 import { AutomationStep } from '../schemas/automation-step.schema';
 import { AutomationConnection } from '../schemas/automation-connection.schema';
 import { AutomationTask } from '../schemas/automation-tasks.schema';

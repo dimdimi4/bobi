@@ -12,8 +12,10 @@ import { AutomationVersionRepository } from './repositories/automation-version.r
 import { Automation, AutomationDocument } from './schemas/automation.schema';
 
 import { CreateAutomationDto } from './dto/create-automation.dto';
-import { AutomationVersion } from './schemas/automation-version';
-import { AutomationVersionDocument } from './schemas/automation-version';
+import {
+  AutomationVersion,
+  AutomationVersionDocument,
+} from './schemas/automation-version.schema';
 import { PaginationQueryDto } from './dto/pagination.query.dto';
 import { AutomationsPaginatedDto } from './dto/automations-paginated.dto';
 import { UpdateAutomationDto } from './dto/update-automation.dto';

@@ -7,7 +7,7 @@ import { Automation, AutomationSchema } from './schemas/automation.schema';
 import {
   AutomationVersion,
   AutomationVersionSchema,
-} from './schemas/automation-version';
+} from './schemas/automation-version.schema';
 
 import { AutomationsRepository } from './repositories/automation.repository';
 import { AutomationVersionRepository } from './repositories/automation-version.repository';
