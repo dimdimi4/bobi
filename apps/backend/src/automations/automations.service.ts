@@ -21,17 +21,12 @@ import { CreateStepDto } from './dto/create-step.dto';
 import { AutomationTask } from './schemas/automation-tasks.schema';
 import { BulkUpdateStepPositionsDto } from './dto/bulk-update-step-positions.dto';
 import { AutomationConnection } from './schemas/automation-connection.schema';
+import { AutomationResponseDto } from './dto/automation-response.dto';
 
 // Common interfaces to reduce repetition
 interface BaseAutomationParams {
   accountId: string;
   automationId: string;
-}
-
-interface AutomationResponse {
-  automation: Automation;
-  publishedVersion?: AutomationVersion | null;
-  draftVersion?: AutomationVersion | null;
 }
 
 interface AutomationWithVersion {
@@ -86,15 +81,15 @@ export class AutomationsService {
     automation: AutomationDocument;
     draftVersion?: AutomationVersionDocument | null;
     publishedVersion?: AutomationVersionDocument | null;
-  }): AutomationResponse {
+  }): AutomationResponseDto {
     return {
       automation: this.toAutomationEntity(automation),
       publishedVersion: publishedVersion
         ? this.toAutomationVersionEntity(publishedVersion)
-        : null,
+        : undefined,
       draftVersion: draftVersion
         ? this.toAutomationVersionEntity(draftVersion)
-        : null,
+        : undefined,
     };
   }
 
@@ -160,7 +155,7 @@ export class AutomationsService {
   }: {
     accountId: string;
     createDto: CreateAutomationDto;
-  }): Promise<AutomationResponse> {
+  }): Promise<AutomationResponseDto> {
     const automationId = uuidv7();
     const versionId = uuidv7();
 
@@ -208,7 +203,7 @@ export class AutomationsService {
     };
   }
 
-  async findOne(params: BaseAutomationParams): Promise<AutomationResponse> {
+  async findOne(params: BaseAutomationParams): Promise<AutomationResponseDto> {
     const automation = await this.ensureAutomationExists(params);
 
     const [publishedVersion, draftVersion] = await Promise.all([
@@ -239,7 +234,7 @@ export class AutomationsService {
     updateDto,
   }: BaseAutomationParams & {
     updateDto: UpdateAutomationDto;
-  }): Promise<AutomationResponse> {
+  }): Promise<AutomationResponseDto> {
     const automation = await this.automationsRepository.setName({
       accountId,
       automationId,
@@ -257,7 +252,7 @@ export class AutomationsService {
 
   async discardDraft(
     params: BaseAutomationParams,
-  ): Promise<AutomationResponse> {
+  ): Promise<AutomationResponseDto> {
     const automation = await this.ensureAutomationExists(params);
 
     if (!automation.draftVersionId) {
@@ -286,7 +281,7 @@ export class AutomationsService {
 
   async publishDraft(
     params: BaseAutomationParams,
-  ): Promise<AutomationResponse> {
+  ): Promise<AutomationResponseDto> {
     const automation = await this.ensureAutomationExists(params);
 
     if (!automation.draftVersionId) {
@@ -337,7 +332,7 @@ export class AutomationsService {
     createStepDto,
   }: BaseAutomationParams & {
     createStepDto: CreateStepDto;
-  }): Promise<AutomationResponse> {
+  }): Promise<AutomationResponseDto> {
     const { automation, draftVersion } = await this.fetchAutomationWithDraft({
       accountId,
       automationId,
@@ -368,7 +363,7 @@ export class AutomationsService {
   }: BaseAutomationParams & {
     stepId: string;
     task: AutomationTask;
-  }): Promise<AutomationResponse> {
+  }): Promise<AutomationResponseDto> {
     const { automation, draftVersion } = await this.fetchAutomationWithDraft({
       accountId,
       automationId,
@@ -398,7 +393,7 @@ export class AutomationsService {
     bulkUpdateStepPositionsDto,
   }: BaseAutomationParams & {
     bulkUpdateStepPositionsDto: BulkUpdateStepPositionsDto;
-  }): Promise<AutomationResponse> {
+  }): Promise<AutomationResponseDto> {
     const { automation, draftVersion } = await this.fetchAutomationWithDraft({
       accountId,
       automationId,
@@ -427,7 +422,7 @@ export class AutomationsService {
     stepId,
   }: BaseAutomationParams & {
     stepId: string;
-  }): Promise<AutomationResponse> {
+  }): Promise<AutomationResponseDto> {
     const { automation, draftVersion } = await this.fetchAutomationWithDraft({
       accountId,
       automationId,
@@ -456,7 +451,7 @@ export class AutomationsService {
     connection,
   }: BaseAutomationParams & {
     connection: AutomationConnection;
-  }): Promise<AutomationResponse> {
+  }): Promise<AutomationResponseDto> {
     const { automation, draftVersion } = await this.fetchAutomationWithDraft({
       accountId,
       automationId,
@@ -485,7 +480,7 @@ export class AutomationsService {
     connectionId,
   }: BaseAutomationParams & {
     connectionId: string;
-  }): Promise<AutomationResponse> {
+  }): Promise<AutomationResponseDto> {
     const { automation, draftVersion } = await this.fetchAutomationWithDraft({
       accountId,
       automationId,

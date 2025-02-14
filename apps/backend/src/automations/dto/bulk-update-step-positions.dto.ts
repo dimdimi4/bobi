@@ -1,6 +1,6 @@
 import { IsString, ValidateNested } from 'class-validator';
 
-import { AutomationStepPosition } from '../schemas/automation.schema';
+import { AutomationStepPosition } from '../schemas/automation-step.schema';
 
 export class UpdateStepPositionsDto {
   @IsString()

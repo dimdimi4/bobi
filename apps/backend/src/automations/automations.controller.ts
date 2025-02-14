@@ -16,9 +16,12 @@ import { AutomationConnection } from './schemas/automation-connection.schema';
 import { AutomationTask } from './schemas/automation-tasks.schema';
 
 import { PaginationQueryDto } from './dto/pagination.query.dto';
-import { MutateAutomationDto } from './dto/create-automation.dto';
+import { CreateAutomationDto } from './dto/create-automation.dto';
 import { BulkUpdateStepPositionsDto } from './dto/bulk-update-step-positions.dto';
 import { CreateStepDto } from './dto/create-step.dto';
+import { UpdateAutomationDto } from './dto/update-automation.dto';
+import { AutomationResponseDto } from './dto/automation-response.dto';
+import { AutomationsPaginatedDto } from './dto/automations-paginated.dto';
 
 const accountId = '666666666666666666666666';
 
@@ -28,82 +31,112 @@ export class AutomationsController {
   constructor(private readonly automationsService: AutomationsService) {}
 
   @Post()
-  create(@Body() mutateAutomationDto: MutateAutomationDto) {
-    return this.automationsService.create(accountId, mutateAutomationDto);
+  create(
+    @Body() createDto: CreateAutomationDto,
+  ): Promise<AutomationResponseDto> {
+    return this.automationsService.create({ accountId, createDto });
   }
 
   @Get()
-  findPaginated(@Query() query: PaginationQueryDto) {
-    console.log(query);
-    return this.automationsService.findPaginated(accountId, query);
+  findPaginated(
+    @Query() query: PaginationQueryDto,
+  ): Promise<AutomationsPaginatedDto> {
+    return this.automationsService.listPaginated({ accountId, query });
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string) {
-    return await this.automationsService.findOne(accountId, id);
+  findOne(@Param('id') automationId: string): Promise<AutomationResponseDto> {
+    return this.automationsService.findOne({ accountId, automationId });
   }
 
   @Patch(':id')
   update(
-    @Param('id') id: string,
-    @Body() mutateAutomationDto: MutateAutomationDto,
-  ) {
-    return this.automationsService.update(accountId, id, mutateAutomationDto);
+    @Param('id') automationId: string,
+    @Body() updateDto: UpdateAutomationDto,
+  ): Promise<AutomationResponseDto> {
+    return this.automationsService.updateName({
+      accountId,
+      automationId,
+      updateDto,
+    });
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: string) {
-    return this.automationsService.delete(accountId, id);
+  async remove(@Param('id') automationId: string): Promise<void> {
+    return this.automationsService.delete({ accountId, automationId });
   }
 
   @Post(':id/steps')
-  createStep(@Param('id') id: string, @Body() createStepDto: CreateStepDto) {
-    return this.automationsService.createStep(accountId, id, createStepDto);
+  createStep(
+    @Param('id') automationId: string,
+    @Body() createStepDto: CreateStepDto,
+  ): Promise<AutomationResponseDto> {
+    return this.automationsService.createStep({
+      accountId,
+      automationId,
+      createStepDto,
+    });
   }
 
   @Patch(':id/bulk-update-step-positions')
-  async bulkUpdateStepPositions(
-    @Param('id') id: string,
-    @Body() stepPositions: BulkUpdateStepPositionsDto,
-  ) {
-    return this.automationsService.bulkUpdateStepPositions(
+  bulkUpdateStepPositions(
+    @Param('id') automationId: string,
+    @Body() bulkUpdateStepPositionsDto: BulkUpdateStepPositionsDto,
+  ): Promise<AutomationResponseDto> {
+    return this.automationsService.bulkUpdateStepPositions({
       accountId,
-      id,
-      stepPositions,
-    );
+      automationId,
+      bulkUpdateStepPositionsDto,
+    });
   }
 
   @Patch(':id/steps/:stepId/task')
-  async updateStepTask(
-    @Param('id') id: string,
+  updateStepTask(
+    @Param('id') automationId: string,
     @Param('stepId') stepId: string,
     @Body() task: AutomationTask,
-  ) {
-    return this.automationsService.updateStepTask(accountId, id, stepId, task);
+  ): Promise<AutomationResponseDto> {
+    return this.automationsService.updateStepTask({
+      accountId,
+      automationId,
+      stepId,
+      task,
+    });
   }
 
   @Delete(':id/steps/:stepId')
-  async deleteStep(@Param('id') id: string, @Param('stepId') stepId: string) {
-    return this.automationsService.deleteStep(accountId, id, stepId);
+  deleteStep(
+    @Param('id') automationId: string,
+    @Param('stepId') stepId: string,
+  ): Promise<AutomationResponseDto> {
+    return this.automationsService.deleteStep({
+      accountId,
+      automationId,
+      stepId,
+    });
   }
 
   @Post(':id/connections')
-  async createConnection(
-    @Param('id') id: string,
+  createConnection(
+    @Param('id') automationId: string,
     @Body() connection: AutomationConnection,
-  ) {
-    return this.automationsService.createConnection(accountId, id, connection);
+  ): Promise<AutomationResponseDto> {
+    return this.automationsService.createConnection({
+      accountId,
+      automationId,
+      connection,
+    });
   }
 
   @Delete(':id/connections/:connectionId')
-  async deleteConnection(
-    @Param('id') id: string,
+  deleteConnection(
+    @Param('id') automationId: string,
     @Param('connectionId') connectionId: string,
-  ) {
-    return this.automationsService.deleteConnection(
+  ): Promise<AutomationResponseDto> {
+    return this.automationsService.deleteConnection({
       accountId,
-      id,
+      automationId,
       connectionId,
-    );
+    });
   }
 }
