@@ -257,16 +257,13 @@ export interface components {
             name?: string;
             token?: string;
         };
-        AutomationTriggerMessage: {
+        TriggerReceivedMessageTask: {
             condition: string;
-            message: string[];
-        };
-        AutomationTrigger: {
-            message: components["schemas"]["AutomationTriggerMessage"];
+            templates?: string[];
         };
         CreateAutomationDto: {
             name: string;
-            trigger?: components["schemas"]["AutomationTrigger"];
+            trigger?: components["schemas"]["TriggerReceivedMessageTask"];
         };
         Automation: {
             id: string;
@@ -280,7 +277,7 @@ export interface components {
             /** Format: date-time */
             updatedAt: string;
         };
-        AutomationStepPosition: {
+        AutomationPosition: {
             x: number;
             y: number;
         };
@@ -289,11 +286,12 @@ export interface components {
             quickReplies: string[];
         };
         AutomationTask: {
-            telegram_sendMessage?: components["schemas"]["TelegramSendMessageTask"];
+            trigger_receivedMessage?: components["schemas"]["TriggerReceivedMessageTask"];
+            action_telegram_sendMessage?: components["schemas"]["TelegramSendMessageTask"];
         };
         AutomationStep: {
             id: string;
-            position: components["schemas"]["AutomationStepPosition"];
+            position: components["schemas"]["AutomationPosition"];
             task: components["schemas"]["AutomationTask"];
         };
         AutomationConnection: {
@@ -305,7 +303,6 @@ export interface components {
         };
         AutomationVersion: {
             id: string;
-            trigger: components["schemas"]["AutomationTrigger"];
             steps: components["schemas"]["AutomationStep"][];
             connections: components["schemas"]["AutomationConnection"][];
             /** Format: date-time */
@@ -335,7 +332,7 @@ export interface components {
         };
         StepPositionDto: {
             stepId: string;
-            position: components["schemas"]["AutomationStepPosition"];
+            position: components["schemas"]["AutomationPosition"];
         };
         UpdateStepsPositionsDto: {
             steps: components["schemas"]["StepPositionDto"][];

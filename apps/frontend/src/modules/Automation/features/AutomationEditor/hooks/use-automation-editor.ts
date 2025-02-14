@@ -1,33 +1,16 @@
 import { useRef } from 'react';
-import { useShallow } from 'zustand/react/shallow';
 
-import { EditorState, EditorNode, useStore } from '../store';
-import { AutomationEditorProps } from '../types';
+import { EditorNode, useEditorStore } from '../store';
 import { useCenterNode } from './use-center-node';
 
-const selector = (state: EditorState) => ({
-  nodes: state.nodes,
-  edges: state.edges,
-  selectedNode: state.selectedNode,
-  onNodesChange: state.onNodesChange,
-  onEdgesChange: state.onEdgesChange,
-  onConnect: state.onConnect,
-  onNodeSelect: state.onNodeSelect,
-});
-
-export function useAutomationEditor({
-  automation,
-  version,
-}: Pick<AutomationEditorProps, 'automation' | 'version'>) {
-  const {
-    nodes,
-    edges,
-    selectedNode,
-    onNodesChange,
-    onEdgesChange,
-    onConnect,
-    onNodeSelect,
-  } = useStore(useShallow(selector));
+export function useAutomationEditor() {
+  const nodes = useEditorStore((s) => s.nodes);
+  const edges = useEditorStore((s) => s.edges);
+  const selectedNode = useEditorStore((s) => s.selectedNode);
+  const onNodesChange = useEditorStore((s) => s.onNodesChange);
+  const onEdgesChange = useEditorStore((s) => s.onEdgesChange);
+  const onConnect = useEditorStore((s) => s.onConnect);
+  const onNodeSelect = useEditorStore((s) => s.onNodeSelect);
 
   const reactFlowWrapper = useRef<HTMLDivElement>(null);
 

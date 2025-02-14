@@ -85,7 +85,7 @@ function OutputHandle({
   altHandle,
   children,
 }: PropsWithChildren<{
-  id: string;
+  id?: string;
   text?: string;
   altHandle?: boolean;
 }>) {

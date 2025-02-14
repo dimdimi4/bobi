@@ -17,20 +17,20 @@
 /**
  * 
  * @export
- * @interface AutomationTriggerMessage
+ * @interface TriggerReceivedMessageTask
  */
-export interface AutomationTriggerMessage {
+export interface TriggerReceivedMessageTask {
     /**
      * 
      * @type {string}
-     * @memberof AutomationTriggerMessage
+     * @memberof TriggerReceivedMessageTask
      */
     'condition': string;
     /**
      * 
      * @type {Array<string>}
-     * @memberof AutomationTriggerMessage
+     * @memberof TriggerReceivedMessageTask
      */
-    'message': Array<string>;
+    'templates'?: Array<string>;
 }
 

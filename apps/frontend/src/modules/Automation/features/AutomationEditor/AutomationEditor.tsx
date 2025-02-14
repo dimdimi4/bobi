@@ -10,10 +10,11 @@ import {
 import '@xyflow/react/dist/style.css';
 
 import { AutomationEditorProps } from './types';
+import { StoreProvider } from './store/StoreProvider';
 
 import { EditorContainer } from './ui/EditorContainer';
 
-import { StartNode } from './nodes/StartNode';
+import { TriggerNode } from './nodes/TriggerNode';
 import { EndNode } from './nodes/EndNode';
 import { ActionNode } from './nodes/ActionNode';
 import { ConditionNode } from './nodes/ConditionNode';
@@ -21,7 +22,7 @@ import { Message2Node, MessageNode } from './nodes/MessageNode';
 import { useAutomationEditor } from './hooks/use-automation-editor';
 
 const nodeTypes = {
-  start: StartNode,
+  trigger: TriggerNode,
   end: EndNode,
   action: ActionNode,
   condition: ConditionNode,
@@ -31,13 +32,18 @@ const nodeTypes = {
 
 export function AutomationEditor(props: AutomationEditorProps) {
   return (
-    <ReactFlowProvider>
-      <AutomationEditorInner {...props} />
-    </ReactFlowProvider>
+    <StoreProvider
+      steps={props.version.steps}
+      connections={props.version.connections}
+    >
+      <ReactFlowProvider>
+        <AutomationEditorInner {...props} />
+      </ReactFlowProvider>
+    </StoreProvider>
   );
 }
 
-function AutomationEditorInner({ onExit, automation }: AutomationEditorProps) {
+function AutomationEditorInner({ onExit }: AutomationEditorProps) {
   const {
     nodes,
     edges,
@@ -47,7 +53,7 @@ function AutomationEditorInner({ onExit, automation }: AutomationEditorProps) {
     onConnect,
     handleNodeSelect,
     reactFlowWrapper,
-  } = useAutomationEditor(automation);
+  } = useAutomationEditor();
 
   return (
     <EditorContainer>
@@ -58,6 +64,9 @@ function AutomationEditorInner({ onExit, automation }: AutomationEditorProps) {
           nodeTypes={nodeTypes}
           onNodesChange={onNodesChange}
           onEdgesChange={onEdgesChange}
+          onNodeDragStop={(_, node, nodes) => {
+            console.log('onNodeDragStop', node, nodes);
+          }}
           onConnect={onConnect}
           onNodeClick={(_, node) => handleNodeSelect(node)}
           onPaneClick={() => handleNodeSelect()}

@@ -939,11 +939,11 @@
       "AutomationTask": {
         "type": "object",
         "properties": {
-          "telegram_sendMessage": {
-            "$ref": "#/components/schemas/TelegramSendMessageTask"
-          },
           "trigger_receivedMessage": {
             "$ref": "#/components/schemas/TriggerReceivedMessageTask"
+          },
+          "action_telegram_sendMessage": {
+            "$ref": "#/components/schemas/TelegramSendMessageTask"
           }
         }
       },

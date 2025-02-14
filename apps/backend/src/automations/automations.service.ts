@@ -198,7 +198,7 @@ export class AutomationsService {
           automationId,
           versionId,
           initStep: createDto.trigger
-            ? this.createInitStep(createDto.trigger)
+            ? this.createTriggerStep(createDto.trigger)
             : undefined,
         },
         session,
@@ -211,7 +211,7 @@ export class AutomationsService {
     });
   }
 
-  private createInitStep(
+  private createTriggerStep(
     trigger: CreateAutomationDto['trigger'],
   ): AutomationStep {
     return {

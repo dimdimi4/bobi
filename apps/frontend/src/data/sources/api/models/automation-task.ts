@@ -16,6 +16,9 @@
 // May contain unused imports in some cases
 // @ts-ignore
 import type { TelegramSendMessageTask } from './telegram-send-message-task';
+// May contain unused imports in some cases
+// @ts-ignore
+import type { TriggerReceivedMessageTask } from './trigger-received-message-task';
 
 /**
  * 
@@ -25,9 +28,15 @@ import type { TelegramSendMessageTask } from './telegram-send-message-task';
 export interface AutomationTask {
     /**
      * 
+     * @type {TriggerReceivedMessageTask}
+     * @memberof AutomationTask
+     */
+    'trigger_receivedMessage'?: TriggerReceivedMessageTask;
+    /**
+     * 
      * @type {TelegramSendMessageTask}
      * @memberof AutomationTask
      */
-    'telegram_sendMessage'?: TelegramSendMessageTask;
+    'action_telegram_sendMessage'?: TelegramSendMessageTask;
 }
 

@@ -15,7 +15,7 @@
 
 // May contain unused imports in some cases
 // @ts-ignore
-import type { AutomationStepPosition } from './automation-step-position';
+import type { AutomationPosition } from './automation-position';
 
 /**
  * 
@@ -31,9 +31,9 @@ export interface StepPositionDto {
     'stepId': string;
     /**
      * 
-     * @type {AutomationStepPosition}
+     * @type {AutomationPosition}
      * @memberof StepPositionDto
      */
-    'position': AutomationStepPosition;
+    'position': AutomationPosition;
 }
 

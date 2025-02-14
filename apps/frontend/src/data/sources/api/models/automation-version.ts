@@ -19,9 +19,6 @@ import type { AutomationConnection } from './automation-connection';
 // May contain unused imports in some cases
 // @ts-ignore
 import type { AutomationStep } from './automation-step';
-// May contain unused imports in some cases
-// @ts-ignore
-import type { AutomationTrigger } from './automation-trigger';
 
 /**
  * 
@@ -35,12 +32,6 @@ export interface AutomationVersion {
      * @memberof AutomationVersion
      */
     'id': string;
-    /**
-     * 
-     * @type {AutomationTrigger}
-     * @memberof AutomationVersion
-     */
-    'trigger': AutomationTrigger;
     /**
      * 
      * @type {Array<AutomationStep>}

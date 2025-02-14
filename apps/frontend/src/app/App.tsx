@@ -2,9 +2,10 @@ import { createRouter, RouterProvider } from '@tanstack/react-router';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Notifications } from '@mantine/notifications';
 
+import '@mantine/notifications/styles.css';
+
 import { routeTree } from '@/routeTree.gen';
 import { ThemeProvider } from './ThemeProvider';
-
 const queryClient = new QueryClient();
 
 const router = createRouter({

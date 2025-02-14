@@ -1,6 +1,6 @@
 import { Prop as MongooseProp, Schema } from '@nestjs/mongoose';
 import { Type } from 'class-transformer';
-import { IsArray, IsString, ValidateNested } from 'class-validator';
+import { IsArray, IsOptional, IsString, ValidateNested } from 'class-validator';
 
 @Schema({ _id: false })
 export class TriggerReceivedMessageTask {
@@ -12,9 +12,10 @@ export class TriggerReceivedMessageTask {
   condition: string; // any / exact / contains
 
   @MongooseProp({
-    type: String,
+    type: [String],
     required: true,
   })
+  @IsOptional()
   @IsArray()
   @IsString({ each: true })
   templates?: string[];
@@ -40,18 +41,18 @@ export class TelegramSendMessageTask {
 @Schema({ _id: false })
 export class AutomationTask {
   @MongooseProp({
-    type: TelegramSendMessageTask,
-    required: false,
-  })
-  @ValidateNested()
-  @Type(() => TelegramSendMessageTask)
-  telegram_sendMessage?: TelegramSendMessageTask;
-
-  @MongooseProp({
     type: TriggerReceivedMessageTask,
     required: false,
   })
   @ValidateNested()
   @Type(() => TriggerReceivedMessageTask)
   trigger_receivedMessage?: TriggerReceivedMessageTask;
+
+  @MongooseProp({
+    type: TelegramSendMessageTask,
+    required: false,
+  })
+  @ValidateNested()
+  @Type(() => TelegramSendMessageTask)
+  action_telegram_sendMessage?: TelegramSendMessageTask;
 }

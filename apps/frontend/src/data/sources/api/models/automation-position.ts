@@ -17,19 +17,19 @@
 /**
  * 
  * @export
- * @interface AutomationStepPosition
+ * @interface AutomationPosition
  */
-export interface AutomationStepPosition {
+export interface AutomationPosition {
     /**
      * 
      * @type {number}
-     * @memberof AutomationStepPosition
+     * @memberof AutomationPosition
      */
     'x': number;
     /**
      * 
      * @type {number}
-     * @memberof AutomationStepPosition
+     * @memberof AutomationPosition
      */
     'y': number;
 }

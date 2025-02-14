@@ -3,7 +3,8 @@ import { useCreateAutomationMutation } from '@/data/repositories/automations-rep
 import { useForm } from '@tanstack/react-form';
 import { z } from 'zod';
 
-import { CreateAutomationProps } from '../types';
+import { CreateAutomationProps, TriggerCondition } from '../types';
+import { CreateAutomationDto } from '@/data/sources/api';
 
 const formSchema = z.object({
   name: z
@@ -15,9 +16,13 @@ const formSchema = z.object({
 });
 
 export function useCreateAutomation({ onSuccess }: CreateAutomationProps) {
-  const form = useForm({
+  const form = useForm<CreateAutomationDto>({
     defaultValues: {
       name: '',
+      trigger: {
+        condition: TriggerCondition.ANY,
+        templates: [],
+      },
     },
     onSubmit: ({ value }) => mutate(value),
     validators: {
@@ -33,5 +38,20 @@ export function useCreateAutomation({ onSuccess }: CreateAutomationProps) {
     }
   }, [data, onSuccess, isSuccess]);
 
-  return { form };
+  const triggerConditions = [
+    {
+      label: 'Any',
+      value: TriggerCondition.ANY,
+    },
+    {
+      label: 'Exact',
+      value: TriggerCondition.EXACT,
+    },
+    {
+      label: 'Contains',
+      value: TriggerCondition.CONTAINS,
+    },
+  ];
+
+  return { form, triggerConditions };
 }

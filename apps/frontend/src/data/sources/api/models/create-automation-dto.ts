@@ -15,7 +15,7 @@
 
 // May contain unused imports in some cases
 // @ts-ignore
-import type { AutomationTrigger } from './automation-trigger';
+import type { TriggerReceivedMessageTask } from './trigger-received-message-task';
 
 /**
  * 
@@ -31,9 +31,9 @@ export interface CreateAutomationDto {
     'name': string;
     /**
      * 
-     * @type {AutomationTrigger}
+     * @type {TriggerReceivedMessageTask}
      * @memberof CreateAutomationDto
      */
-    'trigger'?: AutomationTrigger;
+    'trigger'?: TriggerReceivedMessageTask;
 }
 
