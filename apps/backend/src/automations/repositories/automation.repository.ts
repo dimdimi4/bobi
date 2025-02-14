@@ -22,16 +22,16 @@ export class AutomationsRepository {
     accountId,
     automationId,
     name,
-    draftVersion,
+    draftVersionId,
   }: {
     accountId: string;
     automationId?: string;
-  } & Pick<Automation, 'name' | 'draftVersion'>) {
+  } & Pick<Automation, 'name' | 'draftVersionId'>) {
     const createdAutomation = new this.automationModel({
       _id: automationId,
       accountId,
       name,
-      draftVersion,
+      draftVersionId,
     });
     return createdAutomation.save();
   }
@@ -97,7 +97,7 @@ export class AutomationsRepository {
     return this.automationModel
       .findOneAndUpdate(
         this.secureMatch(accountId, { _id: automationId }),
-        { $set: { draftVersion } },
+        { $set: { draftVersionId: draftVersion } },
         { new: true },
       )
       .exec();
@@ -113,25 +113,28 @@ export class AutomationsRepository {
     return this.automationModel
       .findOneAndUpdate(
         this.secureMatch(accountId, { _id: automationId }),
-        { $unset: { draftVersion: '' } },
+        { $unset: { draftVersionId: '' } },
         { new: true },
       )
       .exec();
   }
 
-  setCurrentVersion({
+  setPublishedVersion({
     accountId,
     automationId,
-    currentVersion,
+    publishedVersionId,
   }: {
     accountId: string;
     automationId: string;
-    currentVersion: string;
+    publishedVersionId: string;
   }) {
     return this.automationModel
       .findOneAndUpdate(
         this.secureMatch(accountId, { _id: automationId }),
-        { $set: { currentVersion }, $unset: { currentVersion: '' } },
+        {
+          $set: { publishedVersionId },
+          $unset: { publishedVersionId: '' },
+        },
         { new: true },
       )
       .exec();

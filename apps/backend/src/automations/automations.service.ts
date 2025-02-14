@@ -18,6 +18,9 @@ import { PaginationQueryDto } from './dto/pagination.query.dto';
 import { AutomationsPaginatedDto } from './dto/automations-paginated.dto';
 import { UpdateAutomationDto } from './dto/update-automation.dto';
 import { CreateStepDto } from './dto/create-step.dto';
+import { AutomationTask } from './schemas/automation-tasks.schema';
+import { BulkUpdateStepPositionsDto } from './dto/bulk-update-step-positions.dto';
+import { AutomationConnection } from './schemas/automation-connection.schema';
 
 @Injectable()
 export class AutomationsService {
@@ -61,7 +64,7 @@ export class AutomationsService {
         accountId,
         automationId,
         name: createDto.name,
-        draftVersion: versionId,
+        draftVersionId: versionId,
       }),
       this.automationVersionRepository.create({
         accountId,
@@ -117,16 +120,16 @@ export class AutomationsService {
     }
 
     const [currentVersion, draftVersion] = await Promise.all([
-      automation.currentVersion
+      automation.publishedVersionId
         ? this.automationVersionRepository.findOne({
             accountId,
-            versionId: automation.currentVersion,
+            versionId: automation.publishedVersionId,
           })
         : null,
-      automation.draftVersion
+      automation.draftVersionId
         ? this.automationVersionRepository.findOne({
             accountId,
-            versionId: automation.draftVersion,
+            versionId: automation.draftVersionId,
           })
         : null,
     ]);
@@ -180,7 +183,7 @@ export class AutomationsService {
       throw new NotFoundException('Automation not found');
     }
 
-    if (!automation.draftVersion) {
+    if (!automation.draftVersionId) {
       throw new BadRequestException('No draft version to discard');
     }
 
@@ -191,7 +194,7 @@ export class AutomationsService {
       }),
       this.automationVersionRepository.delete({
         accountId,
-        versionId: automation.draftVersion,
+        versionId: automation.draftVersionId,
       }),
     ]);
 
@@ -218,19 +221,19 @@ export class AutomationsService {
       throw new NotFoundException('Automation not found');
     }
 
-    if (!automation.draftVersion) {
+    if (!automation.draftVersionId) {
       throw new BadRequestException('No draft version to publish');
     }
 
     const [updatedAutomation, currentVersion] = await Promise.all([
-      this.automationsRepository.setCurrentVersion({
+      this.automationsRepository.setPublishedVersion({
         accountId,
         automationId,
-        currentVersion: automation.draftVersion,
+        publishedVersionId: automation.draftVersionId,
       }),
       this.automationVersionRepository.publish({
         accountId,
-        versionId: automation.draftVersion,
+        versionId: automation.draftVersionId,
       }),
     ]);
 
@@ -281,10 +284,10 @@ export class AutomationsService {
       throw new NotFoundException('Automation not found');
     }
 
-    if (automation.draftVersion) {
+    if (automation.draftVersionId) {
       const draftVersion = await this.automationVersionRepository.findOne({
         accountId,
-        versionId: automation.draftVersion,
+        versionId: automation.draftVersionId,
       });
 
       if (!draftVersion) {
@@ -299,7 +302,7 @@ export class AutomationsService {
 
     const newDraftVersionId = uuidv7();
 
-    if (!automation.currentVersion) {
+    if (!automation.publishedVersionId) {
       throw new BadRequestException('No current version to clone');
     }
 
@@ -307,11 +310,11 @@ export class AutomationsService {
       this.automationsRepository.setDraftVersion({
         accountId,
         automationId,
-        draftVersion: automation.currentVersion,
+        draftVersion: automation.publishedVersionId,
       }),
       this.automationVersionRepository.clone({
         accountId,
-        versionId: automation.currentVersion,
+        versionId: automation.publishedVersionId,
         newVersionId: newDraftVersionId,
       }),
     ]);
@@ -363,62 +366,161 @@ export class AutomationsService {
     };
   }
 
-  // async updateStepTask(
-  //   accountId: string,
-  //   id: string,
-  //   stepId: string,
-  //   task: AutomationTask,
-  // ) {
-  //   const automation = await this.automationsRepository.updateStepTask(
-  //     accountId,
-  //     id,
-  //     stepId,
-  //     task,
-  //   );
-  //   return this.toEntity(automation);
-  // }
+  async updateStepTask({
+    accountId,
+    automationId,
+    stepId,
+    task,
+  }: {
+    accountId: string;
+    automationId: string;
+    stepId: string;
+    task: AutomationTask;
+  }) {
+    const { automation, draftVersion } = await this.fetchAutomationWithDraft({
+      accountId,
+      automationId,
+    });
 
-  // async bulkUpdateStepPositions(
-  //   accountId: string,
-  //   id: string,
-  //   bulkUpdateStepPositionsDto: BulkUpdateStepPositionsDto,
-  // ) {
-  //   const automation = await this.automationsRepository.bulkUpdateStepPositions(
-  //     accountId,
-  //     id,
-  //     bulkUpdateStepPositionsDto,
-  //   );
-  //   return this.toEntity(automation);
-  // }
+    const updatedDraftVersion =
+      await this.automationVersionRepository.updateStepTask({
+        accountId,
+        versionId: draftVersion._id,
+        stepId,
+        task: task,
+      });
 
-  // async deleteStep(accountId: string, id: string, stepId: string) {
-  //   const automation = await this.automationsRepository.deleteStep(
-  //     accountId,
-  //     id,
-  //     stepId,
-  //   );
-  //   return this.toEntity(automation);
-  // }
+    if (!updatedDraftVersion) {
+      throw new NotFoundException('Could not update step task');
+    }
 
-  // async createConnection(
-  //   accountId: string,
-  //   id: string,
-  //   connection: AutomationConnection,
-  // ) {
-  //   const automation = await this.automationsRepository.createConnection(
-  //     accountId,
-  //     id,
-  //     connection,
-  //   );
-  //   return this.toEntity(automation);
-  // }
+    return {
+      automation: this.toAutomationEntity(automation),
+      draftVersion: this.toAutomationVersionEntity(updatedDraftVersion),
+    };
+  }
 
-  // async deleteConnection(accountId: string, id: string, connectionId: string) {
-  //   const automation = await this.automationsRepository.deleteConnection(
-  //     accountId,
-  //     id,
-  //     connectionId,
-  //   );
-  //   return this.toEntity(automation);
-  // }
+  async bulkUpdateStepPositions({
+    accountId,
+    automationId,
+    bulkUpdateStepPositionsDto,
+  }: {
+    accountId: string;
+    automationId: string;
+    bulkUpdateStepPositionsDto: BulkUpdateStepPositionsDto;
+  }) {
+    const { automation, draftVersion } = await this.fetchAutomationWithDraft({
+      accountId,
+      automationId,
+    });
+
+    const updatedDraftVersion =
+      await this.automationVersionRepository.bulkUpdateStepPositions({
+        accountId,
+        versionId: draftVersion._id,
+        stepPositions: bulkUpdateStepPositionsDto,
+      });
+
+    if (!updatedDraftVersion) {
+      throw new NotFoundException('Could not update step positions');
+    }
+
+    return {
+      automation: this.toAutomationEntity(automation),
+      draftVersion: this.toAutomationVersionEntity(updatedDraftVersion),
+    };
+  }
+
+  async deleteStep({
+    accountId,
+    automationId,
+    stepId,
+  }: {
+    accountId: string;
+    automationId: string;
+    stepId: string;
+  }) {
+    const { automation, draftVersion } = await this.fetchAutomationWithDraft({
+      accountId,
+      automationId,
+    });
+
+    const updatedDraftVersion =
+      await this.automationVersionRepository.deleteStep({
+        accountId,
+        versionId: draftVersion._id,
+        stepId,
+      });
+
+    if (!updatedDraftVersion) {
+      throw new NotFoundException('Could not delete step');
+    }
+
+    return {
+      automation: this.toAutomationEntity(automation),
+      draftVersion: this.toAutomationVersionEntity(updatedDraftVersion),
+    };
+  }
+
+  async createConnection({
+    accountId,
+    automationId,
+    connection,
+  }: {
+    accountId: string;
+    automationId: string;
+    connection: AutomationConnection;
+  }) {
+    const { automation, draftVersion } = await this.fetchAutomationWithDraft({
+      accountId,
+      automationId,
+    });
+
+    const updatedDraftVersion =
+      await this.automationVersionRepository.createConnection({
+        accountId,
+        versionId: draftVersion._id,
+        connection,
+      });
+
+    if (!updatedDraftVersion) {
+      throw new NotFoundException('Could not create connection');
+    }
+
+    return {
+      automation: this.toAutomationEntity(automation),
+      draftVersion: this.toAutomationVersionEntity(updatedDraftVersion),
+    };
+  }
+
+  async deleteConnection({
+    accountId,
+    automationId,
+    connectionId,
+  }: {
+    accountId: string;
+    automationId: string;
+    connectionId: string;
+  }) {
+    const { automation, draftVersion } = await this.fetchAutomationWithDraft({
+      accountId,
+      automationId,
+    });
+
+    const updatedDraftVersion =
+      await this.automationVersionRepository.deleteConnection({
+        accountId,
+        versionId: draftVersion._id,
+        connectionId,
+      });
+
+    if (!updatedDraftVersion) {
+      throw new NotFoundException('Could not delete connection');
+    }
+
+    return {
+      automation: this.toAutomationEntity(automation),
+      draftVersion: this.toAutomationVersionEntity(updatedDraftVersion),
+    };
+  }
 }

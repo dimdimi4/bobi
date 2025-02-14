@@ -37,10 +37,10 @@ export class Automation {
   name: string;
 
   @MongooseProp({ type: String, required: false })
-  currentVersion?: string;
+  publishedVersionId?: string;
 
   @MongooseProp({ type: String, required: false })
-  draftVersion?: string;
+  draftVersionId?: string;
 
   @MongooseProp({
     type: String,
