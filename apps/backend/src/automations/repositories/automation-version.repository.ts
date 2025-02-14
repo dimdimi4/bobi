@@ -189,7 +189,7 @@ export class AutomationVersionRepository {
       .exec();
   }
 
-  bulkUpdateStepPositions({
+  bulkUpdateStepsPositions({
     accountId,
     versionId,
     stepPositions,

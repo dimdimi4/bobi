@@ -389,12 +389,12 @@ export class AutomationsService {
     });
   }
 
-  async bulkUpdateStepPositions({
+  async bulkUpdateStepsPositions({
     accountId,
     automationId,
-    bulkUpdateStepPositionsDto,
+    bulkUpdateStepsPositionsDto,
   }: BaseAutomationParams & {
-    bulkUpdateStepPositionsDto: BulkUpdateStepPositionsDto;
+    bulkUpdateStepsPositionsDto: BulkUpdateStepPositionsDto;
   }): Promise<AutomationResponseDto> {
     const { automation, draftVersion } = await this.fetchAutomationWithDraft({
       accountId,
@@ -402,10 +402,10 @@ export class AutomationsService {
     });
 
     const updatedDraftVersion =
-      await this.automationVersionRepository.bulkUpdateStepPositions({
+      await this.automationVersionRepository.bulkUpdateStepsPositions({
         accountId,
         versionId: draftVersion._id,
-        stepPositions: bulkUpdateStepPositionsDto,
+        stepPositions: bulkUpdateStepsPositionsDto,
       });
 
     if (!updatedDraftVersion) {

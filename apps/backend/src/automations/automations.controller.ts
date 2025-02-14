@@ -78,15 +78,15 @@ export class AutomationsController {
     });
   }
 
-  @Patch(':id/bulk-update-step-positions')
-  bulkUpdateStepPositions(
+  @Patch(':id/bulk-update-steps-positions')
+  bulkUpdateStepsPositions(
     @Param('id') automationId: string,
-    @Body() bulkUpdateStepPositionsDto: BulkUpdateStepPositionsDto,
+    @Body() bulkUpdateStepsPositionsDto: BulkUpdateStepPositionsDto,
   ): Promise<AutomationResponseDto> {
-    return this.automationsService.bulkUpdateStepPositions({
+    return this.automationsService.bulkUpdateStepsPositions({
       accountId,
       automationId,
-      bulkUpdateStepPositionsDto,
+      bulkUpdateStepsPositionsDto,
     });
   }
 
