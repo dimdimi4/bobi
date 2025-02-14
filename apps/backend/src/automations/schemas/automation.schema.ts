@@ -28,6 +28,7 @@ export class Automation {
 
   @MongooseProp({ type: String, required: true })
   @ApiHideProperty()
+  @Exclude()
   accountId: string;
 
   @MongooseProp({

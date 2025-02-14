@@ -833,13 +833,13 @@
           }
         }
       },
-      "AutomationTriggerMessage": {
+      "TriggerReceivedMessageTask": {
         "type": "object",
         "properties": {
           "condition": {
             "type": "string"
           },
-          "message": {
+          "templates": {
             "type": "array",
             "items": {
               "type": "string"
@@ -847,19 +847,7 @@
           }
         },
         "required": [
-          "condition",
-          "message"
-        ]
-      },
-      "AutomationTrigger": {
-        "type": "object",
-        "properties": {
-          "message": {
-            "$ref": "#/components/schemas/AutomationTriggerMessage"
-          }
-        },
-        "required": [
-          "message"
+          "condition"
         ]
       },
       "CreateAutomationDto": {
@@ -869,7 +857,7 @@
             "type": "string"
           },
           "trigger": {
-            "$ref": "#/components/schemas/AutomationTrigger"
+            "$ref": "#/components/schemas/TriggerReceivedMessageTask"
           }
         },
         "required": [
@@ -915,7 +903,7 @@
           "updatedAt"
         ]
       },
-      "AutomationStepPosition": {
+      "AutomationPosition": {
         "type": "object",
         "properties": {
           "x": {
@@ -953,6 +941,9 @@
         "properties": {
           "telegram_sendMessage": {
             "$ref": "#/components/schemas/TelegramSendMessageTask"
+          },
+          "trigger_receivedMessage": {
+            "$ref": "#/components/schemas/TriggerReceivedMessageTask"
           }
         }
       },
@@ -963,7 +954,7 @@
             "type": "string"
           },
           "position": {
-            "$ref": "#/components/schemas/AutomationStepPosition"
+            "$ref": "#/components/schemas/AutomationPosition"
           },
           "task": {
             "$ref": "#/components/schemas/AutomationTask"
@@ -1006,9 +997,6 @@
           "id": {
             "type": "string"
           },
-          "trigger": {
-            "$ref": "#/components/schemas/AutomationTrigger"
-          },
           "steps": {
             "type": "array",
             "items": {
@@ -1036,7 +1024,6 @@
         },
         "required": [
           "id",
-          "trigger",
           "steps",
           "connections",
           "createdAt",
@@ -1118,7 +1105,7 @@
             "type": "string"
           },
           "position": {
-            "$ref": "#/components/schemas/AutomationStepPosition"
+            "$ref": "#/components/schemas/AutomationPosition"
           }
         },
         "required": [

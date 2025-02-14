@@ -54,7 +54,7 @@ export class AutomationsController {
     @Param('id') automationId: string,
     @Body() updateDto: UpdateAutomationDto,
   ): Promise<AutomationResponseDto> {
-    return this.automationsService.updateName({
+    return this.automationsService.update({
       accountId,
       automationId,
       updateDto,

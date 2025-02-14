@@ -26,6 +26,7 @@ import { AutomationConnection } from './schemas/automation-connection.schema';
 import { AutomationResponseDto } from './dto/automation-response.dto';
 import { InjectConnection } from '@nestjs/mongoose';
 import { ClientSession, Connection } from 'mongoose';
+import { AutomationStep } from './schemas/automation-step.schema';
 
 // Common interfaces to reduce repetition
 interface BaseAutomationParams {
@@ -181,16 +182,6 @@ export class AutomationsService {
       const automationId = uuidv7();
       const versionId = uuidv7();
 
-      let trigger = createDto.trigger;
-      if (!trigger) {
-        trigger = {
-          message: {
-            condition: 'manual',
-            message: ['/start'],
-          },
-        };
-      }
-
       const automation = await this.automationsRepository.create(
         {
           accountId,
@@ -206,7 +197,9 @@ export class AutomationsService {
           accountId,
           automationId,
           versionId,
-          trigger,
+          initStep: createDto.trigger
+            ? this.createInitStep(createDto.trigger)
+            : undefined,
         },
         session,
       );
@@ -216,6 +209,18 @@ export class AutomationsService {
         draftVersion,
       });
     });
+  }
+
+  private createInitStep(
+    trigger: CreateAutomationDto['trigger'],
+  ): AutomationStep {
+    return {
+      id: uuidv7(),
+      position: { x: 100, y: 100 },
+      task: {
+        trigger_receivedMessage: trigger,
+      },
+    };
   }
 
   async listPaginated({
@@ -266,7 +271,7 @@ export class AutomationsService {
     });
   }
 
-  async updateName({
+  async update({
     accountId,
     automationId,
     updateDto,

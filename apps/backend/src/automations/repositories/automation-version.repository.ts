@@ -9,9 +9,7 @@ import {
 import { AutomationStep } from '../schemas/automation-step.schema';
 import { AutomationConnection } from '../schemas/automation-connection.schema';
 import { AutomationTask } from '../schemas/automation-tasks.schema';
-import { AutomationTrigger } from '../schemas/automation-trigger.schema';
 
-import { CreateAutomationDto } from '../dto/create-automation.dto';
 import { UpdateStepsPositionsDto } from '../dto/bulk-update-step-positions.dto';
 
 @Injectable()
@@ -43,21 +41,26 @@ export class AutomationVersionRepository {
     {
       accountId,
       automationId,
-      trigger,
       versionId,
+      initStep,
     }: {
       accountId: string;
       automationId: string;
       versionId?: string;
-    } & Pick<CreateAutomationDto, 'trigger'>,
+      initStep?: AutomationStep;
+    },
     session?: ClientSession,
   ) {
     const createdVersion = new this.automationVersionModel({
       _id: versionId,
       automationId,
       accountId,
-      trigger,
     });
+
+    if (initStep) {
+      createdVersion.steps = [initStep];
+    }
+
     return createdVersion.save({ session });
   }
 
@@ -139,31 +142,6 @@ export class AutomationVersionRepository {
       .deleteMany(this.safeMatch(accountId, { automationId }), {
         session,
       })
-      .exec();
-  }
-
-  updateTrigger(
-    {
-      accountId,
-      versionId,
-      trigger,
-    }: {
-      accountId: string;
-      versionId: string;
-      trigger: AutomationTrigger;
-    },
-    session?: ClientSession,
-  ) {
-    return this.automationVersionModel
-      .findOneAndUpdate(
-        this.versionMatch(accountId, versionId),
-        {
-          trigger,
-        },
-        {
-          session,
-        },
-      )
       .exec();
   }
 

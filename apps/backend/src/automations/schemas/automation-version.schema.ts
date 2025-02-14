@@ -7,7 +7,6 @@ import { v7 as uuidv7 } from 'uuid';
 
 import { AutomationConnection } from './automation-connection.schema';
 import { AutomationStep } from './automation-step.schema';
-import { AutomationTrigger } from './automation-trigger.schema';
 
 @Schema({
   timestamps: true,
@@ -43,14 +42,6 @@ export class AutomationVersion {
   @ApiHideProperty()
   @IsString()
   automationId: string;
-
-  @MongooseProp({
-    type: AutomationTrigger,
-    required: true,
-  })
-  @ValidateNested()
-  @Type(() => AutomationTrigger)
-  trigger: AutomationTrigger;
 
   @MongooseProp({
     type: [AutomationStep],
