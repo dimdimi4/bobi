@@ -17,13 +17,13 @@
 /**
  * 
  * @export
- * @interface MutateAutomationDto
+ * @interface UpdateAutomationDto
  */
-export interface MutateAutomationDto {
+export interface UpdateAutomationDto {
     /**
      * 
      * @type {string}
-     * @memberof MutateAutomationDto
+     * @memberof UpdateAutomationDto
      */
     'name': string;
 }

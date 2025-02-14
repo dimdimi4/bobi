@@ -14,7 +14,7 @@ function RouteComponent() {
   return (
     <Group>
       <pre>{JSON.stringify(data, null, 2)}</pre>
-      <Link to={`/automations/$id/edit`} params={{ id: data.id }}>
+      <Link to="/automation-editor/$id" params={{ id: data.automation.id }}>
         Edit
       </Link>
     </Group>

@@ -24,6 +24,8 @@ import { AutomationTask } from './schemas/automation-tasks.schema';
 import { UpdateStepsPositionsDto } from './dto/bulk-update-step-positions.dto';
 import { AutomationConnection } from './schemas/automation-connection.schema';
 import { AutomationResponseDto } from './dto/automation-response.dto';
+import { InjectConnection } from '@nestjs/mongoose';
+import { ClientSession, Connection } from 'mongoose';
 
 // Common interfaces to reduce repetition
 interface BaseAutomationParams {
@@ -41,6 +43,7 @@ export class AutomationsService {
   constructor(
     private readonly automationsRepository: AutomationsRepository,
     private readonly automationVersionRepository: AutomationVersionRepository,
+    @InjectConnection() private readonly connection: Connection,
   ) {}
 
   private toAutomationEntity(automation: AutomationDocument): Automation {
@@ -151,6 +154,22 @@ export class AutomationsService {
     };
   }
 
+  private async withTransaction<T>(fn: (session: ClientSession) => Promise<T>) {
+    const session = await this.connection.startSession();
+
+    try {
+      session.startTransaction();
+      const result = await fn(session);
+      await session.commitTransaction();
+      return result;
+    } catch (err) {
+      await session.abortTransaction();
+      throw err;
+    } finally {
+      await session.endSession();
+    }
+  }
+
   async create({
     accountId,
     createDto,
@@ -158,27 +177,44 @@ export class AutomationsService {
     accountId: string;
     createDto: CreateAutomationDto;
   }): Promise<AutomationResponseDto> {
-    const automationId = uuidv7();
-    const versionId = uuidv7();
+    return this.withTransaction(async (session) => {
+      const automationId = uuidv7();
+      const versionId = uuidv7();
 
-    const [automation, draftVersion] = await Promise.all([
-      this.automationsRepository.create({
-        accountId,
-        automationId,
-        name: createDto.name,
-        draftVersionId: versionId,
-      }),
-      this.automationVersionRepository.create({
-        accountId,
-        automationId,
-        versionId,
-        trigger: createDto.trigger,
-      }),
-    ]);
+      let trigger = createDto.trigger;
+      if (!trigger) {
+        trigger = {
+          message: {
+            condition: 'manual',
+            message: ['/start'],
+          },
+        };
+      }
 
-    return this.handleResponse({
-      automation,
-      draftVersion,
+      const automation = await this.automationsRepository.create(
+        {
+          accountId,
+          automationId,
+          name: createDto.name,
+          draftVersionId: versionId,
+        },
+        session,
+      );
+
+      const draftVersion = await this.automationVersionRepository.create(
+        {
+          accountId,
+          automationId,
+          versionId,
+          trigger,
+        },
+        session,
+      );
+
+      return this.handleResponse({
+        automation,
+        draftVersion,
+      });
     });
   }
 

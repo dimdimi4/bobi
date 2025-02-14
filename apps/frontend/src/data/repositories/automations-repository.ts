@@ -1,6 +1,10 @@
-import { queryOptions } from '@tanstack/react-query';
+import {
+  queryOptions,
+  useMutation,
+  useQueryClient,
+} from '@tanstack/react-query';
 
-import { AutomationsApi } from '@/data/sources/api';
+import { AutomationsApi, CreateAutomationDto } from '@/data/sources/api';
 import { api } from '@/shared/lib/api-client';
 
 export class AutomationsRepository {
@@ -18,6 +22,10 @@ export class AutomationsRepository {
   async getAutomation(id: string) {
     return this.automationsApi.automationsFindOneV1(id);
   }
+
+  async createAutomation(payload: CreateAutomationDto) {
+    return this.automationsApi.automationsCreateV1(payload);
+  }
 }
 
 export const automationsRepository = new AutomationsRepository(
@@ -34,3 +42,16 @@ export const automationQueryOptions = (id: string) =>
     queryKey: [AutomationsRepository.name, id],
     queryFn: () => automationsRepository.getAutomation(id),
   });
+
+export function useCreateAutomationMutation() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (payload: CreateAutomationDto) =>
+      automationsRepository.createAutomation(payload),
+    onSuccess: () =>
+      queryClient.invalidateQueries({
+        queryKey: [AutomationsRepository.name],
+      }),
+  });
+}

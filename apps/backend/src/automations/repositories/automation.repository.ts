@@ -1,4 +1,4 @@
-import { FilterQuery, Model } from 'mongoose';
+import { ClientSession, FilterQuery, Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 
@@ -18,22 +18,25 @@ export class AutomationsRepository {
     return { ...match, accountId };
   }
 
-  create({
-    accountId,
-    automationId,
-    name,
-    draftVersionId,
-  }: {
-    accountId: string;
-    automationId?: string;
-  } & Pick<Automation, 'name' | 'draftVersionId'>) {
+  create(
+    {
+      accountId,
+      automationId,
+      name,
+      draftVersionId,
+    }: {
+      accountId: string;
+      automationId?: string;
+    } & Pick<Automation, 'name' | 'draftVersionId'>,
+    session?: ClientSession,
+  ) {
     const createdAutomation = new this.automationModel({
       _id: automationId,
       accountId,
       name,
       draftVersionId,
     });
-    return createdAutomation.save();
+    return createdAutomation.save({ session });
   }
 
   findOne({
@@ -68,66 +71,78 @@ export class AutomationsRepository {
     return this.automationModel.countDocuments(this.secureMatch(accountId));
   }
 
-  setName({
-    accountId,
-    automationId,
-    name,
-  }: {
-    accountId: string;
-    automationId: string;
-  } & Partial<Pick<Automation, 'name'>>) {
+  setName(
+    {
+      accountId,
+      automationId,
+      name,
+    }: {
+      accountId: string;
+      automationId: string;
+    } & Partial<Pick<Automation, 'name'>>,
+    session?: ClientSession,
+  ) {
     return this.automationModel
       .findOneAndUpdate(
         this.secureMatch(accountId, { _id: automationId }),
         { $set: { name } },
-        { new: true },
+        { new: true, session },
       )
       .exec();
   }
 
-  setDraftVersion({
-    accountId,
-    automationId,
-    draftVersion,
-  }: {
-    accountId: string;
-    automationId: string;
-    draftVersion: string;
-  }) {
+  setDraftVersion(
+    {
+      accountId,
+      automationId,
+      draftVersion,
+    }: {
+      accountId: string;
+      automationId: string;
+      draftVersion: string;
+    },
+    session?: ClientSession,
+  ) {
     return this.automationModel
       .findOneAndUpdate(
         this.secureMatch(accountId, { _id: automationId }),
         { $set: { draftVersionId: draftVersion } },
-        { new: true },
+        { new: true, session },
       )
       .exec();
   }
 
-  unsetDraftVersion({
-    accountId,
-    automationId,
-  }: {
-    accountId: string;
-    automationId: string;
-  }) {
+  unsetDraftVersion(
+    {
+      accountId,
+      automationId,
+    }: {
+      accountId: string;
+      automationId: string;
+    },
+    session?: ClientSession,
+  ) {
     return this.automationModel
       .findOneAndUpdate(
         this.secureMatch(accountId, { _id: automationId }),
         { $unset: { draftVersionId: '' } },
-        { new: true },
+        { new: true, session },
       )
       .exec();
   }
 
-  setPublishedVersion({
-    accountId,
-    automationId,
-    publishedVersionId,
-  }: {
-    accountId: string;
-    automationId: string;
-    publishedVersionId: string;
-  }) {
+  setPublishedVersion(
+    {
+      accountId,
+      automationId,
+      publishedVersionId,
+    }: {
+      accountId: string;
+      automationId: string;
+      publishedVersionId: string;
+    },
+    session?: ClientSession,
+  ) {
     return this.automationModel
       .findOneAndUpdate(
         this.secureMatch(accountId, { _id: automationId }),
@@ -135,37 +150,45 @@ export class AutomationsRepository {
           $set: { publishedVersionId },
           $unset: { publishedVersionId: '' },
         },
-        { new: true },
+        { new: true, session },
       )
       .exec();
   }
 
-  setStatus({
-    accountId,
-    automationId,
-    status,
-  }: {
-    accountId: string;
-    automationId: string;
-  } & Pick<Automation, 'status'>) {
+  setStatus(
+    {
+      accountId,
+      automationId,
+      status,
+    }: {
+      accountId: string;
+      automationId: string;
+    } & Pick<Automation, 'status'>,
+    session?: ClientSession,
+  ) {
     return this.automationModel
       .findOneAndUpdate(
         this.secureMatch(accountId, { _id: automationId }),
         { $set: { status } },
-        { new: true },
+        { new: true, session },
       )
       .exec();
   }
 
-  delete({
-    accountId,
-    automationId,
-  }: {
-    accountId: string;
-    automationId: string;
-  }) {
+  delete(
+    {
+      accountId,
+      automationId,
+    }: {
+      accountId: string;
+      automationId: string;
+    },
+    session?: ClientSession,
+  ) {
     return this.automationModel
-      .findOneAndDelete(this.secureMatch(accountId, { _id: automationId }))
+      .findOneAndDelete(this.secureMatch(accountId, { _id: automationId }), {
+        session,
+      })
       .exec();
   }
 }

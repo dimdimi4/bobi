@@ -4,7 +4,7 @@ import { automationQueryOptions } from '@/data/repositories/automations-reposito
 
 import { AutomationEditor } from '@/modules/Automation/features/AutomationEditor';
 
-export const Route = createFileRoute('/automations/$id/edit')({
+export const Route = createFileRoute('/automation-editor/$id')({
   component: RouteComponent,
   loader: ({ context: { queryClient }, params }) =>
     queryClient.ensureQueryData(automationQueryOptions(params.id)),
@@ -15,13 +15,11 @@ function RouteComponent() {
   const router = useRouter();
 
   const handleClose = () => {
-    setTimeout(() => {
-      router.navigate({
-        to: '/automations/$id/view',
-        params: { id: data.id },
-      });
-    }, 200);
+    router.navigate({
+      to: '/automations/$id/view',
+      params: { id: data.automation.id },
+    });
   };
 
-  return <AutomationEditor onExit={handleClose} />;
+  return <AutomationEditor onExit={handleClose} automation={data.automation} />;
 }

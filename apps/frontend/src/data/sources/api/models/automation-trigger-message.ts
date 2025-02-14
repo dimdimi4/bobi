@@ -13,27 +13,24 @@
  */
 
 
-// May contain unused imports in some cases
-// @ts-ignore
-import type { AutomationStepPosition } from './automation-step-position';
 
 /**
  * 
  * @export
- * @interface UpdateStepPositionsDto
+ * @interface AutomationTriggerMessage
  */
-export interface UpdateStepPositionsDto {
+export interface AutomationTriggerMessage {
     /**
      * 
      * @type {string}
-     * @memberof UpdateStepPositionsDto
+     * @memberof AutomationTriggerMessage
      */
-    'stepId': string;
+    'condition': string;
     /**
      * 
-     * @type {AutomationStepPosition}
-     * @memberof UpdateStepPositionsDto
+     * @type {Array<string>}
+     * @memberof AutomationTriggerMessage
      */
-    'position': AutomationStepPosition;
+    'message': Array<string>;
 }
 

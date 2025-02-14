@@ -1,4 +1,4 @@
-import { DeleteResult, FilterQuery, Model } from 'mongoose';
+import { ClientSession, DeleteResult, FilterQuery, Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 
@@ -39,34 +39,40 @@ export class AutomationVersionRepository {
     });
   }
 
-  create({
-    accountId,
-    automationId,
-    trigger,
-    versionId,
-  }: {
-    accountId: string;
-    automationId: string;
-    versionId?: string;
-  } & Pick<CreateAutomationDto, 'trigger'>) {
+  create(
+    {
+      accountId,
+      automationId,
+      trigger,
+      versionId,
+    }: {
+      accountId: string;
+      automationId: string;
+      versionId?: string;
+    } & Pick<CreateAutomationDto, 'trigger'>,
+    session?: ClientSession,
+  ) {
     const createdVersion = new this.automationVersionModel({
       _id: versionId,
       automationId,
       accountId,
       trigger,
     });
-    return createdVersion.save();
+    return createdVersion.save({ session });
   }
 
-  async clone({
-    accountId,
-    versionId,
-    newVersionId,
-  }: {
-    accountId: string;
-    versionId: string;
-    newVersionId?: string;
-  }) {
+  async clone(
+    {
+      accountId,
+      versionId,
+      newVersionId,
+    }: {
+      accountId: string;
+      versionId: string;
+      newVersionId?: string;
+    },
+    session?: ClientSession,
+  ) {
     const existingVersion = await this.findOne({ accountId, versionId });
 
     if (!existingVersion) {
@@ -81,7 +87,7 @@ export class AutomationVersionRepository {
       connections: existingVersion.connections,
     });
 
-    return clonedVersion.save();
+    return clonedVersion.save({ session });
   }
 
   findOne({ accountId, versionId }: { accountId: string; versionId: string }) {
@@ -90,7 +96,10 @@ export class AutomationVersionRepository {
       .exec();
   }
 
-  publish({ accountId, versionId }: { accountId: string; versionId: string }) {
+  publish(
+    { accountId, versionId }: { accountId: string; versionId: string },
+    session?: ClientSession,
+  ) {
     return this.automationVersionModel
       .findOneAndUpdate(
         this.versionMatch(accountId, versionId),
@@ -99,56 +108,79 @@ export class AutomationVersionRepository {
         },
         {
           new: true,
+          session,
         },
       )
       .exec();
   }
 
-  delete({ accountId, versionId }: { accountId: string; versionId: string }) {
+  delete(
+    { accountId, versionId }: { accountId: string; versionId: string },
+    session?: ClientSession,
+  ) {
     return this.automationVersionModel
-      .findOneAndDelete(this.versionMatch(accountId, versionId))
-      .exec();
-  }
-
-  deleteAll({
-    accountId,
-    automationId,
-  }: {
-    accountId: string;
-    automationId: string;
-  }): Promise<DeleteResult> {
-    return this.automationVersionModel
-      .deleteMany(this.safeMatch(accountId, { automationId }))
-      .exec();
-  }
-
-  updateTrigger({
-    accountId,
-    versionId,
-    trigger,
-  }: {
-    accountId: string;
-    versionId: string;
-    trigger: AutomationTrigger;
-  }) {
-    return this.automationVersionModel
-      .findOneAndUpdate(this.versionMatch(accountId, versionId), {
-        trigger,
+      .findOneAndDelete(this.versionMatch(accountId, versionId), {
+        session,
       })
       .exec();
   }
 
-  createStep({
-    accountId,
-    versionId,
-    step,
-    connection,
-  }: {
-    accountId: string;
-    versionId: string;
-    step: AutomationStep;
-    connection?: AutomationConnection;
-  }) {
+  deleteAll(
+    {
+      accountId,
+      automationId,
+    }: {
+      accountId: string;
+      automationId: string;
+    },
+    session?: ClientSession,
+  ): Promise<DeleteResult> {
+    return this.automationVersionModel
+      .deleteMany(this.safeMatch(accountId, { automationId }), {
+        session,
+      })
+      .exec();
+  }
+
+  updateTrigger(
+    {
+      accountId,
+      versionId,
+      trigger,
+    }: {
+      accountId: string;
+      versionId: string;
+      trigger: AutomationTrigger;
+    },
+    session?: ClientSession,
+  ) {
+    return this.automationVersionModel
+      .findOneAndUpdate(
+        this.versionMatch(accountId, versionId),
+        {
+          trigger,
+        },
+        {
+          session,
+        },
+      )
+      .exec();
+  }
+
+  createStep(
+    {
+      accountId,
+      versionId,
+      step,
+      connection,
+    }: {
+      accountId: string;
+      versionId: string;
+      step: AutomationStep;
+      connection?: AutomationConnection;
+    },
+    session?: ClientSession,
+  ) {
     const pushFields: {
       steps: AutomationStep;
       connections?: AutomationConnection;
@@ -164,40 +196,46 @@ export class AutomationVersionRepository {
       .findOneAndUpdate(
         this.versionMatch(accountId, versionId),
         { $push: pushFields },
-        { new: true },
+        { new: true, session },
       )
       .exec();
   }
 
-  updateStepTask({
-    accountId,
-    versionId,
-    stepId,
-    task,
-  }: {
-    accountId: string;
-    versionId: string;
-    stepId: string;
-    task: AutomationTask;
-  }) {
+  updateStepTask(
+    {
+      accountId,
+      versionId,
+      stepId,
+      task,
+    }: {
+      accountId: string;
+      versionId: string;
+      stepId: string;
+      task: AutomationTask;
+    },
+    session?: ClientSession,
+  ) {
     return this.automationVersionModel
       .findOneAndUpdate(
         this.versionMatch(accountId, versionId, { 'steps.id': stepId }),
         { $set: { 'steps.$.task': task } },
-        { new: true },
+        { new: true, session },
       )
       .exec();
   }
 
-  updateStepsPositions({
-    accountId,
-    versionId,
-    stepPositions,
-  }: {
-    accountId: string;
-    versionId: string;
-    stepPositions: UpdateStepsPositionsDto;
-  }) {
+  updateStepsPositions(
+    {
+      accountId,
+      versionId,
+      stepPositions,
+    }: {
+      accountId: string;
+      versionId: string;
+      stepPositions: UpdateStepsPositionsDto;
+    },
+    session?: ClientSession,
+  ) {
     const updates: Record<string, unknown> = {};
     stepPositions.steps.forEach(({ stepId, position }) => {
       updates[`steps.$[elem${stepId}].position`] = position;
@@ -211,19 +249,23 @@ export class AutomationVersionRepository {
           [`elem${stepId}.id`]: stepId,
         })),
         new: true,
+        session,
       },
     );
   }
 
-  deleteStep({
-    accountId,
-    versionId,
-    stepId,
-  }: {
-    accountId: string;
-    versionId: string;
-    stepId: string;
-  }) {
+  deleteStep(
+    {
+      accountId,
+      versionId,
+      stepId,
+    }: {
+      accountId: string;
+      versionId: string;
+      stepId: string;
+    },
+    session?: ClientSession,
+  ) {
     return this.automationVersionModel
       .findOneAndUpdate(
         this.versionMatch(accountId, versionId, { 'steps.id': stepId }),
@@ -235,40 +277,46 @@ export class AutomationVersionRepository {
             },
           },
         },
-        { new: true },
+        { new: true, session },
       )
       .exec();
   }
 
-  createConnection({
-    accountId,
-    versionId,
-    connection,
-  }: {
-    accountId: string;
-    versionId: string;
-    connection: AutomationConnection;
-  }) {
+  createConnection(
+    {
+      accountId,
+      versionId,
+      connection,
+    }: {
+      accountId: string;
+      versionId: string;
+      connection: AutomationConnection;
+    },
+    session?: ClientSession,
+  ) {
     return this.automationVersionModel.findOneAndUpdate(
       this.versionMatch(accountId, versionId),
       { $push: { connections: connection } },
-      { new: true },
+      { new: true, session },
     );
   }
 
-  deleteConnection({
-    accountId,
-    versionId,
-    connectionId,
-  }: {
-    accountId: string;
-    versionId: string;
-    connectionId: string;
-  }) {
+  deleteConnection(
+    {
+      accountId,
+      versionId,
+      connectionId,
+    }: {
+      accountId: string;
+      versionId: string;
+      connectionId: string;
+    },
+    session?: ClientSession,
+  ) {
     return this.automationVersionModel.findOneAndUpdate(
       this.versionMatch(accountId, versionId),
       { $pull: { connections: { id: connectionId } } },
-      { new: true },
+      { new: true, session },
     );
   }
 }

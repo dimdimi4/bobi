@@ -12,7 +12,7 @@ import { useForm } from '@tanstack/react-form';
 import { createFileRoute } from '@tanstack/react-router';
 import { z } from 'zod';
 
-export const Route = createFileRoute('/create-channel')({
+export const Route = createFileRoute('/channels/add-channel')({
   component: RouteComponent,
 });
 

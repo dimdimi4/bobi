@@ -2,7 +2,7 @@ import { Button, Container, Group, Title } from '@mantine/core';
 import { createFileRoute, Link } from '@tanstack/react-router';
 import { channelsQueryOptions } from '@/data/repositories/channel-repository';
 
-export const Route = createFileRoute('/channels')({
+export const Route = createFileRoute('/channels/')({
   component: RouteComponent,
   loader: ({ context: { queryClient } }) =>
     queryClient.ensureQueryData(channelsQueryOptions),
@@ -19,7 +19,7 @@ function RouteComponent() {
           variant="outline"
           size="xs"
           component={Link}
-          to="/create-channel"
+          to="/channels/add-channel"
         >
           Create Channel
         </Button>

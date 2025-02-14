@@ -11,6 +11,7 @@ import { AutomationTrigger } from './automation-trigger.schema';
 
 @Schema({
   timestamps: true,
+  collection: 'automation-versions',
 })
 @Expose()
 export class AutomationVersion {

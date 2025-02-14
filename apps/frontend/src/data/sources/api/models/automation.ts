@@ -13,12 +13,6 @@
  */
 
 
-// May contain unused imports in some cases
-// @ts-ignore
-import type { AutomationConnection } from './automation-connection';
-// May contain unused imports in some cases
-// @ts-ignore
-import type { AutomationStep } from './automation-step';
 
 /**
  * 
@@ -40,16 +34,22 @@ export interface Automation {
     'name': string;
     /**
      * 
-     * @type {Array<AutomationStep>}
+     * @type {string}
      * @memberof Automation
      */
-    'steps': Array<AutomationStep>;
+    'publishedVersionId'?: string;
     /**
      * 
-     * @type {Array<AutomationConnection>}
+     * @type {string}
      * @memberof Automation
      */
-    'connections': Array<AutomationConnection>;
+    'draftVersionId'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Automation
+     */
+    'status': AutomationStatusEnum;
     /**
      * 
      * @type {string}
@@ -63,4 +63,12 @@ export interface Automation {
      */
     'updatedAt': string;
 }
+
+export const AutomationStatusEnum = {
+    Active: 'ACTIVE',
+    Inactive: 'INACTIVE'
+} as const;
+
+export type AutomationStatusEnum = typeof AutomationStatusEnum[keyof typeof AutomationStatusEnum];
+
 
