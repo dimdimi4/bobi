@@ -12,11 +12,11 @@ import { ApiTags } from '@nestjs/swagger';
 
 import { AutomationsService } from './automations.service';
 
-import { AutomationConnection } from './schemas/automation.schema';
+import { AutomationConnection } from './schemas/automation-connection.schema';
 import { AutomationTask } from './schemas/automation-tasks.schema';
 
 import { PaginationQueryDto } from './dto/pagination.query.dto';
-import { MutateAutomationDto } from './dto/mutate-automation.dto';
+import { MutateAutomationDto } from './dto/create-automation.dto';
 import { BulkUpdateStepPositionsDto } from './dto/bulk-update-step-positions.dto';
 import { CreateStepDto } from './dto/create-step.dto';
 

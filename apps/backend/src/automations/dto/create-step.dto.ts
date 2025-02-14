@@ -1,7 +1,7 @@
 import { IsOptional, ValidateNested } from 'class-validator';
 
-import { AutomationStep } from '../schemas/automation.schema';
-import { AutomationConnection } from '../schemas/automation.schema';
+import { AutomationStep } from '../schemas/automation-step.schema';
+import { AutomationConnection } from '../schemas/automation-connection.schema';
 
 export class CreateStepDto {
   @ValidateNested()

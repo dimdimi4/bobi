@@ -4,7 +4,12 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { AutomationsController } from './automations.controller';
 
 import { Automation, AutomationSchema } from './schemas/automation.schema';
-import { AutomationsRepository } from './automations.repository';
+import {
+  AutomationFlow,
+  AutomationFlowSchema,
+} from './schemas/automation-version';
+
+import { AutomationFlowRepository } from './repositories/automation-flow.repository';
 import { AutomationsService } from './automations.service';
 
 @Module({
@@ -14,9 +19,13 @@ import { AutomationsService } from './automations.service';
         name: Automation.name,
         schema: AutomationSchema,
       },
+      {
+        name: AutomationFlow.name,
+        schema: AutomationFlowSchema,
+      },
     ]),
   ],
   controllers: [AutomationsController],
-  providers: [AutomationsRepository, AutomationsService],
+  providers: [AutomationFlowRepository, AutomationsService],
 })
 export class AutomationsModule {}

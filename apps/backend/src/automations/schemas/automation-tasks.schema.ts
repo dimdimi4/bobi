@@ -1,4 +1,5 @@
 import { Prop as MongooseProp, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Type } from 'class-transformer';
 import { IsArray, IsString, ValidateNested } from 'class-validator';
 
 @Schema({ _id: false })
@@ -29,6 +30,7 @@ export class AutomationTask {
     required: false,
   })
   @ValidateNested()
+  @Type(() => TelegramSendMessageTask)
   telegram_sendMessage?: TelegramSendMessageTask;
 }
 
