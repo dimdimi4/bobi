@@ -9,7 +9,6 @@ export function MainLayout({ children }: PropsWithChildren) {
 
   return (
     <AppShell
-      header={{ height: 60 }}
       navbar={{ width: 250, breakpoint: 'sm', collapsed: { mobile: !opened } }}
       padding="md"
       withBorder={false}
