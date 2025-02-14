@@ -22,6 +22,23 @@ import { AutomationTask } from './schemas/automation-tasks.schema';
 import { BulkUpdateStepPositionsDto } from './dto/bulk-update-step-positions.dto';
 import { AutomationConnection } from './schemas/automation-connection.schema';
 
+// Common interfaces to reduce repetition
+interface BaseAutomationParams {
+  accountId: string;
+  automationId: string;
+}
+
+interface AutomationResponse {
+  automation: Automation;
+  publishedVersion?: AutomationVersion | null;
+  draftVersion?: AutomationVersion | null;
+}
+
+interface AutomationWithVersion {
+  automation: AutomationDocument;
+  draftVersion: AutomationVersionDocument;
+}
+
 @Injectable()
 export class AutomationsService {
   constructor(
@@ -49,17 +66,10 @@ export class AutomationsService {
     return automations.map((m) => this.toAutomationEntity(m));
   }
 
-  private async ensureAutomationExists({
-    accountId,
-    automationId,
-  }: {
-    accountId: string;
-    automationId: string;
-  }): Promise<AutomationDocument> {
-    const automation = await this.automationsRepository.findOne({
-      accountId,
-      automationId,
-    });
+  private async ensureAutomationExists(
+    params: BaseAutomationParams,
+  ): Promise<AutomationDocument> {
+    const automation = await this.automationsRepository.findOne(params);
 
     if (!automation) {
       throw new NotFoundException('Automation not found');
@@ -76,7 +86,7 @@ export class AutomationsService {
     automation: AutomationDocument;
     draftVersion?: AutomationVersionDocument | null;
     publishedVersion?: AutomationVersionDocument | null;
-  }) {
+  }): AutomationResponse {
     return {
       automation: this.toAutomationEntity(automation),
       publishedVersion: publishedVersion
@@ -88,21 +98,14 @@ export class AutomationsService {
     };
   }
 
-  private async fetchAutomationWithDraft({
-    accountId,
-    automationId,
-  }: {
-    accountId: string;
-    automationId: string;
-  }) {
-    const automation = await this.ensureAutomationExists({
-      accountId,
-      automationId,
-    });
+  private async fetchAutomationWithDraft(
+    params: BaseAutomationParams,
+  ): Promise<AutomationWithVersion> {
+    const automation = await this.ensureAutomationExists(params);
 
     if (automation.draftVersionId) {
       const draftVersion = await this.automationVersionRepository.findOne({
-        accountId,
+        accountId: params.accountId,
         versionId: automation.draftVersionId,
       });
 
@@ -124,12 +127,12 @@ export class AutomationsService {
 
     const [updatedAutomation, draftVersion] = await Promise.all([
       this.automationsRepository.setDraftVersion({
-        accountId,
-        automationId,
+        accountId: params.accountId,
+        automationId: params.automationId,
         draftVersion: automation.publishedVersionId,
       }),
       this.automationVersionRepository.clone({
-        accountId,
+        accountId: params.accountId,
         versionId: automation.publishedVersionId,
         newVersionId: newDraftVersionId,
       }),
@@ -157,7 +160,7 @@ export class AutomationsService {
   }: {
     accountId: string;
     createDto: CreateAutomationDto;
-  }) {
+  }): Promise<AutomationResponse> {
     const automationId = uuidv7();
     const versionId = uuidv7();
 
@@ -205,32 +208,19 @@ export class AutomationsService {
     };
   }
 
-  async findOne({
-    accountId,
-    automationId,
-  }: {
-    accountId: string;
-    automationId: string;
-  }) {
-    const automation = await this.ensureAutomationExists({
-      accountId,
-      automationId,
-    });
-
-    if (!automation) {
-      throw new NotFoundException('Automation not found');
-    }
+  async findOne(params: BaseAutomationParams): Promise<AutomationResponse> {
+    const automation = await this.ensureAutomationExists(params);
 
     const [publishedVersion, draftVersion] = await Promise.all([
       automation.publishedVersionId
         ? this.automationVersionRepository.findOne({
-            accountId,
+            accountId: params.accountId,
             versionId: automation.publishedVersionId,
           })
         : null,
       automation.draftVersionId
         ? this.automationVersionRepository.findOne({
-            accountId,
+            accountId: params.accountId,
             versionId: automation.draftVersionId,
           })
         : null,
@@ -247,11 +237,9 @@ export class AutomationsService {
     accountId,
     automationId,
     updateDto,
-  }: {
-    accountId: string;
-    automationId: string;
+  }: BaseAutomationParams & {
     updateDto: UpdateAutomationDto;
-  }) {
+  }): Promise<AutomationResponse> {
     const automation = await this.automationsRepository.setName({
       accountId,
       automationId,
@@ -267,17 +255,10 @@ export class AutomationsService {
     });
   }
 
-  async discardDraft({
-    accountId,
-    automationId,
-  }: {
-    accountId: string;
-    automationId: string;
-  }) {
-    const automation = await this.ensureAutomationExists({
-      accountId,
-      automationId,
-    });
+  async discardDraft(
+    params: BaseAutomationParams,
+  ): Promise<AutomationResponse> {
+    const automation = await this.ensureAutomationExists(params);
 
     if (!automation.draftVersionId) {
       throw new BadRequestException('No draft version to discard');
@@ -285,11 +266,11 @@ export class AutomationsService {
 
     const [updatedAutomation] = await Promise.all([
       this.automationsRepository.unsetDraftVersion({
-        accountId,
-        automationId,
+        accountId: params.accountId,
+        automationId: params.automationId,
       }),
       this.automationVersionRepository.delete({
-        accountId,
+        accountId: params.accountId,
         versionId: automation.draftVersionId,
       }),
     ]);
@@ -303,17 +284,10 @@ export class AutomationsService {
     });
   }
 
-  async publishDraft({
-    accountId,
-    automationId,
-  }: {
-    accountId: string;
-    automationId: string;
-  }) {
-    const automation = await this.ensureAutomationExists({
-      accountId,
-      automationId,
-    });
+  async publishDraft(
+    params: BaseAutomationParams,
+  ): Promise<AutomationResponse> {
+    const automation = await this.ensureAutomationExists(params);
 
     if (!automation.draftVersionId) {
       throw new BadRequestException('No draft version to publish');
@@ -321,12 +295,12 @@ export class AutomationsService {
 
     const [updatedAutomation, publishedVersion] = await Promise.all([
       this.automationsRepository.setPublishedVersion({
-        accountId,
-        automationId,
+        accountId: params.accountId,
+        automationId: params.automationId,
         publishedVersionId: automation.draftVersionId,
       }),
       this.automationVersionRepository.publish({
-        accountId,
+        accountId: params.accountId,
         versionId: automation.draftVersionId,
       }),
     ]);
@@ -341,16 +315,13 @@ export class AutomationsService {
     });
   }
 
-  async delete({
-    accountId,
-    automationId,
-  }: {
-    accountId: string;
-    automationId: string;
-  }) {
+  async delete(params: BaseAutomationParams): Promise<void> {
     const [automation] = await Promise.all([
-      this.automationsRepository.delete({ accountId, automationId }),
-      this.automationVersionRepository.deleteAll({ accountId, automationId }),
+      this.automationsRepository.delete(params),
+      this.automationVersionRepository.deleteAll({
+        accountId: params.accountId,
+        automationId: params.automationId,
+      }),
     ]);
 
     if (!automation) {
@@ -364,11 +335,9 @@ export class AutomationsService {
     accountId,
     automationId,
     createStepDto,
-  }: {
-    accountId: string;
-    automationId: string;
+  }: BaseAutomationParams & {
     createStepDto: CreateStepDto;
-  }) {
+  }): Promise<AutomationResponse> {
     const { automation, draftVersion } = await this.fetchAutomationWithDraft({
       accountId,
       automationId,
@@ -396,12 +365,10 @@ export class AutomationsService {
     automationId,
     stepId,
     task,
-  }: {
-    accountId: string;
-    automationId: string;
+  }: BaseAutomationParams & {
     stepId: string;
     task: AutomationTask;
-  }) {
+  }): Promise<AutomationResponse> {
     const { automation, draftVersion } = await this.fetchAutomationWithDraft({
       accountId,
       automationId,
@@ -429,11 +396,9 @@ export class AutomationsService {
     accountId,
     automationId,
     bulkUpdateStepPositionsDto,
-  }: {
-    accountId: string;
-    automationId: string;
+  }: BaseAutomationParams & {
     bulkUpdateStepPositionsDto: BulkUpdateStepPositionsDto;
-  }) {
+  }): Promise<AutomationResponse> {
     const { automation, draftVersion } = await this.fetchAutomationWithDraft({
       accountId,
       automationId,
@@ -460,11 +425,9 @@ export class AutomationsService {
     accountId,
     automationId,
     stepId,
-  }: {
-    accountId: string;
-    automationId: string;
+  }: BaseAutomationParams & {
     stepId: string;
-  }) {
+  }): Promise<AutomationResponse> {
     const { automation, draftVersion } = await this.fetchAutomationWithDraft({
       accountId,
       automationId,
@@ -491,11 +454,9 @@ export class AutomationsService {
     accountId,
     automationId,
     connection,
-  }: {
-    accountId: string;
-    automationId: string;
+  }: BaseAutomationParams & {
     connection: AutomationConnection;
-  }) {
+  }): Promise<AutomationResponse> {
     const { automation, draftVersion } = await this.fetchAutomationWithDraft({
       accountId,
       automationId,
@@ -522,11 +483,9 @@ export class AutomationsService {
     accountId,
     automationId,
     connectionId,
-  }: {
-    accountId: string;
-    automationId: string;
+  }: BaseAutomationParams & {
     connectionId: string;
-  }) {
+  }): Promise<AutomationResponse> {
     const { automation, draftVersion } = await this.fetchAutomationWithDraft({
       accountId,
       automationId,
