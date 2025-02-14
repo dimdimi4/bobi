@@ -21,5 +21,16 @@ function RouteComponent() {
     });
   };
 
-  return <AutomationEditor onExit={handleClose} automation={data.automation} />;
+  // TODO: move this logic to a backend
+  if (!data.draftVersion) {
+    return <div>No draft version found</div>;
+  }
+
+  return (
+    <AutomationEditor
+      onExit={handleClose}
+      automation={data.automation}
+      version={data.draftVersion}
+    />
+  );
 }
