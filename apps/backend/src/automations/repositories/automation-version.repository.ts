@@ -12,7 +12,7 @@ import { AutomationTask } from '../schemas/automation-tasks.schema';
 import { AutomationTrigger } from '../schemas/automation-trigger.schema';
 
 import { CreateAutomationDto } from '../dto/create-automation.dto';
-import { BulkUpdateStepPositionsDto } from '../dto/bulk-update-step-positions.dto';
+import { UpdateStepsPositionsDto } from '../dto/bulk-update-step-positions.dto';
 
 @Injectable()
 export class AutomationVersionRepository {
@@ -189,14 +189,14 @@ export class AutomationVersionRepository {
       .exec();
   }
 
-  bulkUpdateStepsPositions({
+  updateStepsPositions({
     accountId,
     versionId,
     stepPositions,
   }: {
     accountId: string;
     versionId: string;
-    stepPositions: BulkUpdateStepPositionsDto;
+    stepPositions: UpdateStepsPositionsDto;
   }) {
     const updates: Record<string, unknown> = {};
     stepPositions.steps.forEach(({ stepId, position }) => {

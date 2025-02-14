@@ -2,7 +2,7 @@ import { IsString, ValidateNested } from 'class-validator';
 
 import { AutomationStepPosition } from '../schemas/automation-step.schema';
 
-export class UpdateStepPositionsDto {
+export class StepPositionDto {
   @IsString()
   stepId: string;
 
@@ -10,7 +10,7 @@ export class UpdateStepPositionsDto {
   position: AutomationStepPosition;
 }
 
-export class BulkUpdateStepPositionsDto {
+export class UpdateStepsPositionsDto {
   @ValidateNested()
-  steps: UpdateStepPositionsDto[];
+  steps: StepPositionDto[];
 }

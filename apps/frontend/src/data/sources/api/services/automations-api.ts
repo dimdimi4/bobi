@@ -30,7 +30,7 @@ import type { AutomationTask } from '../models';
 // @ts-ignore
 import type { AutomationsPaginatedDto } from '../models';
 // @ts-ignore
-import type { BulkUpdateStepPositionsDto } from '../models';
+import type { UpdateStepsPositionsDto } from '../models';
 // @ts-ignore
 import type { CreateStepDto } from '../models';
 // @ts-ignore
@@ -44,15 +44,15 @@ export const AutomationsApiAxiosParamCreator = function (configuration?: Configu
         /**
          *
          * @param {string} id
-         * @param {BulkUpdateStepPositionsDto} bulkUpdateStepsPositionsDto
+         * @param {UpdateStepsPositionsDto} updateStepsPositionsDto
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        automationsBulkUpdateStepPositionsV1: async (id: string, bulkUpdateStepsPositionsDto: BulkUpdateStepPositionsDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        automationsUpdateStepsPositionsV1: async (id: string, updateStepsPositionsDto: UpdateStepsPositionsDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
-            assertParamExists('automationsBulkUpdateStepPositionsV1', 'id', id)
-            // verify required parameter 'bulkUpdateStepsPositionsDto' is not null or undefined
-            assertParamExists('automationsBulkUpdateStepPositionsV1', 'bulkUpdateStepsPositionsDto', bulkUpdateStepsPositionsDto)
+            assertParamExists('automationsUpdateStepsPositionsV1', 'id', id)
+            // verify required parameter 'updateStepsPositionsDto' is not null or undefined
+            assertParamExists('automationsUpdateStepsPositionsV1', 'updateStepsPositionsDto', updateStepsPositionsDto)
             const localVarPath = `/api/v1/automations/{id}/bulk-update-step-positions`
                 .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -73,7 +73,7 @@ export const AutomationsApiAxiosParamCreator = function (configuration?: Configu
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(bulkUpdateStepsPositionsDto, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(updateStepsPositionsDto, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -467,14 +467,14 @@ export const AutomationsApiFp = function(configuration?: Configuration) {
         /**
          *
          * @param {string} id
-         * @param {BulkUpdateStepPositionsDto} bulkUpdateStepsPositionsDto
+         * @param {UpdateStepsPositionsDto} updateStepsPositionsDto
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async automationsBulkUpdateStepPositionsV1(id: string, bulkUpdateStepsPositionsDto: BulkUpdateStepPositionsDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Automation>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.automationsBulkUpdateStepPositionsV1(id, bulkUpdateStepsPositionsDto, options);
+        async automationsUpdateStepsPositionsV1(id: string, updateStepsPositionsDto: UpdateStepsPositionsDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Automation>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.automationsUpdateStepsPositionsV1(id, updateStepsPositionsDto, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['AutomationsApi.automationsBulkUpdateStepPositionsV1']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['AutomationsApi.automationsUpdateStepsPositionsV1']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -618,12 +618,12 @@ export const AutomationsApiFactory = function (configuration?: Configuration, ba
         /**
          *
          * @param {string} id
-         * @param {BulkUpdateStepPositionsDto} bulkUpdateStepsPositionsDto
+         * @param {UpdateStepsPositionsDto} updateStepsPositionsDto
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        automationsBulkUpdateStepPositionsV1(id: string, bulkUpdateStepsPositionsDto: BulkUpdateStepPositionsDto, options?: RawAxiosRequestConfig): AxiosPromise<Automation> {
-            return localVarFp.automationsBulkUpdateStepPositionsV1(id, bulkUpdateStepsPositionsDto, options).then((request) => request(axios, basePath));
+        automationsUpdateStepsPositionsV1(id: string, updateStepsPositionsDto: UpdateStepsPositionsDto, options?: RawAxiosRequestConfig): AxiosPromise<Automation> {
+            return localVarFp.automationsUpdateStepsPositionsV1(id, updateStepsPositionsDto, options).then((request) => request(axios, basePath));
         },
         /**
          *
@@ -736,13 +736,13 @@ export class AutomationsApi extends BaseAPI {
     /**
      *
      * @param {string} id
-     * @param {BulkUpdateStepPositionsDto} bulkUpdateStepsPositionsDto
+     * @param {UpdateStepsPositionsDto} updateStepsPositionsDto
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof AutomationsApi
      */
-    public automationsBulkUpdateStepPositionsV1(id: string, bulkUpdateStepsPositionsDto: BulkUpdateStepPositionsDto, options?: RawAxiosRequestConfig) {
-        return AutomationsApiFp(this.configuration).automationsBulkUpdateStepPositionsV1(id, bulkUpdateStepsPositionsDto, options).then((request) => request(this.axios, this.basePath));
+    public automationsUpdateStepsPositionsV1(id: string, updateStepsPositionsDto: UpdateStepsPositionsDto, options?: RawAxiosRequestConfig) {
+        return AutomationsApiFp(this.configuration).automationsUpdateStepsPositionsV1(id, updateStepsPositionsDto, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

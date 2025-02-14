@@ -21,7 +21,7 @@ import { AutomationsPaginatedDto } from './dto/automations-paginated.dto';
 import { UpdateAutomationDto } from './dto/update-automation.dto';
 import { CreateStepDto } from './dto/create-step.dto';
 import { AutomationTask } from './schemas/automation-tasks.schema';
-import { BulkUpdateStepPositionsDto } from './dto/bulk-update-step-positions.dto';
+import { UpdateStepsPositionsDto } from './dto/bulk-update-step-positions.dto';
 import { AutomationConnection } from './schemas/automation-connection.schema';
 import { AutomationResponseDto } from './dto/automation-response.dto';
 
@@ -389,12 +389,12 @@ export class AutomationsService {
     });
   }
 
-  async bulkUpdateStepsPositions({
+  async updateStepsPositions({
     accountId,
     automationId,
-    bulkUpdateStepsPositionsDto,
+    stepPositions,
   }: BaseAutomationParams & {
-    bulkUpdateStepsPositionsDto: BulkUpdateStepPositionsDto;
+    stepPositions: UpdateStepsPositionsDto;
   }): Promise<AutomationResponseDto> {
     const { automation, draftVersion } = await this.fetchAutomationWithDraft({
       accountId,
@@ -402,10 +402,10 @@ export class AutomationsService {
     });
 
     const updatedDraftVersion =
-      await this.automationVersionRepository.bulkUpdateStepsPositions({
+      await this.automationVersionRepository.updateStepsPositions({
         accountId,
         versionId: draftVersion._id,
-        stepPositions: bulkUpdateStepsPositionsDto,
+        stepPositions,
       });
 
     if (!updatedDraftVersion) {

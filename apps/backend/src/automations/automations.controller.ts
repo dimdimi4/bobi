@@ -17,7 +17,7 @@ import { AutomationTask } from './schemas/automation-tasks.schema';
 
 import { PaginationQueryDto } from './dto/pagination.query.dto';
 import { CreateAutomationDto } from './dto/create-automation.dto';
-import { BulkUpdateStepPositionsDto } from './dto/bulk-update-step-positions.dto';
+import { UpdateStepsPositionsDto } from './dto/bulk-update-step-positions.dto';
 import { CreateStepDto } from './dto/create-step.dto';
 import { UpdateAutomationDto } from './dto/update-automation.dto';
 import { AutomationResponseDto } from './dto/automation-response.dto';
@@ -78,15 +78,15 @@ export class AutomationsController {
     });
   }
 
-  @Patch(':id/bulk-update-steps-positions')
-  bulkUpdateStepsPositions(
+  @Patch(':id/update-steps-positions')
+  updateStepsPositions(
     @Param('id') automationId: string,
-    @Body() bulkUpdateStepsPositionsDto: BulkUpdateStepPositionsDto,
+    @Body() stepPositions: UpdateStepsPositionsDto,
   ): Promise<AutomationResponseDto> {
-    return this.automationsService.bulkUpdateStepsPositions({
+    return this.automationsService.updateStepsPositions({
       accountId,
       automationId,
-      bulkUpdateStepsPositionsDto,
+      stepPositions,
     });
   }
 
