@@ -20,6 +20,7 @@ import { ActionNode } from './nodes/ActionNode';
 import { ConditionNode } from './nodes/ConditionNode';
 import { Message2Node, MessageNode } from './nodes/MessageNode';
 import { useAutomationEditor } from './hooks/use-automation-editor';
+import { useAddStep } from './hooks/use-add-step';
 
 const nodeTypes = {
   trigger: TriggerNode,
@@ -33,6 +34,7 @@ const nodeTypes = {
 export function AutomationEditor(props: AutomationEditorProps) {
   return (
     <StoreProvider
+      automation={props.automation}
       steps={props.version.steps}
       connections={props.version.connections}
     >
@@ -45,15 +47,18 @@ export function AutomationEditor(props: AutomationEditorProps) {
 
 function AutomationEditorInner({ onExit }: AutomationEditorProps) {
   const {
+    reactFlowWrapper,
     nodes,
     edges,
     selectedNode,
-    onNodesChange,
-    onEdgesChange,
-    onConnect,
     handleNodeSelect,
-    reactFlowWrapper,
+    handlePaneClick,
+    handleNodeChanges,
+    handleEdgeChanges,
+    handleConnect,
   } = useAutomationEditor();
+
+  const { addMessageStep } = useAddStep();
 
   return (
     <EditorContainer>
@@ -62,14 +67,12 @@ function AutomationEditorInner({ onExit }: AutomationEditorProps) {
           nodes={nodes}
           edges={edges}
           nodeTypes={nodeTypes}
-          onNodesChange={onNodesChange}
-          onEdgesChange={onEdgesChange}
-          onNodeDragStop={(_, node, nodes) => {
-            console.log('onNodeDragStop', node, nodes);
-          }}
-          onConnect={onConnect}
+          onNodesChange={handleNodeChanges}
+          onEdgesChange={handleEdgeChanges}
+          onNodeDragStop={(_, node, nodes) => {}}
+          onConnect={handleConnect}
           onNodeClick={(_, node) => handleNodeSelect(node)}
-          onPaneClick={() => handleNodeSelect()}
+          onPaneClick={() => handlePaneClick()}
           selectNodesOnDrag={false}
           snapToGrid
         >
@@ -90,6 +93,9 @@ function AutomationEditorInner({ onExit }: AutomationEditorProps) {
                 </Badge>
               </Group>
               <Group justify="flex-end" gap="xs">
+                <Button variant="default" size="xs" onClick={addMessageStep}>
+                  Add message step
+                </Button>
                 <Button variant="default" size="xs" onClick={onExit}>
                   Discard Changes
                 </Button>

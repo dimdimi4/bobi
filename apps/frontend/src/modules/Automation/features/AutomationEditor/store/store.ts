@@ -7,14 +7,15 @@ import {
 } from '@xyflow/react';
 
 import {
+  Automation,
   AutomationConnection,
   AutomationStep,
   AutomationTask,
 } from '@/data/sources/api';
 
-import { EditorNode, EditorState } from './types';
+import { EditorNode, EditorState, EditorNodeTypes } from '../types';
 
-function taskToType(task: AutomationTask): string {
+function taskToType(task: AutomationTask): EditorNodeTypes {
   if (task.trigger_receivedMessage) {
     return 'trigger';
   }
@@ -48,6 +49,7 @@ function mapConnectionsToEdges(connections: AutomationConnection[]): Edge[] {
 export type EditorStore = ReturnType<typeof createStore>;
 
 export function createStore(
+  automation: Automation,
   steps: AutomationStep[],
   connections: AutomationConnection[]
 ) {
@@ -55,9 +57,15 @@ export function createStore(
   const edges = mapConnectionsToEdges(connections);
 
   return create<EditorState>((set, get) => ({
+    automation,
     nodes: nodes,
     edges,
     selectedNode: null,
+    setSelectedNode: (node) => {
+      set({
+        selectedNode: node,
+      });
+    },
     onNodesChange: (changes) => {
       set({
         nodes: applyNodeChanges(changes, get().nodes),
@@ -71,11 +79,6 @@ export function createStore(
     onConnect: (connection) => {
       set({
         edges: addEdge(connection, get().edges),
-      });
-    },
-    onNodeSelect: (node) => {
-      set({
-        selectedNode: node,
       });
     },
     setNodes: (nodes) => {

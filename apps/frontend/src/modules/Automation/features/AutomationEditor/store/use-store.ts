@@ -2,7 +2,7 @@
 import { useContext } from 'react';
 import { useStore } from 'zustand';
 
-import { EditorState } from './types';
+import { EditorState } from '../types';
 import { EditorStoreContext } from './context';
 
 export function useEditorStore<T>(selector: (state: EditorState) => T): T {
