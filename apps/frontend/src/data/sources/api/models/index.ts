@@ -17,6 +17,7 @@ export * from './delete-steps-dto';
 export * from './paginated-channels-dto';
 export * from './paginated-dto';
 export * from './step-position-dto';
+export * from './telegram-quick-reply-button';
 export * from './telegram-send-message-task';
 export * from './trigger-received-message-task';
 export * from './update-automation-dto';

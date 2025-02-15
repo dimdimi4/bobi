@@ -13,6 +13,9 @@
  */
 
 
+// May contain unused imports in some cases
+// @ts-ignore
+import type { TelegramQuickReplyButton } from './telegram-quick-reply-button';
 
 /**
  * 
@@ -28,9 +31,9 @@ export interface TelegramSendMessageTask {
     'message': string;
     /**
      * 
-     * @type {Array<string>}
+     * @type {Array<TelegramQuickReplyButton>}
      * @memberof TelegramSendMessageTask
      */
-    'quickReplies': Array<string>;
+    'quickReplyButtons': Array<TelegramQuickReplyButton>;
 }
 

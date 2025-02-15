@@ -2,7 +2,7 @@ import { Prop as MongooseProp, Schema } from '@nestjs/mongoose';
 import { IsString, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
 
-import { AutomationTask } from './automation-tasks.schema';
+import { AutomationTask } from './automation-tasks/automation-task.schema';
 import { AutomationPosition } from './automation-position.schema';
 
 @Schema({ _id: false })

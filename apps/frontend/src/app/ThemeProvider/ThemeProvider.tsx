@@ -1,9 +1,11 @@
 import { PropsWithChildren } from 'react';
 import { MantineProvider } from '@mantine/core';
 
+import '@xyflow/react/dist/style.css';
+
 import '@mantine/core/styles.css';
 import '@mantine/tiptap/styles.css';
-import '@xyflow/react/dist/style.css';
+import '@mantine/dropzone/styles.css';
 
 import { theme } from './theme';
 

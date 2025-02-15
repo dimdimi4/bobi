@@ -24,11 +24,10 @@
 }
 
 .side-panel {
-  background-color: var(--mantine-color-white);
+  background-color: var(--mantine-color-gray-1);
   border-left: 1px solid var(--mantine-color-gray-2);
   box-shadow: var(--mantine-shadow-xl);
   z-index: 99;
-
   overflow: hidden;
   width: 0;
   transition: width 0.15s ease-in-out;
@@ -40,6 +39,7 @@
 
 
 .side-panel__content {
+  padding: var(--mantine-spacing-md);
   width: var(--sidebar-width);
 }
 

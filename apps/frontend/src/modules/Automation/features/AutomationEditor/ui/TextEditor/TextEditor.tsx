@@ -42,10 +42,3 @@ export function TextEditor({
     </RichTextEditor>
   );
 }
-
-// messageEntityBold => <b>bold</b>, <strong>bold</strong>, **bold**
-// messageEntityItalic => <i>italic</i>, <em>italic</em> *italic*
-// messageEntityCode » => <code>code</code>, `code`
-// messageEntityStrike => <s>strike</s>, <strike>strike</strike>, <del>strike</del>, ~~strike~~
-// messageEntityUnderline => <u>underline</u>
-// messageEntityPre » => <pre language="c++">code</pre>,

@@ -249,9 +249,14 @@ export interface components {
             x: number;
             y: number;
         };
+        TelegramQuickReplyButton: {
+            id: string;
+            text: string;
+            url?: string;
+        };
         TelegramSendMessageTask: {
             message: string;
-            quickReplies: string[];
+            quickReplyButtons: components["schemas"]["TelegramQuickReplyButton"][];
         };
         AutomationTask: {
             trigger_receivedMessage?: components["schemas"]["TriggerReceivedMessageTask"];

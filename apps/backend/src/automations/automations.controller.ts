@@ -13,7 +13,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { AutomationsService } from './automations.service';
 
 import { AutomationConnection } from './schemas/automation-connection.schema';
-import { AutomationTask } from './schemas/automation-tasks.schema';
+import { AutomationTask } from './schemas/automation-tasks/automation-task.schema';
 
 import { PaginationQueryDto } from './dto/pagination.query.dto';
 import { CreateAutomationDto } from './dto/create-automation.dto';

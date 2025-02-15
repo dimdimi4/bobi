@@ -8,7 +8,7 @@ import {
 } from '../schemas/automation-version.schema';
 import { AutomationStep } from '../schemas/automation-step.schema';
 import { AutomationConnection } from '../schemas/automation-connection.schema';
-import { AutomationTask } from '../schemas/automation-tasks.schema';
+import { AutomationTask } from '../schemas/automation-tasks/automation-task.schema';
 
 import { UpdateStepsPositionsDto } from '../dto/bulk-update-step-positions.dto';
 

@@ -909,22 +909,40 @@
           "y"
         ]
       },
+      "TelegramQuickReplyButton": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "text": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "text"
+        ]
+      },
       "TelegramSendMessageTask": {
         "type": "object",
         "properties": {
           "message": {
             "type": "string"
           },
-          "quickReplies": {
+          "quickReplyButtons": {
             "type": "array",
             "items": {
-              "type": "string"
+              "$ref": "#/components/schemas/TelegramQuickReplyButton"
             }
           }
         },
         "required": [
           "message",
-          "quickReplies"
+          "quickReplyButtons"
         ]
       },
       "AutomationTask": {

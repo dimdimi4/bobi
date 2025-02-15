@@ -14,7 +14,7 @@ import { AutomationVersionRepository } from './repositories/automation-version.r
 import { AutomationDocument } from './schemas/automation.schema';
 import { AutomationVersionDocument } from './schemas/automation-version.schema';
 
-import { AutomationTask } from './schemas/automation-tasks.schema';
+import { AutomationTask } from './schemas/automation-tasks/automation-task.schema';
 import { AutomationConnection } from './schemas/automation-connection.schema';
 import { AutomationStep } from './schemas/automation-step.schema';
 
