@@ -52,10 +52,6 @@ export class Automation {
 
   createdAt: Date;
   updatedAt: Date;
-
-  @ApiHideProperty()
-  @Exclude()
-  __v: number;
 }
 
 export type AutomationDocument = HydratedDocument<Automation>;

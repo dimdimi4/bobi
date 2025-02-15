@@ -67,10 +67,6 @@ export class AutomationVersion {
 
   createdAt: Date;
   updatedAt: Date;
-
-  @ApiHideProperty()
-  @Exclude()
-  __v: number;
 }
 
 export type AutomationVersionDocument = HydratedDocument<AutomationVersion>;

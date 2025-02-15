@@ -20,8 +20,10 @@ import { CreateAutomationDto } from './dto/create-automation.dto';
 import { UpdateStepsPositionsDto } from './dto/bulk-update-step-positions.dto';
 import { CreateStepDto } from './dto/create-step.dto';
 import { UpdateAutomationDto } from './dto/update-automation.dto';
-import { AutomationResponseDto } from './dto/automation-response.dto';
 import { AutomationsPaginatedDto } from './dto/automations-paginated.dto';
+import { AutomationDto } from './dto/automation.dto';
+import { AutomationOverviewDto } from './dto/automation-overview.dto';
+import { AutomationBaseDto } from './dto/automation-base.dto';
 
 const accountId = '666666666666666666666666';
 
@@ -31,29 +33,40 @@ export class AutomationsController {
   constructor(private readonly automationsService: AutomationsService) {}
 
   @Post()
-  create(
-    @Body() createDto: CreateAutomationDto,
-  ): Promise<AutomationResponseDto> {
+  create(@Body() createDto: CreateAutomationDto): Promise<AutomationDto> {
     return this.automationsService.create({ accountId, createDto });
   }
 
   @Get()
-  findPaginated(
+  listPaginated(
     @Query() query: PaginationQueryDto,
   ): Promise<AutomationsPaginatedDto> {
     return this.automationsService.listPaginated({ accountId, query });
   }
 
   @Get(':id')
-  findOne(@Param('id') automationId: string): Promise<AutomationResponseDto> {
-    return this.automationsService.findOne({ accountId, automationId });
+  findOneForUpdate(@Param('id') automationId: string): Promise<AutomationDto> {
+    return this.automationsService.findOneForUpdate({
+      accountId,
+      automationId,
+    });
+  }
+
+  @Get(':id/overview')
+  findOneOverview(
+    @Param('id') automationId: string,
+  ): Promise<AutomationOverviewDto> {
+    return this.automationsService.findOneOverview({
+      accountId,
+      automationId,
+    });
   }
 
   @Patch(':id')
   update(
     @Param('id') automationId: string,
     @Body() updateDto: UpdateAutomationDto,
-  ): Promise<AutomationResponseDto> {
+  ): Promise<AutomationBaseDto> {
     return this.automationsService.update({
       accountId,
       automationId,
@@ -70,7 +83,7 @@ export class AutomationsController {
   createStep(
     @Param('id') automationId: string,
     @Body() createStepDto: CreateStepDto,
-  ): Promise<AutomationResponseDto> {
+  ): Promise<AutomationDto> {
     return this.automationsService.createStep({
       accountId,
       automationId,
@@ -82,7 +95,7 @@ export class AutomationsController {
   updateStepsPositions(
     @Param('id') automationId: string,
     @Body() stepPositions: UpdateStepsPositionsDto,
-  ): Promise<AutomationResponseDto> {
+  ): Promise<AutomationDto> {
     return this.automationsService.updateStepsPositions({
       accountId,
       automationId,
@@ -95,7 +108,7 @@ export class AutomationsController {
     @Param('id') automationId: string,
     @Param('stepId') stepId: string,
     @Body() task: AutomationTask,
-  ): Promise<AutomationResponseDto> {
+  ): Promise<AutomationDto> {
     return this.automationsService.updateStepTask({
       accountId,
       automationId,
@@ -108,7 +121,7 @@ export class AutomationsController {
   deleteStep(
     @Param('id') automationId: string,
     @Param('stepId') stepId: string,
-  ): Promise<AutomationResponseDto> {
+  ): Promise<AutomationDto> {
     return this.automationsService.deleteStep({
       accountId,
       automationId,
@@ -120,7 +133,7 @@ export class AutomationsController {
   createConnection(
     @Param('id') automationId: string,
     @Body() connection: AutomationConnection,
-  ): Promise<AutomationResponseDto> {
+  ): Promise<AutomationDto> {
     return this.automationsService.createConnection({
       accountId,
       automationId,
@@ -132,7 +145,7 @@ export class AutomationsController {
   deleteConnection(
     @Param('id') automationId: string,
     @Param('connectionId') connectionId: string,
-  ): Promise<AutomationResponseDto> {
+  ): Promise<AutomationDto> {
     return this.automationsService.deleteConnection({
       accountId,
       automationId,
