@@ -1,3 +1,4 @@
+import { Type } from 'class-transformer';
 import { AutomationStatus } from '../schemas/automation.schema';
 import { Automation } from '../schemas/automation.schema';
 
@@ -7,6 +8,10 @@ export class AutomationBaseDto
   id: string;
   name: string;
   status: AutomationStatus;
+
+  @Type(() => Date)
   createdAt: Date;
+
+  @Type(() => Date)
   updatedAt: Date;
 }

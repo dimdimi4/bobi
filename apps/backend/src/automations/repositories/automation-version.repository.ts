@@ -1,5 +1,5 @@
 import { ClientSession, DeleteResult, FilterQuery, Model } from 'mongoose';
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 
 import {
@@ -14,6 +14,8 @@ import { UpdateStepsPositionsDto } from '../dto/bulk-update-step-positions.dto';
 
 @Injectable()
 export class AutomationVersionRepository {
+  private readonly logger = new Logger(AutomationVersionRepository.name);
+
   constructor(
     @InjectModel(AutomationVersion.name)
     private readonly automationVersionModel: Model<AutomationVersionDocument>,
@@ -169,6 +171,11 @@ export class AutomationVersionRepository {
     if (connection) {
       pushFields.connections = connection;
     }
+
+    this.logger.log(
+      `Creating step ${step.id} in version ${versionId}`,
+      pushFields,
+    );
 
     return this.automationVersionModel
       .findOneAndUpdate(

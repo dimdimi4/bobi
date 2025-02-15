@@ -3,6 +3,7 @@ import { AutomationStep } from '../schemas/automation-step.schema';
 import { AutomationConnection } from '../schemas/automation-connection.schema';
 import { AutomationBaseDto } from './automation-base.dto';
 import { PickType } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
 
 export class AutomationVersionOverviewDto
   implements
@@ -12,10 +13,20 @@ export class AutomationVersionOverviewDto
     >
 {
   id: string;
+
+  @Type(() => Date)
   publishedAt?: Date;
+
+  @Type(() => Date)
   createdAt: Date;
+
+  @Type(() => Date)
   updatedAt: Date;
+
+  @Type(() => AutomationStep)
   steps: AutomationStep[];
+
+  @Type(() => AutomationConnection)
   connections: AutomationConnection[];
 }
 
@@ -26,6 +37,9 @@ export class AutomationOverviewDto extends PickType(AutomationBaseDto, [
   'createdAt',
   'updatedAt',
 ] as const) {
+  @Type(() => AutomationVersionOverviewDto)
   publishedVersion?: AutomationVersionOverviewDto;
+
+  @Type(() => AutomationVersionOverviewDto)
   draftVersion?: AutomationVersionOverviewDto;
 }
