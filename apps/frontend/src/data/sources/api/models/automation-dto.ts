@@ -19,48 +19,71 @@ import type { AutomationConnection } from './automation-connection';
 // May contain unused imports in some cases
 // @ts-ignore
 import type { AutomationStep } from './automation-step';
+// May contain unused imports in some cases
+// @ts-ignore
+import type { AutomationVersionDto } from './automation-version-dto';
 
 /**
  * 
  * @export
- * @interface AutomationVersion
+ * @interface AutomationDto
  */
-export interface AutomationVersion {
-    /**
-     * 
-     * @type {string}
-     * @memberof AutomationVersion
-     */
-    'id': string;
+export interface AutomationDto {
     /**
      * 
      * @type {Array<AutomationStep>}
-     * @memberof AutomationVersion
+     * @memberof AutomationDto
      */
     'steps': Array<AutomationStep>;
     /**
      * 
      * @type {Array<AutomationConnection>}
-     * @memberof AutomationVersion
+     * @memberof AutomationDto
      */
     'connections': Array<AutomationConnection>;
     /**
      * 
-     * @type {string}
-     * @memberof AutomationVersion
+     * @type {AutomationVersionDto}
+     * @memberof AutomationDto
      */
-    'publishedAt'?: string;
+    'version': AutomationVersionDto;
     /**
      * 
      * @type {string}
-     * @memberof AutomationVersion
+     * @memberof AutomationDto
+     */
+    'id': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof AutomationDto
+     */
+    'name': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof AutomationDto
+     */
+    'status': AutomationDtoStatusEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof AutomationDto
      */
     'createdAt': string;
     /**
      * 
      * @type {string}
-     * @memberof AutomationVersion
+     * @memberof AutomationDto
      */
     'updatedAt': string;
 }
+
+export const AutomationDtoStatusEnum = {
+    Active: 'ACTIVE',
+    Inactive: 'INACTIVE'
+} as const;
+
+export type AutomationDtoStatusEnum = typeof AutomationDtoStatusEnum[keyof typeof AutomationDtoStatusEnum];
+
 

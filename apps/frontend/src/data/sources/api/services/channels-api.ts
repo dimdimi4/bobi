@@ -309,57 +309,139 @@ export const ChannelsApiFactory = function (configuration?: Configuration, baseP
         /**
          * 
          * @summary Create a new channel
-         * @param {CreateChannelDto} createChannelDto 
+         * @param {ChannelsApiChannelsCreateV1Request} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        channelsCreateV1(createChannelDto: CreateChannelDto, options?: RawAxiosRequestConfig): AxiosPromise<ChannelDto> {
-            return localVarFp.channelsCreateV1(createChannelDto, options).then((request) => request(axios, basePath));
+        channelsCreateV1(requestParameters: ChannelsApiChannelsCreateV1Request, options?: RawAxiosRequestConfig): AxiosPromise<ChannelDto> {
+            return localVarFp.channelsCreateV1(requestParameters.createChannelDto, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @summary Get a channel by id
-         * @param {string} id 
+         * @param {ChannelsApiChannelsFindOneV1Request} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        channelsFindOneV1(id: string, options?: RawAxiosRequestConfig): AxiosPromise<ChannelDto> {
-            return localVarFp.channelsFindOneV1(id, options).then((request) => request(axios, basePath));
+        channelsFindOneV1(requestParameters: ChannelsApiChannelsFindOneV1Request, options?: RawAxiosRequestConfig): AxiosPromise<ChannelDto> {
+            return localVarFp.channelsFindOneV1(requestParameters.id, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @summary Get all channels
-         * @param {number} [offset] 
-         * @param {number} [limit] 
+         * @param {ChannelsApiChannelsFindPaginatedV1Request} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        channelsFindPaginatedV1(offset?: number, limit?: number, options?: RawAxiosRequestConfig): AxiosPromise<PaginatedChannelsDto> {
-            return localVarFp.channelsFindPaginatedV1(offset, limit, options).then((request) => request(axios, basePath));
+        channelsFindPaginatedV1(requestParameters: ChannelsApiChannelsFindPaginatedV1Request = {}, options?: RawAxiosRequestConfig): AxiosPromise<PaginatedChannelsDto> {
+            return localVarFp.channelsFindPaginatedV1(requestParameters.offset, requestParameters.limit, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @summary Delete a channel
-         * @param {string} id 
+         * @param {ChannelsApiChannelsRemoveV1Request} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        channelsRemoveV1(id: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
-            return localVarFp.channelsRemoveV1(id, options).then((request) => request(axios, basePath));
+        channelsRemoveV1(requestParameters: ChannelsApiChannelsRemoveV1Request, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.channelsRemoveV1(requestParameters.id, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @summary Update a channel
-         * @param {string} id 
-         * @param {UpdateChannelDto} updateChannelDto 
+         * @param {ChannelsApiChannelsUpdateV1Request} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        channelsUpdateV1(id: string, updateChannelDto: UpdateChannelDto, options?: RawAxiosRequestConfig): AxiosPromise<ChannelDto> {
-            return localVarFp.channelsUpdateV1(id, updateChannelDto, options).then((request) => request(axios, basePath));
+        channelsUpdateV1(requestParameters: ChannelsApiChannelsUpdateV1Request, options?: RawAxiosRequestConfig): AxiosPromise<ChannelDto> {
+            return localVarFp.channelsUpdateV1(requestParameters.id, requestParameters.updateChannelDto, options).then((request) => request(axios, basePath));
         },
     };
 };
+
+/**
+ * Request parameters for channelsCreateV1 operation in ChannelsApi.
+ * @export
+ * @interface ChannelsApiChannelsCreateV1Request
+ */
+export interface ChannelsApiChannelsCreateV1Request {
+    /**
+     * 
+     * @type {CreateChannelDto}
+     * @memberof ChannelsApiChannelsCreateV1
+     */
+    readonly createChannelDto: CreateChannelDto
+}
+
+/**
+ * Request parameters for channelsFindOneV1 operation in ChannelsApi.
+ * @export
+ * @interface ChannelsApiChannelsFindOneV1Request
+ */
+export interface ChannelsApiChannelsFindOneV1Request {
+    /**
+     * 
+     * @type {string}
+     * @memberof ChannelsApiChannelsFindOneV1
+     */
+    readonly id: string
+}
+
+/**
+ * Request parameters for channelsFindPaginatedV1 operation in ChannelsApi.
+ * @export
+ * @interface ChannelsApiChannelsFindPaginatedV1Request
+ */
+export interface ChannelsApiChannelsFindPaginatedV1Request {
+    /**
+     * 
+     * @type {number}
+     * @memberof ChannelsApiChannelsFindPaginatedV1
+     */
+    readonly offset?: number
+
+    /**
+     * 
+     * @type {number}
+     * @memberof ChannelsApiChannelsFindPaginatedV1
+     */
+    readonly limit?: number
+}
+
+/**
+ * Request parameters for channelsRemoveV1 operation in ChannelsApi.
+ * @export
+ * @interface ChannelsApiChannelsRemoveV1Request
+ */
+export interface ChannelsApiChannelsRemoveV1Request {
+    /**
+     * 
+     * @type {string}
+     * @memberof ChannelsApiChannelsRemoveV1
+     */
+    readonly id: string
+}
+
+/**
+ * Request parameters for channelsUpdateV1 operation in ChannelsApi.
+ * @export
+ * @interface ChannelsApiChannelsUpdateV1Request
+ */
+export interface ChannelsApiChannelsUpdateV1Request {
+    /**
+     * 
+     * @type {string}
+     * @memberof ChannelsApiChannelsUpdateV1
+     */
+    readonly id: string
+
+    /**
+     * 
+     * @type {UpdateChannelDto}
+     * @memberof ChannelsApiChannelsUpdateV1
+     */
+    readonly updateChannelDto: UpdateChannelDto
+}
 
 /**
  * ChannelsApi - object-oriented interface
@@ -371,63 +453,61 @@ export class ChannelsApi extends BaseAPI {
     /**
      * 
      * @summary Create a new channel
-     * @param {CreateChannelDto} createChannelDto 
+     * @param {ChannelsApiChannelsCreateV1Request} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ChannelsApi
      */
-    public channelsCreateV1(createChannelDto: CreateChannelDto, options?: RawAxiosRequestConfig) {
-        return ChannelsApiFp(this.configuration).channelsCreateV1(createChannelDto, options).then((request) => request(this.axios, this.basePath));
+    public channelsCreateV1(requestParameters: ChannelsApiChannelsCreateV1Request, options?: RawAxiosRequestConfig) {
+        return ChannelsApiFp(this.configuration).channelsCreateV1(requestParameters.createChannelDto, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
      * @summary Get a channel by id
-     * @param {string} id 
+     * @param {ChannelsApiChannelsFindOneV1Request} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ChannelsApi
      */
-    public channelsFindOneV1(id: string, options?: RawAxiosRequestConfig) {
-        return ChannelsApiFp(this.configuration).channelsFindOneV1(id, options).then((request) => request(this.axios, this.basePath));
+    public channelsFindOneV1(requestParameters: ChannelsApiChannelsFindOneV1Request, options?: RawAxiosRequestConfig) {
+        return ChannelsApiFp(this.configuration).channelsFindOneV1(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
      * @summary Get all channels
-     * @param {number} [offset] 
-     * @param {number} [limit] 
+     * @param {ChannelsApiChannelsFindPaginatedV1Request} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ChannelsApi
      */
-    public channelsFindPaginatedV1(offset?: number, limit?: number, options?: RawAxiosRequestConfig) {
-        return ChannelsApiFp(this.configuration).channelsFindPaginatedV1(offset, limit, options).then((request) => request(this.axios, this.basePath));
+    public channelsFindPaginatedV1(requestParameters: ChannelsApiChannelsFindPaginatedV1Request = {}, options?: RawAxiosRequestConfig) {
+        return ChannelsApiFp(this.configuration).channelsFindPaginatedV1(requestParameters.offset, requestParameters.limit, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
      * @summary Delete a channel
-     * @param {string} id 
+     * @param {ChannelsApiChannelsRemoveV1Request} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ChannelsApi
      */
-    public channelsRemoveV1(id: string, options?: RawAxiosRequestConfig) {
-        return ChannelsApiFp(this.configuration).channelsRemoveV1(id, options).then((request) => request(this.axios, this.basePath));
+    public channelsRemoveV1(requestParameters: ChannelsApiChannelsRemoveV1Request, options?: RawAxiosRequestConfig) {
+        return ChannelsApiFp(this.configuration).channelsRemoveV1(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
      * @summary Update a channel
-     * @param {string} id 
-     * @param {UpdateChannelDto} updateChannelDto 
+     * @param {ChannelsApiChannelsUpdateV1Request} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ChannelsApi
      */
-    public channelsUpdateV1(id: string, updateChannelDto: UpdateChannelDto, options?: RawAxiosRequestConfig) {
-        return ChannelsApiFp(this.configuration).channelsUpdateV1(id, updateChannelDto, options).then((request) => request(this.axios, this.basePath));
+    public channelsUpdateV1(requestParameters: ChannelsApiChannelsUpdateV1Request, options?: RawAxiosRequestConfig) {
+        return ChannelsApiFp(this.configuration).channelsUpdateV1(requestParameters.id, requestParameters.updateChannelDto, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

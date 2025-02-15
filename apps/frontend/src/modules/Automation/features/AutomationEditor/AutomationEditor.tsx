@@ -33,11 +33,7 @@ const nodeTypes = {
 
 export function AutomationEditor(props: AutomationEditorProps) {
   return (
-    <StoreProvider
-      automation={props.automation}
-      steps={props.version.steps}
-      connections={props.version.connections}
-    >
+    <StoreProvider automation={props.automation}>
       <ReactFlowProvider>
         <AutomationEditorInner {...props} />
       </ReactFlowProvider>

@@ -1,8 +1,4 @@
-import {
-  AutomationStep,
-  AutomationVersion,
-  Automation,
-} from '@/data/sources/api';
+import { AutomationStep, AutomationDto } from '@/data/sources/api';
 
 import {
   type Edge,
@@ -20,7 +16,7 @@ export type EditorNode = Node<
 >;
 
 export type EditorState = {
-  automation: Automation;
+  automationId: string;
   nodes: EditorNode[];
   edges: Edge[];
   selectedNode: EditorNode | null;
@@ -33,7 +29,6 @@ export type EditorState = {
 };
 
 export type AutomationEditorProps = {
-  automation: Automation;
-  version: AutomationVersion;
+  automation: AutomationDto;
   onExit: () => void;
 };

@@ -278,12 +278,12 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
     return {
         /**
          * 
-         * @param {object} body 
+         * @param {DefaultApiAccountsCreateV1Request} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        accountsCreateV1(body: object, options?: RawAxiosRequestConfig): AxiosPromise<string> {
-            return localVarFp.accountsCreateV1(body, options).then((request) => request(axios, basePath));
+        accountsCreateV1(requestParameters: DefaultApiAccountsCreateV1Request, options?: RawAxiosRequestConfig): AxiosPromise<string> {
+            return localVarFp.accountsCreateV1(requestParameters.body, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -295,34 +295,96 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
         },
         /**
          * 
-         * @param {string} id 
+         * @param {DefaultApiAccountsFindOneV1Request} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        accountsFindOneV1(id: string, options?: RawAxiosRequestConfig): AxiosPromise<string> {
-            return localVarFp.accountsFindOneV1(id, options).then((request) => request(axios, basePath));
+        accountsFindOneV1(requestParameters: DefaultApiAccountsFindOneV1Request, options?: RawAxiosRequestConfig): AxiosPromise<string> {
+            return localVarFp.accountsFindOneV1(requestParameters.id, options).then((request) => request(axios, basePath));
         },
         /**
          * 
-         * @param {string} id 
+         * @param {DefaultApiAccountsRemoveV1Request} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        accountsRemoveV1(id: string, options?: RawAxiosRequestConfig): AxiosPromise<string> {
-            return localVarFp.accountsRemoveV1(id, options).then((request) => request(axios, basePath));
+        accountsRemoveV1(requestParameters: DefaultApiAccountsRemoveV1Request, options?: RawAxiosRequestConfig): AxiosPromise<string> {
+            return localVarFp.accountsRemoveV1(requestParameters.id, options).then((request) => request(axios, basePath));
         },
         /**
          * 
-         * @param {string} id 
-         * @param {object} body 
+         * @param {DefaultApiAccountsUpdateV1Request} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        accountsUpdateV1(id: string, body: object, options?: RawAxiosRequestConfig): AxiosPromise<string> {
-            return localVarFp.accountsUpdateV1(id, body, options).then((request) => request(axios, basePath));
+        accountsUpdateV1(requestParameters: DefaultApiAccountsUpdateV1Request, options?: RawAxiosRequestConfig): AxiosPromise<string> {
+            return localVarFp.accountsUpdateV1(requestParameters.id, requestParameters.body, options).then((request) => request(axios, basePath));
         },
     };
 };
+
+/**
+ * Request parameters for accountsCreateV1 operation in DefaultApi.
+ * @export
+ * @interface DefaultApiAccountsCreateV1Request
+ */
+export interface DefaultApiAccountsCreateV1Request {
+    /**
+     * 
+     * @type {object}
+     * @memberof DefaultApiAccountsCreateV1
+     */
+    readonly body: object
+}
+
+/**
+ * Request parameters for accountsFindOneV1 operation in DefaultApi.
+ * @export
+ * @interface DefaultApiAccountsFindOneV1Request
+ */
+export interface DefaultApiAccountsFindOneV1Request {
+    /**
+     * 
+     * @type {string}
+     * @memberof DefaultApiAccountsFindOneV1
+     */
+    readonly id: string
+}
+
+/**
+ * Request parameters for accountsRemoveV1 operation in DefaultApi.
+ * @export
+ * @interface DefaultApiAccountsRemoveV1Request
+ */
+export interface DefaultApiAccountsRemoveV1Request {
+    /**
+     * 
+     * @type {string}
+     * @memberof DefaultApiAccountsRemoveV1
+     */
+    readonly id: string
+}
+
+/**
+ * Request parameters for accountsUpdateV1 operation in DefaultApi.
+ * @export
+ * @interface DefaultApiAccountsUpdateV1Request
+ */
+export interface DefaultApiAccountsUpdateV1Request {
+    /**
+     * 
+     * @type {string}
+     * @memberof DefaultApiAccountsUpdateV1
+     */
+    readonly id: string
+
+    /**
+     * 
+     * @type {object}
+     * @memberof DefaultApiAccountsUpdateV1
+     */
+    readonly body: object
+}
 
 /**
  * DefaultApi - object-oriented interface
@@ -333,13 +395,13 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
 export class DefaultApi extends BaseAPI {
     /**
      * 
-     * @param {object} body 
+     * @param {DefaultApiAccountsCreateV1Request} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public accountsCreateV1(body: object, options?: RawAxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).accountsCreateV1(body, options).then((request) => request(this.axios, this.basePath));
+    public accountsCreateV1(requestParameters: DefaultApiAccountsCreateV1Request, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).accountsCreateV1(requestParameters.body, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -354,36 +416,35 @@ export class DefaultApi extends BaseAPI {
 
     /**
      * 
-     * @param {string} id 
+     * @param {DefaultApiAccountsFindOneV1Request} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public accountsFindOneV1(id: string, options?: RawAxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).accountsFindOneV1(id, options).then((request) => request(this.axios, this.basePath));
+    public accountsFindOneV1(requestParameters: DefaultApiAccountsFindOneV1Request, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).accountsFindOneV1(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
-     * @param {string} id 
+     * @param {DefaultApiAccountsRemoveV1Request} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public accountsRemoveV1(id: string, options?: RawAxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).accountsRemoveV1(id, options).then((request) => request(this.axios, this.basePath));
+    public accountsRemoveV1(requestParameters: DefaultApiAccountsRemoveV1Request, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).accountsRemoveV1(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
-     * @param {string} id 
-     * @param {object} body 
+     * @param {DefaultApiAccountsUpdateV1Request} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public accountsUpdateV1(id: string, body: object, options?: RawAxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).accountsUpdateV1(id, body, options).then((request) => request(this.axios, this.basePath));
+    public accountsUpdateV1(requestParameters: DefaultApiAccountsUpdateV1Request, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).accountsUpdateV1(requestParameters.id, requestParameters.body, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

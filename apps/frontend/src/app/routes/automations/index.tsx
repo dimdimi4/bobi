@@ -3,7 +3,7 @@ import { createFileRoute, Link, useRouter } from '@tanstack/react-router';
 import { automationsQueryOptions } from '@/data/repositories/automations-repository';
 import { CreateAutomation } from '@/modules/Automation/features/CreateAutomation';
 import { useDisclosure } from '@mantine/hooks';
-import { Automation } from '@/data/sources/api';
+import { AutomationDto } from '@/data/sources/api';
 
 export const Route = createFileRoute('/automations/')({
   component: RouteComponent,
@@ -16,7 +16,7 @@ function RouteComponent() {
   const router = useRouter();
   const [opened, { open, close }] = useDisclosure(false);
 
-  const onAutomationCreated = (automation: Automation) => {
+  const onAutomationCreated = (automation: AutomationDto) => {
     router.invalidate();
     router.navigate({
       to: '/automation-editor/$id',

@@ -316,7 +316,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AutomationResponseDto"
+                  "$ref": "#/components/schemas/AutomationDto"
                 }
               }
             }
@@ -327,7 +327,7 @@
         ]
       },
       "get": {
-        "operationId": "automationsFindPaginatedV1",
+        "operationId": "automationsListPaginatedV1",
         "parameters": [
           {
             "name": "offset",
@@ -368,7 +368,7 @@
     },
     "/api/v1/automations/{id}": {
       "get": {
-        "operationId": "automationsFindOneV1",
+        "operationId": "automationsFindOneForUpdateV1",
         "parameters": [
           {
             "name": "id",
@@ -385,7 +385,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AutomationResponseDto"
+                  "$ref": "#/components/schemas/AutomationDto"
                 }
               }
             }
@@ -423,7 +423,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AutomationResponseDto"
+                  "$ref": "#/components/schemas/AutomationBaseDto"
                 }
               }
             }
@@ -448,6 +448,36 @@
         "responses": {
           "200": {
             "description": ""
+          }
+        },
+        "tags": [
+          "Automations"
+        ]
+      }
+    },
+    "/api/v1/automations/{id}/overview": {
+      "get": {
+        "operationId": "automationsFindOneOverviewV1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AutomationOverviewDto"
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -484,7 +514,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AutomationResponseDto"
+                  "$ref": "#/components/schemas/AutomationDto"
                 }
               }
             }
@@ -524,7 +554,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AutomationResponseDto"
+                  "$ref": "#/components/schemas/AutomationDto"
                 }
               }
             }
@@ -572,7 +602,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AutomationResponseDto"
+                  "$ref": "#/components/schemas/AutomationDto"
                 }
               }
             }
@@ -610,7 +640,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AutomationResponseDto"
+                  "$ref": "#/components/schemas/AutomationDto"
                 }
               }
             }
@@ -650,7 +680,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AutomationResponseDto"
+                  "$ref": "#/components/schemas/AutomationDto"
                 }
               }
             }
@@ -688,7 +718,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AutomationResponseDto"
+                  "$ref": "#/components/schemas/AutomationDto"
                 }
               }
             }
@@ -864,45 +894,6 @@
           "name"
         ]
       },
-      "Automation": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "publishedVersionId": {
-            "type": "string"
-          },
-          "draftVersionId": {
-            "type": "string"
-          },
-          "status": {
-            "type": "string",
-            "enum": [
-              "ACTIVE",
-              "INACTIVE"
-            ]
-          },
-          "createdAt": {
-            "format": "date-time",
-            "type": "string"
-          },
-          "updatedAt": {
-            "format": "date-time",
-            "type": "string"
-          }
-        },
-        "required": [
-          "id",
-          "name",
-          "status",
-          "createdAt",
-          "updatedAt"
-        ]
-      },
       "AutomationPosition": {
         "type": "object",
         "properties": {
@@ -991,23 +982,11 @@
           "targetStepId"
         ]
       },
-      "AutomationVersion": {
+      "AutomationVersionDto": {
         "type": "object",
         "properties": {
           "id": {
             "type": "string"
-          },
-          "steps": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/AutomationStep"
-            }
-          },
-          "connections": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/AutomationConnection"
-            }
           },
           "publishedAt": {
             "format": "date-time",
@@ -1024,27 +1003,92 @@
         },
         "required": [
           "id",
-          "steps",
-          "connections",
           "createdAt",
           "updatedAt"
         ]
       },
-      "AutomationResponseDto": {
+      "AutomationDto": {
         "type": "object",
         "properties": {
-          "automation": {
-            "$ref": "#/components/schemas/Automation"
+          "steps": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AutomationStep"
+            }
           },
-          "publishedVersion": {
-            "$ref": "#/components/schemas/AutomationVersion"
+          "connections": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AutomationConnection"
+            }
           },
-          "draftVersion": {
-            "$ref": "#/components/schemas/AutomationVersion"
+          "version": {
+            "$ref": "#/components/schemas/AutomationVersionDto"
+          },
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "ACTIVE",
+              "INACTIVE"
+            ],
+            "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
           }
         },
         "required": [
-          "automation"
+          "steps",
+          "connections",
+          "version",
+          "id",
+          "name",
+          "status",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "AutomationBaseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "ACTIVE",
+              "INACTIVE"
+            ],
+            "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "status",
+          "createdAt",
+          "updatedAt"
         ]
       },
       "AutomationsPaginatedDto": {
@@ -1062,7 +1106,7 @@
           "results": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Automation"
+              "$ref": "#/components/schemas/AutomationBaseDto"
             }
           }
         },
@@ -1071,6 +1115,84 @@
           "limit",
           "offset",
           "results"
+        ]
+      },
+      "AutomationVersionOverviewDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "publishedAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "steps": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AutomationStep"
+            }
+          },
+          "connections": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AutomationConnection"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "createdAt",
+          "updatedAt",
+          "steps",
+          "connections"
+        ]
+      },
+      "AutomationOverviewDto": {
+        "type": "object",
+        "properties": {
+          "publishedVersion": {
+            "$ref": "#/components/schemas/AutomationVersionOverviewDto"
+          },
+          "draftVersion": {
+            "$ref": "#/components/schemas/AutomationVersionOverviewDto"
+          },
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ACTIVE",
+              "INACTIVE"
+            ]
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "status",
+          "createdAt",
+          "updatedAt"
         ]
       },
       "UpdateAutomationDto": {

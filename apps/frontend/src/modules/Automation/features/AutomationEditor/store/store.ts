@@ -7,8 +7,8 @@ import {
 } from '@xyflow/react';
 
 import {
-  Automation,
   AutomationConnection,
+  AutomationDto,
   AutomationStep,
   AutomationTask,
 } from '@/data/sources/api';
@@ -48,16 +48,12 @@ function mapConnectionsToEdges(connections: AutomationConnection[]): Edge[] {
 
 export type EditorStore = ReturnType<typeof createStore>;
 
-export function createStore(
-  automation: Automation,
-  steps: AutomationStep[],
-  connections: AutomationConnection[]
-) {
-  const nodes = mapStepsToNodes(steps);
-  const edges = mapConnectionsToEdges(connections);
+export function createStore(automation: AutomationDto) {
+  const nodes = mapStepsToNodes(automation.steps);
+  const edges = mapConnectionsToEdges(automation.connections);
 
   return create<EditorState>((set, get) => ({
-    automation,
+    automationId: automation.id,
     nodes: nodes,
     edges,
     selectedNode: null,

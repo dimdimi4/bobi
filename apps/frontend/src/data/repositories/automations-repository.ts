@@ -17,21 +17,31 @@ export const automationsApi = new AutomationsApi(undefined, '', api);
 
 export const automationsQueryOptions = queryOptions({
   queryKey: [KEY],
-  queryFn: () => automationsApi.automationsFindPaginatedV1(0, 10),
+  queryFn: async () =>
+    automationsApi.automationsListPaginatedV1({
+      offset: 0,
+      limit: 10,
+    }),
 });
 
-export const automationQueryOptions = (id: string) =>
+export const automationOverviewQueryOptions = (id: string) =>
   queryOptions({
     queryKey: [KEY, id],
-    queryFn: () => automationsApi.automationsFindOneV1(id),
+    queryFn: async () => automationsApi.automationsFindOneOverviewV1({ id }),
+  });
+
+export const automationForUpdateQueryOptions = (id: string) =>
+  queryOptions({
+    queryKey: [KEY, id],
+    queryFn: async () => automationsApi.automationsFindOneForUpdateV1({ id }),
   });
 
 export function useCreateAutomationMutation() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (payload: CreateAutomationDto) =>
-      automationsApi.automationsCreateV1(payload),
+    mutationFn: async (payload: CreateAutomationDto) =>
+      automationsApi.automationsCreateV1({ createAutomationDto: payload }),
     onSuccess: () =>
       queryClient.invalidateQueries({
         queryKey: [KEY],
@@ -43,8 +53,11 @@ export function useCreateStepMutation(automationId: string) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (payload: CreateStepDto) =>
-      automationsApi.automationsCreateStepV1(automationId, payload),
+    mutationFn: async (payload: CreateStepDto) =>
+      automationsApi.automationsCreateStepV1({
+        id: automationId,
+        createStepDto: payload,
+      }),
     onSuccess: () =>
       queryClient.invalidateQueries({
         queryKey: [KEY],

@@ -44,6 +44,7 @@ export class AutomationTask {
     type: TriggerReceivedMessageTask,
     required: false,
   })
+  @IsOptional()
   @ValidateNested()
   @Type(() => TriggerReceivedMessageTask)
   trigger_receivedMessage?: TriggerReceivedMessageTask;
@@ -52,6 +53,7 @@ export class AutomationTask {
     type: TelegramSendMessageTask,
     required: false,
   })
+  @IsOptional()
   @ValidateNested()
   @Type(() => TelegramSendMessageTask)
   action_telegram_sendMessage?: TelegramSendMessageTask;

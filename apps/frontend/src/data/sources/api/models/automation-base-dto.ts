@@ -17,58 +17,46 @@
 /**
  * 
  * @export
- * @interface Automation
+ * @interface AutomationBaseDto
  */
-export interface Automation {
+export interface AutomationBaseDto {
     /**
      * 
      * @type {string}
-     * @memberof Automation
+     * @memberof AutomationBaseDto
      */
     'id': string;
     /**
      * 
      * @type {string}
-     * @memberof Automation
+     * @memberof AutomationBaseDto
      */
     'name': string;
     /**
      * 
      * @type {string}
-     * @memberof Automation
+     * @memberof AutomationBaseDto
      */
-    'publishedVersionId'?: string;
+    'status': AutomationBaseDtoStatusEnum;
     /**
      * 
      * @type {string}
-     * @memberof Automation
-     */
-    'draftVersionId'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Automation
-     */
-    'status': AutomationStatusEnum;
-    /**
-     * 
-     * @type {string}
-     * @memberof Automation
+     * @memberof AutomationBaseDto
      */
     'createdAt': string;
     /**
      * 
      * @type {string}
-     * @memberof Automation
+     * @memberof AutomationBaseDto
      */
     'updatedAt': string;
 }
 
-export const AutomationStatusEnum = {
+export const AutomationBaseDtoStatusEnum = {
     Active: 'ACTIVE',
     Inactive: 'INACTIVE'
 } as const;
 
-export type AutomationStatusEnum = typeof AutomationStatusEnum[keyof typeof AutomationStatusEnum];
+export type AutomationBaseDtoStatusEnum = typeof AutomationBaseDtoStatusEnum[keyof typeof AutomationBaseDtoStatusEnum];
 
 

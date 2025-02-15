@@ -54,46 +54,58 @@ export class AutomationsService {
   private toAutomationVersionDto(
     version: AutomationVersionDocument,
   ): AutomationVersionDto {
+    const versionObj = version.toObject();
     const versionDto: AutomationVersionDto = {
-      id: version._id,
-      createdAt: version.createdAt,
-      updatedAt: version.updatedAt,
-      publishedAt: version.publishedAt,
+      id: versionObj._id,
+      createdAt: versionObj.createdAt,
+      updatedAt: versionObj.updatedAt,
+      publishedAt: versionObj.publishedAt,
     };
 
-    return plainToInstance(AutomationVersionDto, versionDto);
+    return plainToInstance(AutomationVersionDto, versionDto, {
+      enableCircularCheck: true,
+    });
   }
 
   private toAutomationDto(
     automation: AutomationDocument,
     version: AutomationVersionDocument,
   ): AutomationDto {
+    const automationObj = automation.toObject();
+    const versionObj = version.toObject();
+
     const automationDto: AutomationDto = {
-      id: automation._id,
-      name: automation.name,
-      status: automation.status,
-      steps: version.steps,
-      connections: version.connections,
+      id: automationObj._id,
+      name: automationObj.name,
+      status: automationObj.status,
+      steps: versionObj.steps,
+      connections: versionObj.connections,
       version: this.toAutomationVersionDto(version),
       createdAt: automation.createdAt,
       updatedAt: automation.updatedAt,
     };
 
-    return plainToInstance(AutomationDto, automationDto);
+    return plainToInstance(AutomationDto, automationDto, {
+      enableCircularCheck: true,
+    });
   }
 
   private toAutomationBaseDto(
     automation: AutomationDocument,
   ): AutomationBaseDto {
+    const automationObj = automation.toObject();
+
     const automationBaseDto: AutomationBaseDto = {
-      id: automation._id,
-      name: automation.name,
-      status: automation.status,
-      createdAt: automation.createdAt,
-      updatedAt: automation.updatedAt,
+      id: automationObj._id,
+      name: automationObj.name,
+      status: automationObj.status,
+      createdAt: automationObj.createdAt,
+      updatedAt: automationObj.updatedAt,
     };
 
-    return plainToInstance(AutomationBaseDto, automationBaseDto);
+    return plainToInstance(AutomationBaseDto, automationBaseDto, {
+      enableCircularCheck: true,
+    });
   }
 
   private async ensureAutomationExists(
@@ -289,15 +301,18 @@ export class AutomationsService {
   private toAutomationVersionOverviewDto(
     version: AutomationVersionDocument,
   ): AutomationVersionOverviewDto {
+    const versionObj = version.toObject();
     const versionOverviewDto: AutomationVersionOverviewDto = {
-      id: version._id,
-      createdAt: version.createdAt,
-      updatedAt: version.updatedAt,
-      steps: version.steps,
-      connections: version.connections,
+      id: versionObj._id,
+      createdAt: versionObj.createdAt,
+      updatedAt: versionObj.updatedAt,
+      steps: versionObj.steps,
+      connections: versionObj.connections,
     };
 
-    return plainToInstance(AutomationVersionOverviewDto, versionOverviewDto);
+    return plainToInstance(AutomationVersionOverviewDto, versionOverviewDto, {
+      enableCircularCheck: true,
+    });
   }
 
   private toAutomationOverviewDto(
@@ -305,12 +320,13 @@ export class AutomationsService {
     publishedVersion: AutomationVersionDocument | null,
     draftVersion: AutomationVersionDocument | null,
   ): AutomationOverviewDto {
+    const automationObj = automation.toObject();
     const automationOverviewDto: AutomationOverviewDto = {
-      id: automation._id,
-      name: automation.name,
-      status: automation.status,
-      createdAt: automation.createdAt,
-      updatedAt: automation.updatedAt,
+      id: automationObj._id,
+      name: automationObj.name,
+      status: automationObj.status,
+      createdAt: automationObj.createdAt,
+      updatedAt: automationObj.updatedAt,
       publishedVersion: publishedVersion
         ? this.toAutomationVersionOverviewDto(publishedVersion)
         : undefined,
@@ -319,7 +335,9 @@ export class AutomationsService {
         : undefined,
     };
 
-    return plainToInstance(AutomationOverviewDto, automationOverviewDto);
+    return plainToInstance(AutomationOverviewDto, automationOverviewDto, {
+      enableCircularCheck: true,
+    });
   }
 
   async findOneOverview(

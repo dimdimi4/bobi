@@ -84,7 +84,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get: operations["automationsFindPaginatedV1"];
+        get: operations["automationsListPaginatedV1"];
         put?: never;
         post: operations["automationsCreateV1"];
         delete?: never;
@@ -102,13 +102,31 @@ export interface paths {
             };
             cookie?: never;
         };
-        get: operations["automationsFindOneV1"];
+        get: operations["automationsFindOneForUpdateV1"];
         put?: never;
         post?: never;
         delete: operations["automationsRemoveV1"];
         options?: never;
         head?: never;
         patch: operations["automationsUpdateV1"];
+        trace?: never;
+    };
+    "/api/v1/automations/{id}/overview": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        get: operations["automationsFindOneOverviewV1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
         trace?: never;
     };
     "/api/v1/automations/{id}/steps": {
@@ -265,18 +283,6 @@ export interface components {
             name: string;
             trigger?: components["schemas"]["TriggerReceivedMessageTask"];
         };
-        Automation: {
-            id: string;
-            name: string;
-            publishedVersionId?: string;
-            draftVersionId?: string;
-            /** @enum {string} */
-            status: "ACTIVE" | "INACTIVE";
-            /** Format: date-time */
-            createdAt: string;
-            /** Format: date-time */
-            updatedAt: string;
-        };
         AutomationPosition: {
             x: number;
             y: number;
@@ -301,10 +307,8 @@ export interface components {
             targetStepId: string;
             targetHandleId?: string;
         };
-        AutomationVersion: {
+        AutomationVersionDto: {
             id: string;
-            steps: components["schemas"]["AutomationStep"][];
-            connections: components["schemas"]["AutomationConnection"][];
             /** Format: date-time */
             publishedAt?: string;
             /** Format: date-time */
@@ -312,16 +316,57 @@ export interface components {
             /** Format: date-time */
             updatedAt: string;
         };
-        AutomationResponseDto: {
-            automation: components["schemas"]["Automation"];
-            publishedVersion?: components["schemas"]["AutomationVersion"];
-            draftVersion?: components["schemas"]["AutomationVersion"];
+        AutomationDto: {
+            steps: components["schemas"]["AutomationStep"][];
+            connections: components["schemas"]["AutomationConnection"][];
+            version: components["schemas"]["AutomationVersionDto"];
+            id: string;
+            name: string;
+            /** @enum {string} */
+            status: "ACTIVE" | "INACTIVE";
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+        };
+        AutomationBaseDto: {
+            id: string;
+            name: string;
+            /** @enum {string} */
+            status: "ACTIVE" | "INACTIVE";
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
         };
         AutomationsPaginatedDto: {
             total: number;
             limit: number;
             offset: number;
-            results: components["schemas"]["Automation"][];
+            results: components["schemas"]["AutomationBaseDto"][];
+        };
+        AutomationVersionOverviewDto: {
+            id: string;
+            /** Format: date-time */
+            publishedAt?: string;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+            steps: components["schemas"]["AutomationStep"][];
+            connections: components["schemas"]["AutomationConnection"][];
+        };
+        AutomationOverviewDto: {
+            publishedVersion?: components["schemas"]["AutomationVersionOverviewDto"];
+            draftVersion?: components["schemas"]["AutomationVersionOverviewDto"];
+            id: string;
+            name: string;
+            /** @enum {string} */
+            status: "ACTIVE" | "INACTIVE";
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
         };
         UpdateAutomationDto: {
             name: string;
@@ -576,7 +621,7 @@ export interface operations {
             };
         };
     };
-    automationsFindPaginatedV1: {
+    automationsListPaginatedV1: {
         parameters: {
             query?: {
                 offset?: number;
@@ -616,12 +661,12 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["AutomationResponseDto"];
+                    "application/json": components["schemas"]["AutomationDto"];
                 };
             };
         };
     };
-    automationsFindOneV1: {
+    automationsFindOneForUpdateV1: {
         parameters: {
             query?: never;
             header?: never;
@@ -637,7 +682,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["AutomationResponseDto"];
+                    "application/json": components["schemas"]["AutomationDto"];
                 };
             };
         };
@@ -681,7 +726,28 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["AutomationResponseDto"];
+                    "application/json": components["schemas"]["AutomationBaseDto"];
+                };
+            };
+        };
+    };
+    automationsFindOneOverviewV1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AutomationOverviewDto"];
                 };
             };
         };
@@ -706,7 +772,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["AutomationResponseDto"];
+                    "application/json": components["schemas"]["AutomationDto"];
                 };
             };
         };
@@ -731,7 +797,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["AutomationResponseDto"];
+                    "application/json": components["schemas"]["AutomationDto"];
                 };
             };
         };
@@ -757,7 +823,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["AutomationResponseDto"];
+                    "application/json": components["schemas"]["AutomationDto"];
                 };
             };
         };
@@ -779,7 +845,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["AutomationResponseDto"];
+                    "application/json": components["schemas"]["AutomationDto"];
                 };
             };
         };
@@ -804,7 +870,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["AutomationResponseDto"];
+                    "application/json": components["schemas"]["AutomationDto"];
                 };
             };
         };
@@ -826,7 +892,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["AutomationResponseDto"];
+                    "application/json": components["schemas"]["AutomationDto"];
                 };
             };
         };
@@ -844,10 +910,11 @@ export enum ApiPaths {
     channelsUpdateV1 = "/api/v1/channels/:id",
     channelsRemoveV1 = "/api/v1/channels/:id",
     automationsCreateV1 = "/api/v1/automations",
-    automationsFindPaginatedV1 = "/api/v1/automations",
-    automationsFindOneV1 = "/api/v1/automations/:id",
+    automationsListPaginatedV1 = "/api/v1/automations",
+    automationsFindOneForUpdateV1 = "/api/v1/automations/:id",
     automationsUpdateV1 = "/api/v1/automations/:id",
     automationsRemoveV1 = "/api/v1/automations/:id",
+    automationsFindOneOverviewV1 = "/api/v1/automations/:id/overview",
     automationsCreateStepV1 = "/api/v1/automations/:id/steps",
     automationsUpdateStepsPositionsV1 = "/api/v1/automations/:id/update-steps-positions",
     automationsUpdateStepTaskV1 = "/api/v1/automations/:id/steps/:stepId/task",
