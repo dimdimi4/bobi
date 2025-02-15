@@ -20,7 +20,11 @@ import { ActionNode } from './nodes/ActionNode';
 import { ConditionNode } from './nodes/ConditionNode';
 import { Message2Node, MessageNode } from './nodes/MessageNode';
 import { useAutomationEditor } from './hooks/use-automation-editor';
-import { useAddStep } from './hooks/use-add-step';
+import { useCreateStep } from './hooks/use-create-step';
+import { useUpdateStepPositions } from './hooks/use-update-positions';
+import { useCreateConnection } from './hooks/use-create-connection';
+import { useDeleteConnections } from './hooks/use-delete-connections';
+import { useDeleteSteps } from './hooks/use-delete-steps';
 
 const nodeTypes = {
   trigger: TriggerNode,
@@ -42,6 +46,12 @@ export function AutomationEditor(props: AutomationEditorProps) {
 }
 
 function AutomationEditorInner({ onExit }: AutomationEditorProps) {
+  const { handleCreateMessageStep } = useCreateStep();
+  const { handleStepPositionChange } = useUpdateStepPositions();
+  const { handleDeleteSteps } = useDeleteSteps();
+  const { handleCreateConnection } = useCreateConnection();
+  const { handleDeleteConnections } = useDeleteConnections();
+
   const {
     reactFlowWrapper,
     nodes,
@@ -51,10 +61,7 @@ function AutomationEditorInner({ onExit }: AutomationEditorProps) {
     handlePaneClick,
     handleNodeChanges,
     handleEdgeChanges,
-    handleConnect,
   } = useAutomationEditor();
-
-  const { addMessageStep } = useAddStep();
 
   return (
     <EditorContainer>
@@ -65,12 +72,15 @@ function AutomationEditorInner({ onExit }: AutomationEditorProps) {
           nodeTypes={nodeTypes}
           onNodesChange={handleNodeChanges}
           onEdgesChange={handleEdgeChanges}
-          onNodeDragStop={(_, node, nodes) => {}}
-          onConnect={handleConnect}
+          onNodeDragStop={(_, _1, nodes) => handleStepPositionChange(nodes)}
+          onConnect={handleCreateConnection}
           onNodeClick={(_, node) => handleNodeSelect(node)}
           onPaneClick={() => handlePaneClick()}
+          onEdgesDelete={handleDeleteConnections}
+          onNodesDelete={handleDeleteSteps}
           selectNodesOnDrag={false}
           snapToGrid
+          // deleteKeyCode={null}
         >
           <EditorContainer.Header>
             <Group justify="space-between" gap="xs">
@@ -89,7 +99,11 @@ function AutomationEditorInner({ onExit }: AutomationEditorProps) {
                 </Badge>
               </Group>
               <Group justify="flex-end" gap="xs">
-                <Button variant="default" size="xs" onClick={addMessageStep}>
+                <Button
+                  variant="default"
+                  size="xs"
+                  onClick={handleCreateMessageStep}
+                >
                   Add message step
                 </Button>
                 <Button variant="default" size="xs" onClick={onExit}>

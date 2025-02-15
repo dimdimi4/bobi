@@ -13,6 +13,8 @@ function RouteComponent() {
   const data = Route.useLoaderData();
   const router = useRouter();
 
+  console.log(data);
+
   const handleClose = () => {
     router.navigate({
       to: '/automations/$id/view',

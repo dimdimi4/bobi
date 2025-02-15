@@ -523,6 +523,44 @@
         "tags": [
           "Automations"
         ]
+      },
+      "delete": {
+        "operationId": "automationsDeleteStepsV1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteStepsDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AutomationDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Automations"
+        ]
       }
     },
     "/api/v1/automations/{id}/update-steps-positions": {
@@ -613,44 +651,6 @@
         ]
       }
     },
-    "/api/v1/automations/{id}/steps/{stepId}": {
-      "delete": {
-        "operationId": "automationsDeleteStepV1",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "stepId",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AutomationDto"
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Automations"
-        ]
-      }
-    },
     "/api/v1/automations/{id}/connections": {
       "post": {
         "operationId": "automationsCreateConnectionV1",
@@ -689,11 +689,9 @@
         "tags": [
           "Automations"
         ]
-      }
-    },
-    "/api/v1/automations/{id}/connections/{connectionId}": {
+      },
       "delete": {
-        "operationId": "automationsDeleteConnectionV1",
+        "operationId": "automationsDeleteConnectionsV1",
         "parameters": [
           {
             "name": "id",
@@ -702,16 +700,18 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "connectionId",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
           }
         ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteConnectionsDto"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "",
@@ -1247,6 +1247,34 @@
         },
         "required": [
           "steps"
+        ]
+      },
+      "DeleteStepsDto": {
+        "type": "object",
+        "properties": {
+          "stepIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "stepIds"
+        ]
+      },
+      "DeleteConnectionsDto": {
+        "type": "object",
+        "properties": {
+          "connectionIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "connectionIds"
         ]
       }
     }

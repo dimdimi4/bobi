@@ -20,16 +20,22 @@ function taskToType(task: AutomationTask): EditorNodeTypes {
     return 'trigger';
   }
 
+  if (task.action_telegram_sendMessage) {
+    return 'message';
+  }
+
   return 'action';
 }
 
 function mapStepsToNodes(steps: AutomationStep[]): EditorNode[] {
   return steps.map((step) => {
+    const type = taskToType(step.task);
     return {
       id: step.id,
-      type: taskToType(step.task),
+      type: type,
       data: { ...step.task },
       position: step.position,
+      deletable: type !== 'trigger',
     };
   });
 }

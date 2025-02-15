@@ -24,6 +24,8 @@ import { AutomationsPaginatedDto } from './dto/automations-paginated.dto';
 import { AutomationDto } from './dto/automation.dto';
 import { AutomationOverviewDto } from './dto/automation-overview.dto';
 import { AutomationBaseDto } from './dto/automation-base.dto';
+import { DeleteStepsDto } from './dto/delete-steps.dto';
+import { DeleteConnectionsDto } from './dto/delete-connections.dto';
 
 const accountId = '666666666666666666666666';
 
@@ -117,15 +119,15 @@ export class AutomationsController {
     });
   }
 
-  @Delete(':id/steps/:stepId')
-  deleteStep(
+  @Delete(':id/steps')
+  deleteSteps(
     @Param('id') automationId: string,
-    @Param('stepId') stepId: string,
+    @Body() deleteStepsDto: DeleteStepsDto,
   ): Promise<AutomationDto> {
-    return this.automationsService.deleteStep({
+    return this.automationsService.deleteSteps({
       accountId,
       automationId,
-      stepId,
+      stepIds: deleteStepsDto.stepIds,
     });
   }
 
@@ -141,15 +143,15 @@ export class AutomationsController {
     });
   }
 
-  @Delete(':id/connections/:connectionId')
-  deleteConnection(
+  @Delete(':id/connections')
+  deleteConnections(
     @Param('id') automationId: string,
-    @Param('connectionId') connectionId: string,
+    @Body() deleteConnectionsDto: DeleteConnectionsDto,
   ): Promise<AutomationDto> {
-    return this.automationsService.deleteConnection({
+    return this.automationsService.deleteConnections({
       accountId,
       automationId,
-      connectionId,
+      connectionIds: deleteConnectionsDto.connectionIds,
     });
   }
 }

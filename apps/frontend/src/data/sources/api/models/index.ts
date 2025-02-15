@@ -12,6 +12,8 @@ export * from './channel-dto';
 export * from './create-automation-dto';
 export * from './create-channel-dto';
 export * from './create-step-dto';
+export * from './delete-connections-dto';
+export * from './delete-steps-dto';
 export * from './paginated-channels-dto';
 export * from './paginated-dto';
 export * from './step-position-dto';

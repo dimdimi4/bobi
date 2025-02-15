@@ -221,9 +221,11 @@ export class AutomationVersionRepository {
     },
     session?: ClientSession,
   ) {
+    const sanitizeStepId = (stepId: string) => stepId.replace(/-/g, '');
+
     const updates: Record<string, unknown> = {};
     stepPositions.steps.forEach(({ stepId, position }) => {
-      updates[`steps.$[elem${stepId}].position`] = position;
+      updates[`steps.$[elem${sanitizeStepId(stepId)}].position`] = position;
     });
 
     return this.automationVersionModel.findOneAndUpdate(
@@ -231,7 +233,7 @@ export class AutomationVersionRepository {
       { $set: updates },
       {
         arrayFilters: stepPositions.steps.map(({ stepId }) => ({
-          [`elem${stepId}.id`]: stepId,
+          [`elem${sanitizeStepId(stepId)}.id`]: stepId,
         })),
         new: true,
         session,
@@ -239,26 +241,29 @@ export class AutomationVersionRepository {
     );
   }
 
-  deleteStep(
+  deleteSteps(
     {
       accountId,
       versionId,
-      stepId,
+      stepIds,
     }: {
       accountId: string;
       versionId: string;
-      stepId: string;
+      stepIds: string[];
     },
     session?: ClientSession,
   ) {
     return this.automationVersionModel
       .findOneAndUpdate(
-        this.versionMatch(accountId, versionId, { 'steps.id': stepId }),
+        this.versionMatch(accountId, versionId),
         {
           $pull: {
-            steps: { id: stepId },
+            steps: { id: { $in: stepIds } },
             connections: {
-              $or: [{ sourceStepId: stepId }, { targetStepId: stepId }],
+              $or: [
+                { sourceStepId: { $in: stepIds } },
+                { targetStepId: { $in: stepIds } },
+              ],
             },
           },
         },
@@ -286,21 +291,21 @@ export class AutomationVersionRepository {
     );
   }
 
-  deleteConnection(
+  deleteConnections(
     {
       accountId,
       versionId,
-      connectionId,
+      connectionIds,
     }: {
       accountId: string;
       versionId: string;
-      connectionId: string;
+      connectionIds: string[];
     },
     session?: ClientSession,
   ) {
     return this.automationVersionModel.findOneAndUpdate(
       this.versionMatch(accountId, versionId),
-      { $pull: { connections: { id: connectionId } } },
+      { $pull: { connections: { id: { $in: connectionIds } } } },
       { new: true, session },
     );
   }

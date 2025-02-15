@@ -141,7 +141,7 @@ export interface paths {
         get?: never;
         put?: never;
         post: operations["automationsCreateStepV1"];
-        delete?: never;
+        delete: operations["automationsDeleteStepsV1"];
         options?: never;
         head?: never;
         patch?: never;
@@ -184,25 +184,6 @@ export interface paths {
         patch: operations["automationsUpdateStepTaskV1"];
         trace?: never;
     };
-    "/api/v1/automations/{id}/steps/{stepId}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: string;
-                stepId: string;
-            };
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        delete: operations["automationsDeleteStepV1"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/api/v1/automations/{id}/connections": {
         parameters: {
             query?: never;
@@ -215,26 +196,7 @@ export interface paths {
         get?: never;
         put?: never;
         post: operations["automationsCreateConnectionV1"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/v1/automations/{id}/connections/{connectionId}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: string;
-                connectionId: string;
-            };
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        delete: operations["automationsDeleteConnectionV1"];
+        delete: operations["automationsDeleteConnectionsV1"];
         options?: never;
         head?: never;
         patch?: never;
@@ -381,6 +343,12 @@ export interface components {
         };
         UpdateStepsPositionsDto: {
             steps: components["schemas"]["StepPositionDto"][];
+        };
+        DeleteStepsDto: {
+            stepIds: string[];
+        };
+        DeleteConnectionsDto: {
+            connectionIds: string[];
         };
     };
     responses: never;
@@ -777,6 +745,31 @@ export interface operations {
             };
         };
     };
+    automationsDeleteStepsV1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["DeleteStepsDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AutomationDto"];
+                };
+            };
+        };
+    };
     automationsUpdateStepsPositionsV1: {
         parameters: {
             query?: never;
@@ -828,28 +821,6 @@ export interface operations {
             };
         };
     };
-    automationsDeleteStepV1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: string;
-                stepId: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["AutomationDto"];
-                };
-            };
-        };
-    };
     automationsCreateConnectionV1: {
         parameters: {
             query?: never;
@@ -875,17 +846,20 @@ export interface operations {
             };
         };
     };
-    automationsDeleteConnectionV1: {
+    automationsDeleteConnectionsV1: {
         parameters: {
             query?: never;
             header?: never;
             path: {
                 id: string;
-                connectionId: string;
             };
             cookie?: never;
         };
-        requestBody?: never;
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["DeleteConnectionsDto"];
+            };
+        };
         responses: {
             200: {
                 headers: {
@@ -916,9 +890,9 @@ export enum ApiPaths {
     automationsRemoveV1 = "/api/v1/automations/:id",
     automationsFindOneOverviewV1 = "/api/v1/automations/:id/overview",
     automationsCreateStepV1 = "/api/v1/automations/:id/steps",
+    automationsDeleteStepsV1 = "/api/v1/automations/:id/steps",
     automationsUpdateStepsPositionsV1 = "/api/v1/automations/:id/update-steps-positions",
     automationsUpdateStepTaskV1 = "/api/v1/automations/:id/steps/:stepId/task",
-    automationsDeleteStepV1 = "/api/v1/automations/:id/steps/:stepId",
     automationsCreateConnectionV1 = "/api/v1/automations/:id/connections",
-    automationsDeleteConnectionV1 = "/api/v1/automations/:id/connections/:connectionId"
+    automationsDeleteConnectionsV1 = "/api/v1/automations/:id/connections"
 }

@@ -38,6 +38,10 @@ import type { CreateAutomationDto } from '../models';
 // @ts-ignore
 import type { CreateStepDto } from '../models';
 // @ts-ignore
+import type { DeleteConnectionsDto } from '../models';
+// @ts-ignore
+import type { DeleteStepsDto } from '../models';
+// @ts-ignore
 import type { UpdateAutomationDto } from '../models';
 // @ts-ignore
 import type { UpdateStepsPositionsDto } from '../models';
@@ -163,18 +167,17 @@ export const AutomationsApiAxiosParamCreator = function (configuration?: Configu
         /**
          * 
          * @param {string} id 
-         * @param {string} connectionId 
+         * @param {DeleteConnectionsDto} deleteConnectionsDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        automationsDeleteConnectionV1: async (id: string, connectionId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        automationsDeleteConnectionsV1: async (id: string, deleteConnectionsDto: DeleteConnectionsDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
-            assertParamExists('automationsDeleteConnectionV1', 'id', id)
-            // verify required parameter 'connectionId' is not null or undefined
-            assertParamExists('automationsDeleteConnectionV1', 'connectionId', connectionId)
-            const localVarPath = `/api/v1/automations/{id}/connections/{connectionId}`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
-                .replace(`{${"connectionId"}}`, encodeURIComponent(String(connectionId)));
+            assertParamExists('automationsDeleteConnectionsV1', 'id', id)
+            // verify required parameter 'deleteConnectionsDto' is not null or undefined
+            assertParamExists('automationsDeleteConnectionsV1', 'deleteConnectionsDto', deleteConnectionsDto)
+            const localVarPath = `/api/v1/automations/{id}/connections`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -188,9 +191,12 @@ export const AutomationsApiAxiosParamCreator = function (configuration?: Configu
 
 
     
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(deleteConnectionsDto, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -200,18 +206,17 @@ export const AutomationsApiAxiosParamCreator = function (configuration?: Configu
         /**
          * 
          * @param {string} id 
-         * @param {string} stepId 
+         * @param {DeleteStepsDto} deleteStepsDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        automationsDeleteStepV1: async (id: string, stepId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        automationsDeleteStepsV1: async (id: string, deleteStepsDto: DeleteStepsDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
-            assertParamExists('automationsDeleteStepV1', 'id', id)
-            // verify required parameter 'stepId' is not null or undefined
-            assertParamExists('automationsDeleteStepV1', 'stepId', stepId)
-            const localVarPath = `/api/v1/automations/{id}/steps/{stepId}`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
-                .replace(`{${"stepId"}}`, encodeURIComponent(String(stepId)));
+            assertParamExists('automationsDeleteStepsV1', 'id', id)
+            // verify required parameter 'deleteStepsDto' is not null or undefined
+            assertParamExists('automationsDeleteStepsV1', 'deleteStepsDto', deleteStepsDto)
+            const localVarPath = `/api/v1/automations/{id}/steps`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -225,9 +230,12 @@ export const AutomationsApiAxiosParamCreator = function (configuration?: Configu
 
 
     
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(deleteStepsDto, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -544,27 +552,27 @@ export const AutomationsApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @param {string} id 
-         * @param {string} connectionId 
+         * @param {DeleteConnectionsDto} deleteConnectionsDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async automationsDeleteConnectionV1(id: string, connectionId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AutomationDto>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.automationsDeleteConnectionV1(id, connectionId, options);
+        async automationsDeleteConnectionsV1(id: string, deleteConnectionsDto: DeleteConnectionsDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AutomationDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.automationsDeleteConnectionsV1(id, deleteConnectionsDto, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['AutomationsApi.automationsDeleteConnectionV1']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['AutomationsApi.automationsDeleteConnectionsV1']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
          * @param {string} id 
-         * @param {string} stepId 
+         * @param {DeleteStepsDto} deleteStepsDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async automationsDeleteStepV1(id: string, stepId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AutomationDto>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.automationsDeleteStepV1(id, stepId, options);
+        async automationsDeleteStepsV1(id: string, deleteStepsDto: DeleteStepsDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AutomationDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.automationsDeleteStepsV1(id, deleteStepsDto, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['AutomationsApi.automationsDeleteStepV1']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['AutomationsApi.automationsDeleteStepsV1']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -695,21 +703,21 @@ export const AutomationsApiFactory = function (configuration?: Configuration, ba
         },
         /**
          * 
-         * @param {AutomationsApiAutomationsDeleteConnectionV1Request} requestParameters Request parameters.
+         * @param {AutomationsApiAutomationsDeleteConnectionsV1Request} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        automationsDeleteConnectionV1(requestParameters: AutomationsApiAutomationsDeleteConnectionV1Request, options?: RawAxiosRequestConfig): AxiosPromise<AutomationDto> {
-            return localVarFp.automationsDeleteConnectionV1(requestParameters.id, requestParameters.connectionId, options).then((request) => request(axios, basePath));
+        automationsDeleteConnectionsV1(requestParameters: AutomationsApiAutomationsDeleteConnectionsV1Request, options?: RawAxiosRequestConfig): AxiosPromise<AutomationDto> {
+            return localVarFp.automationsDeleteConnectionsV1(requestParameters.id, requestParameters.deleteConnectionsDto, options).then((request) => request(axios, basePath));
         },
         /**
          * 
-         * @param {AutomationsApiAutomationsDeleteStepV1Request} requestParameters Request parameters.
+         * @param {AutomationsApiAutomationsDeleteStepsV1Request} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        automationsDeleteStepV1(requestParameters: AutomationsApiAutomationsDeleteStepV1Request, options?: RawAxiosRequestConfig): AxiosPromise<AutomationDto> {
-            return localVarFp.automationsDeleteStepV1(requestParameters.id, requestParameters.stepId, options).then((request) => request(axios, basePath));
+        automationsDeleteStepsV1(requestParameters: AutomationsApiAutomationsDeleteStepsV1Request, options?: RawAxiosRequestConfig): AxiosPromise<AutomationDto> {
+            return localVarFp.automationsDeleteStepsV1(requestParameters.id, requestParameters.deleteStepsDto, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -834,45 +842,45 @@ export interface AutomationsApiAutomationsCreateV1Request {
 }
 
 /**
- * Request parameters for automationsDeleteConnectionV1 operation in AutomationsApi.
+ * Request parameters for automationsDeleteConnectionsV1 operation in AutomationsApi.
  * @export
- * @interface AutomationsApiAutomationsDeleteConnectionV1Request
+ * @interface AutomationsApiAutomationsDeleteConnectionsV1Request
  */
-export interface AutomationsApiAutomationsDeleteConnectionV1Request {
+export interface AutomationsApiAutomationsDeleteConnectionsV1Request {
     /**
      * 
      * @type {string}
-     * @memberof AutomationsApiAutomationsDeleteConnectionV1
+     * @memberof AutomationsApiAutomationsDeleteConnectionsV1
      */
     readonly id: string
 
     /**
      * 
-     * @type {string}
-     * @memberof AutomationsApiAutomationsDeleteConnectionV1
+     * @type {DeleteConnectionsDto}
+     * @memberof AutomationsApiAutomationsDeleteConnectionsV1
      */
-    readonly connectionId: string
+    readonly deleteConnectionsDto: DeleteConnectionsDto
 }
 
 /**
- * Request parameters for automationsDeleteStepV1 operation in AutomationsApi.
+ * Request parameters for automationsDeleteStepsV1 operation in AutomationsApi.
  * @export
- * @interface AutomationsApiAutomationsDeleteStepV1Request
+ * @interface AutomationsApiAutomationsDeleteStepsV1Request
  */
-export interface AutomationsApiAutomationsDeleteStepV1Request {
+export interface AutomationsApiAutomationsDeleteStepsV1Request {
     /**
      * 
      * @type {string}
-     * @memberof AutomationsApiAutomationsDeleteStepV1
+     * @memberof AutomationsApiAutomationsDeleteStepsV1
      */
     readonly id: string
 
     /**
      * 
-     * @type {string}
-     * @memberof AutomationsApiAutomationsDeleteStepV1
+     * @type {DeleteStepsDto}
+     * @memberof AutomationsApiAutomationsDeleteStepsV1
      */
-    readonly stepId: string
+    readonly deleteStepsDto: DeleteStepsDto
 }
 
 /**
@@ -1050,24 +1058,24 @@ export class AutomationsApi extends BaseAPI {
 
     /**
      * 
-     * @param {AutomationsApiAutomationsDeleteConnectionV1Request} requestParameters Request parameters.
+     * @param {AutomationsApiAutomationsDeleteConnectionsV1Request} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof AutomationsApi
      */
-    public automationsDeleteConnectionV1(requestParameters: AutomationsApiAutomationsDeleteConnectionV1Request, options?: RawAxiosRequestConfig) {
-        return AutomationsApiFp(this.configuration).automationsDeleteConnectionV1(requestParameters.id, requestParameters.connectionId, options).then((request) => request(this.axios, this.basePath));
+    public automationsDeleteConnectionsV1(requestParameters: AutomationsApiAutomationsDeleteConnectionsV1Request, options?: RawAxiosRequestConfig) {
+        return AutomationsApiFp(this.configuration).automationsDeleteConnectionsV1(requestParameters.id, requestParameters.deleteConnectionsDto, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
-     * @param {AutomationsApiAutomationsDeleteStepV1Request} requestParameters Request parameters.
+     * @param {AutomationsApiAutomationsDeleteStepsV1Request} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof AutomationsApi
      */
-    public automationsDeleteStepV1(requestParameters: AutomationsApiAutomationsDeleteStepV1Request, options?: RawAxiosRequestConfig) {
-        return AutomationsApiFp(this.configuration).automationsDeleteStepV1(requestParameters.id, requestParameters.stepId, options).then((request) => request(this.axios, this.basePath));
+    public automationsDeleteStepsV1(requestParameters: AutomationsApiAutomationsDeleteStepsV1Request, options?: RawAxiosRequestConfig) {
+        return AutomationsApiFp(this.configuration).automationsDeleteStepsV1(requestParameters.id, requestParameters.deleteStepsDto, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

@@ -580,12 +580,12 @@ export class AutomationsService {
     });
   }
 
-  async deleteStep({
+  async deleteSteps({
     accountId,
     automationId,
-    stepId,
+    stepIds,
   }: BaseAutomationParams & {
-    stepId: string;
+    stepIds: string[];
   }): Promise<AutomationDto> {
     return this.withTransaction(async (session) => {
       const { automation, draftVersion } = await this.fetchAutomationWithDraft(
@@ -597,11 +597,11 @@ export class AutomationsService {
       );
 
       const updatedDraftVersion =
-        await this.automationVersionRepository.deleteStep(
+        await this.automationVersionRepository.deleteSteps(
           {
             accountId,
             versionId: draftVersion._id,
-            stepId,
+            stepIds,
           },
           session,
         );
@@ -610,7 +610,7 @@ export class AutomationsService {
         return this.toAutomationDto(automation, updatedDraftVersion);
       }
 
-      throw new NotFoundException('Could not delete step');
+      throw new NotFoundException('Could not delete steps');
     });
   }
 
@@ -648,12 +648,12 @@ export class AutomationsService {
     });
   }
 
-  async deleteConnection({
+  async deleteConnections({
     accountId,
     automationId,
-    connectionId,
+    connectionIds,
   }: BaseAutomationParams & {
-    connectionId: string;
+    connectionIds: string[];
   }): Promise<AutomationDto> {
     return this.withTransaction(async (session) => {
       const { automation, draftVersion } = await this.fetchAutomationWithDraft(
@@ -665,11 +665,11 @@ export class AutomationsService {
       );
 
       const updatedDraftVersion =
-        await this.automationVersionRepository.deleteConnection(
+        await this.automationVersionRepository.deleteConnections(
           {
             accountId,
             versionId: draftVersion._id,
-            connectionId,
+            connectionIds,
           },
           session,
         );
@@ -678,7 +678,7 @@ export class AutomationsService {
         return this.toAutomationDto(automation, updatedDraftVersion);
       }
 
-      throw new NotFoundException('Could not delete connection');
+      throw new NotFoundException('Could not delete connections');
     });
   }
 }

@@ -2,24 +2,18 @@ import { useCallback, useRef } from 'react';
 
 import { EditorNode, useEditorStore } from '../store';
 import { useCenterNode } from './use-center-node';
-import {
-  Connection,
-  Edge,
-  EdgeChange,
-  NodeChange,
-  OnConnectStartParams,
-} from '@xyflow/react';
+import { Edge, EdgeChange, NodeChange } from '@xyflow/react';
 
 export function useAutomationEditor() {
+  const reactFlowWrapper = useRef<HTMLDivElement>(null);
+
   const nodes = useEditorStore((s) => s.nodes);
   const edges = useEditorStore((s) => s.edges);
   const selectedNode = useEditorStore((s) => s.selectedNode);
   const setSelectedNode = useEditorStore((s) => s.setSelectedNode);
   const onNodesChange = useEditorStore((s) => s.onNodesChange);
   const onEdgesChange = useEditorStore((s) => s.onEdgesChange);
-  const onConnect = useEditorStore((s) => s.onConnect);
   const setNodes = useEditorStore((s) => s.setNodes);
-  const reactFlowWrapper = useRef<HTMLDivElement>(null);
 
   const { centerNode } = useCenterNode({ reactFlowWrapper });
 
@@ -47,13 +41,6 @@ export function useAutomationEditor() {
     setSelectedNode(undefined);
   }, [setSelectedNode]);
 
-  const handleConnect = useCallback(
-    (params: Connection) => {
-      onConnect(params);
-    },
-    [onConnect]
-  );
-
   const addMessageStep = () => {
     setNodes([
       ...nodes,
@@ -76,7 +63,6 @@ export function useAutomationEditor() {
     handleNodeSelect,
     handlePaneClick,
     handleEdgeChanges,
-    handleConnect,
     addMessageStep,
     handleNodeChanges,
   };

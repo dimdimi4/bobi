@@ -4,11 +4,11 @@ import { useCreateStepMutation } from '@/data/repositories/automations-repositor
 
 import { EditorNode, useEditorStore } from '../store';
 
-export function useAddStep() {
+export function useCreateStep() {
   const { automationId, nodes, setNodes } = useEditorStore((s) => s);
   const { mutate: createStep } = useCreateStepMutation(automationId);
 
-  const addStep = (step: EditorNode) => {
+  const handleAddStep = (step: EditorNode) => {
     setNodes([...nodes, step]);
     createStep({
       step: {
@@ -19,8 +19,8 @@ export function useAddStep() {
     });
   };
 
-  const addMessageStep = () => {
-    addStep({
+  const handleCreateMessageStep = () => {
+    handleAddStep({
       id: uuid(),
       type: 'message',
       position: { x: 0, y: 0 },
@@ -33,5 +33,5 @@ export function useAddStep() {
     });
   };
 
-  return { addStep, addMessageStep };
+  return { handleAddStep, handleCreateMessageStep };
 }
