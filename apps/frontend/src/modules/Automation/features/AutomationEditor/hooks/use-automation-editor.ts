@@ -31,7 +31,7 @@ export function useAutomationEditor() {
         setSelectedNode(undefined);
       } else {
         setSelectedNode(node);
-        centerNode(node);
+        // centerNode(node);
       }
     },
     [centerNode, setSelectedNode, selectedNode?.id]

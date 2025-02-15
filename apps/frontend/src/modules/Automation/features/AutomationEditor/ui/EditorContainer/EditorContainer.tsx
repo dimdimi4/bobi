@@ -1,13 +1,16 @@
 import { forwardRef, PropsWithChildren } from 'react';
 import styles from './EditorContainer.module.css';
-import { Panel } from '@xyflow/react';
 
 export function EditorContainer({ children }: PropsWithChildren) {
   return <div className={styles.root}>{children}</div>;
 }
 
 function Header({ children }: PropsWithChildren) {
-  return <Panel className={styles.header}>{children}</Panel>;
+  return <div className={styles.header}>{children}</div>;
+}
+
+function Content({ children }: PropsWithChildren) {
+  return <div className={styles.content}>{children}</div>;
 }
 
 function SidePanel({
@@ -20,9 +23,9 @@ function SidePanel({
   }
 
   return (
-    <Panel position="bottom-right" className={classes.join(' ')}>
-      {children}
-    </Panel>
+    <div className={classes.join(' ')}>
+      <div className={styles['side-panel__content']}>{children}</div>
+    </div>
   );
 }
 
@@ -42,5 +45,6 @@ function Footer({ children }: PropsWithChildren) {
 
 EditorContainer.Header = Header;
 EditorContainer.Body = Body;
+EditorContainer.Content = Content;
 EditorContainer.Footer = Footer;
 EditorContainer.SidePanel = SidePanel;

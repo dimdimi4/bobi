@@ -34,7 +34,7 @@ export function useCreateAutomation({ onSuccess }: CreateAutomationProps) {
 
   useEffect(() => {
     if (isSuccess && data) {
-      onSuccess?.(data.automation);
+      onSuccess?.(data);
     }
   }, [data, onSuccess, isSuccess]);
 
