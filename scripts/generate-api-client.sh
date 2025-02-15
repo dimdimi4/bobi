@@ -27,7 +27,7 @@ openapi-generator generate \
   -i "$SPEC_PATH" \
   -g typescript-axios \
   -o "$OUTPUT_PATH" \
-  --additional-properties=supportsES6=true,withSeparateModelsAndApi=true,modelPackage="models",apiPackage="services"
+  --additional-properties=supportsES6=true,withSeparateModelsAndApi=true,useSingleRequestParameter=true,modelPackage="models",apiPackage="services"
 
 # Clean up unnecessary files
 rm -f "$OUTPUT_PATH"/.gitignore
