@@ -21,7 +21,7 @@ export function Media() {
   const [mediaType, setMediaType] = useState<string>('image');
 
   return (
-    <Paper p="sm" withBorder>
+    <Paper p="sm" withBorder shadow="xs">
       <Stack gap="xs">
         <Text size="lg" fw={500}>
           Media <br />

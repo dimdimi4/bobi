@@ -1,4 +1,12 @@
-import { Button, Paper, Stack, Text } from '@mantine/core';
+import {
+  Button,
+  CloseButton,
+  Group,
+  Paper,
+  Stack,
+  Text,
+  Title,
+} from '@mantine/core';
 import { useForm } from '@tanstack/react-form';
 
 import { TextEditor } from '../../ui/TextEditor';
@@ -23,8 +31,12 @@ export function TelegramSendMessageTaskForm({
       }}
     >
       <Stack gap="md">
+        <Group justify="space-between">
+          <Title order={3}>Send message</Title>
+          <CloseButton size="lg" />
+        </Group>
         <Media />
-        <Paper p="sm" withBorder>
+        <Paper p="sm" withBorder shadow="xs">
           <Stack gap="xs">
             <Text size="md" fw={500}>
               Text <br />
@@ -44,7 +56,7 @@ export function TelegramSendMessageTaskForm({
             />
           </Stack>
         </Paper>
-        <Paper p="sm" withBorder>
+        <Paper p="sm" withBorder shadow="xs">
           <Stack gap="xs">
             <Text size="lg" fw={500}>
               Quick replies

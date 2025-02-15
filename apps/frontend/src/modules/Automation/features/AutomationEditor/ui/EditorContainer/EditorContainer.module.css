@@ -24,7 +24,7 @@
 }
 
 .side-panel {
-  background-color: var(--mantine-color-gray-1);
+  background-color: var(--mantine-color-gray-0);
   border-left: 1px solid var(--mantine-color-gray-2);
   box-shadow: var(--mantine-shadow-xl);
   z-index: 99;
