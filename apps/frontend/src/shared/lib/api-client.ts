@@ -22,7 +22,6 @@ api.interceptors.response.use(
   },
   (error) => {
     const message = error.response?.data?.message || error.message;
-    console.log('i was here', message);
     notifications.show({
       color: 'red',
       title: 'Error',

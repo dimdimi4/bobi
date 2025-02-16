@@ -32,7 +32,7 @@ export function App() {
     <ThemeProvider>
       <QueryClientProvider client={queryClient}>
         <RouterProvider router={router} />
-        <Notifications />
+        <Notifications limit={5} position="bottom-center" />
       </QueryClientProvider>
     </ThemeProvider>
   );

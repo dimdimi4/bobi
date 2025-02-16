@@ -22,7 +22,7 @@ import { useUpdateStepPositions } from './hooks/use-update-positions';
 import { useCreateConnection } from './hooks/use-create-connection';
 import { useDeleteConnections } from './hooks/use-delete-connections';
 import { useDeleteSteps } from './hooks/use-delete-steps';
-import { TelegramSendMessageTaskForm } from './forms/TelegramSendMessageTask';
+import { TelegramSendMessage } from './forms/TelegramSendMessage';
 
 const nodeTypes = {
   trigger: TriggerNode,
@@ -90,7 +90,7 @@ function AutomationEditorInner({ onExit }: AutomationEditorProps) {
         </EditorContainer.Body>
         <EditorContainer.SidePanel opened={!!selectedNode}>
           {selectedNode?.data.action_telegram_sendMessage && (
-            <TelegramSendMessageTaskForm
+            <TelegramSendMessage
               task={selectedNode?.data.action_telegram_sendMessage}
             />
           )}

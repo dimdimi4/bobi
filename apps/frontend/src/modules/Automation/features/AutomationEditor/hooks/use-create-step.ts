@@ -27,7 +27,13 @@ export function useCreateStep() {
       data: {
         action_telegram_sendMessage: {
           message: 'Hello, world!',
-          quickReplies: [],
+          quickReplyButtons: [
+            {
+              id: uuid(),
+              text: 'Hello',
+              url: 'https://google.com',
+            },
+          ],
         },
       },
     });

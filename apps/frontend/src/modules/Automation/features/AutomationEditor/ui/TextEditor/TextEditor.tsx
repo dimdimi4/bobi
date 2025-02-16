@@ -5,6 +5,8 @@ import { useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Placeholder from '@tiptap/extension-placeholder';
 import Underline from '@tiptap/extension-underline';
+// import Emoji, { gitHubEmojis } from '@tiptap-pro/extension-emoji';
+// import emojisSuggestions from './emojis-suggestions';
 
 export function TextEditor({
   value,
@@ -19,6 +21,12 @@ export function TextEditor({
       StarterKit,
       Underline,
       Placeholder.configure({ placeholder: 'Type your message here...' }),
+      // TODO: Fix emoji extension
+      // Emoji.configure({
+      //   emojis: gitHubEmojis,
+      //   enableEmoticons: true,
+      //   suggestion: emojisSuggestions,
+      // }),
     ],
     content: value,
     onUpdate: ({ editor }) => {
