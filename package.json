@@ -1,8 +1,17 @@
 {
+  "name": "autochat",
+  "private": true,
   "scripts": {
     "gen": "npm run gen:api-client && npm run gen:api-schema",
     "gen:api-client": "./scripts/generate-api-client.sh",
     "gen:api-schema": "./scripts/generate-api-schema.sh"
   },
-  "packageManager": "pnpm@9.1.4+sha1.2432063d815cfa88fd9fef1d85a445e3f609851d"
+  "packageManager": "pnpm@9.1.4+sha1.2432063d815cfa88fd9fef1d85a445e3f609851d",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "devDependencies": {
+    "turbo": "^2.4.2"
+  }
 }
