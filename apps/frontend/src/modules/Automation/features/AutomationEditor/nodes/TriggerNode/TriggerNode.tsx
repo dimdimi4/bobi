@@ -12,13 +12,17 @@ type TriggerNode = Node<TriggersTypes, 'trigger'>;
 export function TriggerNode({ data }: NodeProps<TriggerNode>) {
   return (
     <EditorNode start>
-      <EditorNode.StartHandle text="Start when..." />
-      <EditorNode.BodyContainer>
-        {data.trigger_receivedMessage && (
-          <TriggerReceivedMessageNode trigger={data.trigger_receivedMessage} />
-        )}
-      </EditorNode.BodyContainer>
-      <EditorNode.OutputHandle text="Then" />
+      <EditorNode.Body>
+        <EditorNode.StartHandle text="Start when..." />
+        <EditorNode.BodyContainer>
+          {data.trigger_receivedMessage && (
+            <TriggerReceivedMessageNode
+              trigger={data.trigger_receivedMessage}
+            />
+          )}
+        </EditorNode.BodyContainer>
+        <EditorNode.OutputHandle text="Then" />
+      </EditorNode.Body>
     </EditorNode>
   );
 }

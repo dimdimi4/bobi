@@ -1,6 +1,7 @@
 import { createRouter, RouterProvider } from '@tanstack/react-router';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Notifications } from '@mantine/notifications';
+import { ModalsProvider } from '@mantine/modals';
 
 import '@mantine/notifications/styles.css';
 
@@ -31,8 +32,10 @@ export function App() {
   return (
     <ThemeProvider>
       <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} />
-        <Notifications limit={5} position="bottom-center" />
+        <ModalsProvider>
+          <RouterProvider router={router} />
+          <Notifications limit={5} position="bottom-center" />
+        </ModalsProvider>
       </QueryClientProvider>
     </ThemeProvider>
   );

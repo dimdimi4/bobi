@@ -7,6 +7,7 @@ import {
 import {
   AutomationConnection,
   AutomationsApi,
+  AutomationTask,
   CreateAutomationDto,
   CreateStepDto,
   UpdateStepsPositionsDto,
@@ -123,6 +124,26 @@ export function useDeleteConnectionsMutation(automationId: string) {
       automationsApi.automationsDeleteConnectionsV1({
         id: automationId,
         deleteConnectionsDto: { connectionIds },
+      }),
+    onSuccess: () =>
+      queryClient.invalidateQueries({
+        queryKey: [KEY, automationId],
+      }),
+  });
+}
+
+export function useUpdateStepTaskMutation(
+  automationId: string,
+  stepId: string
+) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (payload: AutomationTask) =>
+      automationsApi.automationsUpdateStepTaskV1({
+        id: automationId,
+        stepId: stepId,
+        automationTask: payload,
       }),
     onSuccess: () =>
       queryClient.invalidateQueries({

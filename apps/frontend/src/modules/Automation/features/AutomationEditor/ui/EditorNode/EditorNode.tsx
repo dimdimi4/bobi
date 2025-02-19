@@ -14,18 +14,22 @@ function EditorNode({
   start = false,
   end = false,
 }: PropsWithChildren<EditorNodeProps>) {
-  const classes = [styles.EditorNode];
+  const classes = [styles.root];
 
   if (start) {
-    classes.push(styles.EditorNodeStart);
+    classes.push(styles.start);
   }
 
   if (end) {
-    classes.push(styles.EditorNodeEnd);
+    classes.push(styles.end);
   }
 
+  return <div className={classes.join(' ')}>{children}</div>;
+}
+
+function Body({ children }: PropsWithChildren) {
   return (
-    <Card shadow="xs" withBorder className={classes.join(' ')}>
+    <Card shadow="xs" withBorder className={styles.body}>
       {children}
     </Card>
   );
@@ -34,17 +38,17 @@ function EditorNode({
 function BodyContainer({ children }: PropsWithChildren) {
   return (
     <Card.Section inheritPadding py={4} className={styles.BodyContainer}>
-      <div className={styles.BodyContainerContent}>{children}</div>
+      {children}
     </Card.Section>
   );
 }
 
+function BodyContent({ children }: PropsWithChildren) {
+  return <div className={styles.BodyContainerContent}>{children}</div>;
+}
+
 function HandleContainer({ children }: PropsWithChildren) {
-  return (
-    <Card.Section inheritPadding py={6} className={styles.HandleContainer}>
-      {children}
-    </Card.Section>
-  );
+  return <div className={styles.HandleContainer}>{children}</div>;
 }
 
 function HandleText({ text }: { text: string }) {
@@ -119,5 +123,7 @@ EditorNode.OutputHandle = OutputHandle;
 EditorNode.HandleContainer = HandleContainer;
 EditorNode.HandleText = HandleText;
 EditorNode.BodyContainer = BodyContainer;
+EditorNode.BodyContent = BodyContent;
+EditorNode.Body = Body;
 
 export { EditorNode };

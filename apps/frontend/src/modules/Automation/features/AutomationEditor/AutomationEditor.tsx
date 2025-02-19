@@ -11,18 +11,18 @@ import { StoreProvider } from './store/StoreProvider';
 import { EditorContainer } from './ui/EditorContainer';
 
 import { AutomationEditorHeader } from './AutomationEditorHeader';
+import { AutomationEditorSidebar } from './AutomationEditorSidebar';
 
 import { TriggerNode } from './nodes/TriggerNode';
 import { EndNode } from './nodes/EndNode';
 import { ActionNode } from './nodes/ActionNode';
 import { ConditionNode } from './nodes/ConditionNode';
-import { Message2Node, MessageNode } from './nodes/MessageNode';
+import { MessageNode } from './nodes/MessageNode';
 import { useAutomationEditor } from './hooks/use-automation-editor';
 import { useUpdateStepPositions } from './hooks/use-update-positions';
 import { useCreateConnection } from './hooks/use-create-connection';
 import { useDeleteConnections } from './hooks/use-delete-connections';
 import { useDeleteSteps } from './hooks/use-delete-steps';
-import { TelegramSendMessage } from './forms/TelegramSendMessage';
 
 const nodeTypes = {
   trigger: TriggerNode,
@@ -30,7 +30,6 @@ const nodeTypes = {
   action: ActionNode,
   condition: ConditionNode,
   message: MessageNode,
-  message2: Message2Node,
 };
 
 export function AutomationEditor(props: AutomationEditorProps) {
@@ -89,11 +88,7 @@ function AutomationEditorInner({ onExit }: AutomationEditorProps) {
           </ReactFlow>
         </EditorContainer.Body>
         <EditorContainer.SidePanel opened={!!selectedNode}>
-          {selectedNode?.data.action_telegram_sendMessage && (
-            <TelegramSendMessage
-              task={selectedNode?.data.action_telegram_sendMessage}
-            />
-          )}
+          {selectedNode && <AutomationEditorSidebar />}
         </EditorContainer.SidePanel>
       </EditorContainer.Content>
     </EditorContainer>

@@ -1,49 +1,61 @@
+import Markdown, { ReactRenderer } from 'marked-react';
+import { Anchor, Button, Code, Stack, Text } from '@mantine/core';
 import { Node, NodeProps } from '@xyflow/react';
 
-import { EditorNode } from '../../ui/EditorNode';
-import { Button, Group, Image, Text } from '@mantine/core';
+import { AutomationTask } from '@/data/sources/api';
 
-type MessageNode = Node<{ label: string }, 'message'>;
+import { EditorNode } from '../../ui/EditorNode';
+
+type ActionsTypes = Pick<AutomationTask, 'action_telegram_sendMessage'>;
+type MessageNode = Node<ActionsTypes, 'message'>;
+
+const renderer: Partial<ReactRenderer> = {
+  paragraph(children) {
+    return <Text>{children}</Text>;
+  },
+  link(href, children) {
+    return (
+      <Anchor href={href} target="_blank">
+        {children}
+      </Anchor>
+    );
+  },
+  codespan(children) {
+    return <Code>{children}</Code>;
+  },
+};
 
 export function MessageNode({ data }: NodeProps<MessageNode>) {
   return (
     <EditorNode>
-      <EditorNode.InputHandle text="Send message" />
-      <EditorNode.BodyContainer>
-        <Group gap="xs">
-          <Image
-            src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-8.png"
-            height={140}
-            alt="Norway"
+      <Stack gap={6}>
+        <EditorNode.Body>
+          <EditorNode.BodyContainer>
+            <EditorNode.InputHandle text="Send message" />
+          </EditorNode.BodyContainer>
+          <EditorNode.BodyContainer>
+            <EditorNode.BodyContent>
+              {data.action_telegram_sendMessage && (
+                <Markdown renderer={renderer}>
+                  {data.action_telegram_sendMessage?.message}
+                </Markdown>
+              )}
+            </EditorNode.BodyContent>
+          </EditorNode.BodyContainer>
+          <EditorNode.OutputHandle
+            text="If no replay, then"
+            id="then"
+            altHandle
           />
-          <Text fz="xs" lh="xs">
-            Привет! На связи Катя Каменецки.{' '}
-          </Text>
-          <Text fz="xs" lh="xs" p={0}>
-            Если ты здесь, значит, тебе интересно развиваться и расти в продажах
-            в 2025 году.
-          </Text>
-          <Text fz="xs" lh="xs">
-            Ты попала в нужное место в нужное время 😍
-          </Text>
-          <Text fz="xs" lh="xs">
-            Я записала для тебя супер актуальный урок: "Как вести блог и
-            продавать психологам, эзотерикам и креаторам в 2025 году" 🌟
-          </Text>
-          <Text fz="xs" lh="xs">
-            Но прежде чем я отправлю тебе его, ответь, пожалуйста, на несколько
-            вопросов, чтобы мы поближе познакомились 👇
-          </Text>
-        </Group>
-      </EditorNode.BodyContainer>
-      <EditorNode.OutputHandle id="then2">
-        <Button.Group>
-          <Button.GroupSection variant="default" size="xs" w="100%">
-            Хорошо
-          </Button.GroupSection>
-        </Button.Group>
-      </EditorNode.OutputHandle>
-      <EditorNode.OutputHandle text="If no replay, then" id="then" altHandle />
+        </EditorNode.Body>
+        {data.action_telegram_sendMessage?.quickReplyButtons?.map((button) => (
+          <EditorNode.OutputHandle key={button.text} id={button.id}>
+            <Button variant="light" size="xs" color="indigo" fullWidth>
+              {button.text}
+            </Button>
+          </EditorNode.OutputHandle>
+        ))}
+      </Stack>
     </EditorNode>
   );
 }

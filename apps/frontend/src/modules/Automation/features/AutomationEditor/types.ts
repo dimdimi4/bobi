@@ -10,10 +10,10 @@ import {
 
 export type EditorNodeTypes = 'trigger' | 'action' | 'condition' | 'message';
 
-export type EditorNode = Node<
-  AutomationStep['task'] & Record<string, unknown>,
-  EditorNodeTypes
->;
+export type AutomationStepTask = AutomationStep['task'] &
+  Record<string, unknown>;
+
+export type EditorNode = Node<AutomationStepTask, EditorNodeTypes>;
 
 export type EditorState = {
   automationId: string;

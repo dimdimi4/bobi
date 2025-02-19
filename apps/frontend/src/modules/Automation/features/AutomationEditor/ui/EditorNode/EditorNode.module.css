@@ -1,29 +1,35 @@
-.EditorNode {
+.root {
   width: 280px;
-  position: relative;
   overflow: initial;
-}
+  position: relative;
 
-:global(.selected) .EditorNode {
-  &:before {
-    content: '';
-    position: absolute;
-    top: -2px;
-    left: -2px;
-    width: calc(100% + 4px);
-    height: calc(100% + 4px);
-    border: 2px solid var(--mantine-primary-color-9);
-    border-radius: var(--mantine-radius-md);
-    z-index: 0;
+  :global(.selected) & {
+    &:before {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      width: calc(100% + 4px);
+      height: calc(100% + 4px);
+      border: 2px solid var(--mantine-primary-color-9);
+      border-radius: var(--mantine-radius-md);
+      z-index: 0;
+    }
   }
 }
 
-.EditorNodeStart {
-  border-left: 4px solid var(--mantine-primary-color-9);
-}
+.body {
+  width: 100%;
+  position: relative;
+  overflow: initial;
 
-.EditorNodeEnd {
-  border-right: 4px solid var(--mantine-primary-color-9);
+  .start & {
+    border-left: 4px solid var(--mantine-primary-color-9);
+  }
+
+  .end & {
+    border-right: 4px solid var(--mantine-primary-color-9);
+  }
 }
 
 .HandleContainer {

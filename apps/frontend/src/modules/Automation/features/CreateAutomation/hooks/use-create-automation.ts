@@ -16,6 +16,8 @@ const formSchema = z.object({
 });
 
 export function useCreateAutomation({ onSuccess }: CreateAutomationProps) {
+  const { mutate, data, isSuccess } = useCreateAutomationMutation();
+
   const form = useForm<CreateAutomationDto>({
     defaultValues: {
       name: '',
@@ -29,8 +31,6 @@ export function useCreateAutomation({ onSuccess }: CreateAutomationProps) {
       onChange: formSchema,
     },
   });
-
-  const { mutate, data, isSuccess } = useCreateAutomationMutation();
 
   useEffect(() => {
     if (isSuccess && data) {
