@@ -50,7 +50,7 @@ export function MessageNode({ data }: NodeProps<MessageNode>) {
         </EditorNode.Body>
         {data.action_telegram_sendMessage?.quickReplyButtons?.map((button) => (
           <EditorNode.OutputHandle key={button.text} id={button.id}>
-            <Button variant="light" size="xs" color="indigo" fullWidth>
+            <Button variant="light" size="xs" fullWidth>
               {button.text}
             </Button>
           </EditorNode.OutputHandle>
