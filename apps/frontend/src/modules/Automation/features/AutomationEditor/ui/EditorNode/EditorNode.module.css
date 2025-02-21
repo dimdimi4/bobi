@@ -62,14 +62,14 @@
 }
 
 .handle {
-  --handle-width: 16px;
-  --handle-height: 16px;
+  --handle-width: 14px;
+  --handle-height: 14px;
 
   width: var(--handle-width);
   height: var(--handle-height);
   background: var(--mantine-primary-color-9);
   border-radius: 50%;
-  border: 2px solid var(--mantine-color-white);
+  border: 0;
 
   &:hover {
     background-color: var(--mantine-primary-color-7);
