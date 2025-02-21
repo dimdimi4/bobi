@@ -927,6 +927,21 @@
           "text"
         ]
       },
+      "TelegramTimeout": {
+        "type": "object",
+        "properties": {
+          "duration": {
+            "type": "number"
+          },
+          "unit": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "duration",
+          "unit"
+        ]
+      },
       "TelegramSendMessageTask": {
         "type": "object",
         "properties": {
@@ -938,6 +953,9 @@
             "items": {
               "$ref": "#/components/schemas/TelegramQuickReplyButton"
             }
+          },
+          "timeout": {
+            "$ref": "#/components/schemas/TelegramTimeout"
           }
         },
         "required": [

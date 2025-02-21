@@ -1,7 +1,7 @@
 import Markdown, { ReactRenderer } from 'marked-react';
 import { Anchor, Button, Code, Stack, Text } from '@mantine/core';
-import { Node, NodeProps } from '@xyflow/react';
-
+import { Node, NodeProps, Position } from '@xyflow/react';
+import { v4 as uuidv4 } from 'uuid';
 import { AutomationTask } from '@/data/sources/api';
 
 import { EditorNode } from '../../ui/EditorNode';
@@ -11,51 +11,62 @@ type MessageNode = Node<ActionsTypes, 'message'>;
 
 const renderer: Partial<ReactRenderer> = {
   paragraph(children) {
-    return <Text>{children}</Text>;
+    return <Text key={uuidv4()}>{children}</Text>;
   },
   link(href, children) {
     return (
-      <Anchor href={href} target="_blank">
+      <Anchor href={href} target="_blank" key={uuidv4()}>
         {children}
       </Anchor>
     );
   },
   codespan(children) {
-    return <Code>{children}</Code>;
+    return <Code key={uuidv4()}>{children}</Code>;
   },
 };
 
-export function MessageNode({ data }: NodeProps<MessageNode>) {
+export function MessageNode({
+  data: { action_telegram_sendMessage },
+}: NodeProps<MessageNode>) {
+  if (!action_telegram_sendMessage) {
+    return null;
+  }
+
+  const { message, quickReplyButtons, timeout } = action_telegram_sendMessage;
+
   return (
     <EditorNode>
-      <Stack gap={6}>
+      <EditorNode.HandleContainer padded>
+        <EditorNode.InputHandle position={Position.Left} />
+        <Text fw={500} size="sm" c="gray" component="div">
+          Send message
+        </Text>
+      </EditorNode.HandleContainer>
+      <EditorNode.Section>
         <EditorNode.Body>
-          <EditorNode.BodyContainer>
-            <EditorNode.InputHandle text="Send message" />
-          </EditorNode.BodyContainer>
-          <EditorNode.BodyContainer>
-            <EditorNode.BodyContent>
-              {data.action_telegram_sendMessage && (
-                <Markdown renderer={renderer}>
-                  {data.action_telegram_sendMessage?.message}
-                </Markdown>
-              )}
-            </EditorNode.BodyContent>
-          </EditorNode.BodyContainer>
-          <EditorNode.OutputHandle
-            text="If no replay, then"
-            id="then"
-            altHandle
-          />
+          <Markdown renderer={renderer} key="send-message">
+            {message}
+          </Markdown>
         </EditorNode.Body>
-        {data.action_telegram_sendMessage?.quickReplyButtons?.map((button) => (
-          <EditorNode.OutputHandle key={button.text} id={button.id}>
-            <Button variant="light" size="xs" fullWidth>
+      </EditorNode.Section>
+      <Stack gap="xs">
+        {quickReplyButtons?.map((button) => (
+          <EditorNode.HandleContainer padded={{ x: true }} key={button.text}>
+            <Button variant="light" color="gray" size="xs" fullWidth>
               {button.text}
             </Button>
-          </EditorNode.OutputHandle>
+            <EditorNode.OutputHandle id={button.id} position={Position.Right} />
+          </EditorNode.HandleContainer>
         ))}
       </Stack>
+      <EditorNode.HandleContainer padded justify="flex-end">
+        <Text fw={600} size="sm" c="dimmed" component="div">
+          {timeout
+            ? `If no reply in ${timeout.duration} ${timeout.unit}`
+            : 'Then'}
+        </Text>
+        <EditorNode.OutputHandle position={Position.Right} />
+      </EditorNode.HandleContainer>
     </EditorNode>
   );
 }

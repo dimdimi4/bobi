@@ -7,17 +7,23 @@
   overflow: hidden;
 }
 
+:root {
+  --editor-container-header-height: 50px;
+}
+
 .header {
   padding: var(--mantine-spacing-xs);
   background-color: var(--mantine-color-white);
   border-bottom: 1px solid var(--mantine-color-gray-2);
   box-shadow: var(--mantine-shadow-sm);
   z-index: 100;
+  height: var(--editor-container-header-height);
 }
 
 .content {
   display: flex;
   flex: 1;
+  height: calc(100vh - var(--editor-container-header-height));
 }
 
 :root {
@@ -31,16 +37,18 @@
   z-index: 99;
   width: 0;
   transition: width 0.15s ease-in-out;
+  overflow: hidden;
 
   &--open {
     width: var(--sidebar-width);
   }
 }
 
-
 .side-panel__content {
   padding: var(--mantine-spacing-md);
   width: var(--sidebar-width);
+  height: 100%;
+  overflow-y: auto;
 }
 
 .body {

@@ -1,12 +1,13 @@
 import { z } from 'zod';
 import { useForm, zodResolver } from '@mantine/form';
-import { CloseButton, Group, Stack, Title } from '@mantine/core';
+import { CloseButton, Group, Space, Stack, Title } from '@mantine/core';
 import { useDebouncedCallback } from '@mantine/hooks';
 
 import { TelegramSendMessageTask } from '@/data/sources/api';
 
 import { QuickRepliesSection } from './QuickRepliesSection';
 import { MessageSection } from './MessageSection';
+import { TimeoutSection } from './TimeoutSection';
 
 const formSchema = z.object({
   message: z
@@ -31,6 +32,12 @@ const formSchema = z.object({
         .optional(),
     })
   ),
+  timeout: z
+    .object({
+      duration: z.number().min(1, { message: 'Duration is required' }),
+      unit: z.string().min(1, { message: 'Unit is required' }),
+    })
+    .optional(),
 });
 
 export function TelegramSendMessage({
@@ -40,7 +47,7 @@ export function TelegramSendMessage({
   initialValues?: TelegramSendMessageTask;
   onSubmit: (value: TelegramSendMessageTask) => void;
 }) {
-  const handleValuesChange = useDebouncedCallback(onSubmit, 750);
+  const handleValuesChange = useDebouncedCallback(onSubmit, 500);
 
   const form = useForm<TelegramSendMessageTask>({
     mode: 'uncontrolled',
@@ -63,6 +70,8 @@ export function TelegramSendMessage({
         </Group>
         <MessageSection form={form} />
         <QuickRepliesSection form={form} />
+        <TimeoutSection form={form} />
+        <Space h="xl" />
       </Stack>
     </form>
   );

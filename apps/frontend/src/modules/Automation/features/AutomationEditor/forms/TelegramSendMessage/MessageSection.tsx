@@ -13,7 +13,7 @@ export function MessageSection({
   return (
     <TaskSection
       title="Message"
-      description="Message that will be sent to the user"
+      description="Text that will be sent to the user"
     >
       <TextEditor
         key={form.key('message')}

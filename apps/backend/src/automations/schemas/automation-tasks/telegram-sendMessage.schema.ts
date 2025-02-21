@@ -1,6 +1,13 @@
 import { Prop as MongooseProp, Schema } from '@nestjs/mongoose';
 import { Type } from 'class-transformer';
-import { IsArray, IsOptional, IsString, ValidateNested } from 'class-validator';
+import {
+  IsArray,
+  IsEnum,
+  IsNumber,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from 'class-validator';
 
 @Schema({ _id: false })
 export class TelegramQuickReplyButton {
@@ -28,6 +35,25 @@ export class TelegramQuickReplyButton {
 }
 
 @Schema({ _id: false })
+export class TelegramTimeout {
+  @MongooseProp({
+    type: Number,
+    required: true,
+  })
+  @IsNumber()
+  duration: number;
+
+  @MongooseProp({
+    type: String,
+    enum: ['seconds', 'minutes', 'hours', 'days'],
+    required: true,
+  })
+  @IsString()
+  @IsEnum(['seconds', 'minutes', 'hours', 'days'])
+  unit: string;
+}
+
+@Schema({ _id: false })
 export class TelegramSendMessageTask {
   @MongooseProp({
     type: String,
@@ -44,4 +70,13 @@ export class TelegramSendMessageTask {
   @ValidateNested({ each: true })
   @Type(() => TelegramQuickReplyButton)
   quickReplyButtons: TelegramQuickReplyButton[];
+
+  @MongooseProp({
+    type: TelegramTimeout,
+    required: false,
+  })
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => TelegramTimeout)
+  timeout?: TelegramTimeout;
 }

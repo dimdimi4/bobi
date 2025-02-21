@@ -80,7 +80,7 @@ function AutomationEditorInner({ onExit }: AutomationEditorProps) {
             onEdgesDelete={handleDeleteConnections}
             onNodesDelete={handleDeleteSteps}
             selectNodesOnDrag={false}
-            snapToGrid
+            // snapToGrid
             // deleteKeyCode={null}
           >
             <Background bgColor="var(--mantine-color-gray-1)" />

@@ -16,6 +16,9 @@
 // May contain unused imports in some cases
 // @ts-ignore
 import type { TelegramQuickReplyButton } from './telegram-quick-reply-button';
+// May contain unused imports in some cases
+// @ts-ignore
+import type { TelegramTimeout } from './telegram-timeout';
 
 /**
  * 
@@ -35,5 +38,11 @@ export interface TelegramSendMessageTask {
      * @memberof TelegramSendMessageTask
      */
     'quickReplyButtons': Array<TelegramQuickReplyButton>;
+    /**
+     * 
+     * @type {TelegramTimeout}
+     * @memberof TelegramSendMessageTask
+     */
+    'timeout'?: TelegramTimeout;
 }
 

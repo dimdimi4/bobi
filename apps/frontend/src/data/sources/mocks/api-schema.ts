@@ -254,9 +254,14 @@ export interface components {
             text: string;
             url?: string;
         };
+        TelegramTimeout: {
+            duration: number;
+            unit: string;
+        };
         TelegramSendMessageTask: {
             message: string;
             quickReplyButtons: components["schemas"]["TelegramQuickReplyButton"][];
+            timeout?: components["schemas"]["TelegramTimeout"];
         };
         AutomationTask: {
             trigger_receivedMessage?: components["schemas"]["TriggerReceivedMessageTask"];

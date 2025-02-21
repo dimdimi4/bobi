@@ -19,6 +19,7 @@ export * from './paginated-dto';
 export * from './step-position-dto';
 export * from './telegram-quick-reply-button';
 export * from './telegram-send-message-task';
+export * from './telegram-timeout';
 export * from './trigger-received-message-task';
 export * from './update-automation-dto';
 export * from './update-channel-dto';

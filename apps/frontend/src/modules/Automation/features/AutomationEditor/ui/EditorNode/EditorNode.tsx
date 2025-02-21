@@ -1,129 +1,67 @@
 import { PropsWithChildren } from 'react';
-import { Card, Group, Text } from '@mantine/core';
-import { Handle, Position } from '@xyflow/react';
 
 import styles from './EditorNode.module.css';
+import { Handle } from '@xyflow/react';
+import { HandleProps } from '@xyflow/react';
+import { Group } from '@mantine/core';
 
-type EditorNodeProps = {
-  start?: boolean;
-  end?: boolean;
-};
-
-function EditorNode({
-  children,
-  start = false,
-  end = false,
-}: PropsWithChildren<EditorNodeProps>) {
-  const classes = [styles.root];
-
-  if (start) {
-    classes.push(styles.start);
-  }
-
-  if (end) {
-    classes.push(styles.end);
-  }
-
-  return <div className={classes.join(' ')}>{children}</div>;
+function EditorNode({ children }: PropsWithChildren) {
+  return <div className={styles.root}>{children}</div>;
 }
 
 function Body({ children }: PropsWithChildren) {
-  return (
-    <Card shadow="xs" withBorder className={styles.body}>
-      {children}
-    </Card>
-  );
+  return <div className={styles.body}>{children}</div>;
 }
 
-function BodyContainer({ children }: PropsWithChildren) {
-  return (
-    <Card.Section inheritPadding py={4} className={styles.BodyContainer}>
-      {children}
-    </Card.Section>
-  );
+function Section({ children }: PropsWithChildren) {
+  return <div className={styles.section}>{children}</div>;
 }
 
-function BodyContent({ children }: PropsWithChildren) {
-  return <div className={styles.BodyContainerContent}>{children}</div>;
-}
-
-function HandleContainer({ children }: PropsWithChildren) {
-  return <div className={styles.HandleContainer}>{children}</div>;
-}
-
-function HandleText({ text }: { text: string }) {
-  return (
-    <Text fw={600} size="sm" c="dimmed">
-      {text}
-    </Text>
-  );
-}
-
-function StartHandle({ text = 'Start when...' }: { text: string }) {
-  return (
-    <HandleContainer>
-      <HandleText text={text} />
-    </HandleContainer>
-  );
-}
-
-function InputHandle({ text = 'Start when...' }: { text: string }) {
-  return (
-    <HandleContainer>
-      <Handle
-        id="left"
-        type="target"
-        position={Position.Left}
-        className={styles.HandleElement}
-      />
-      <Group justify="flex-start">
-        <HandleText text={text} />
-      </Group>
-    </HandleContainer>
-  );
-}
-
-function OutputHandle({
-  text,
-  id = 'right',
-  altHandle,
+function HandleContainer({
   children,
+  padded = false,
+  justify = 'flex-start',
 }: PropsWithChildren<{
-  id?: string;
-  text?: string;
-  altHandle?: boolean;
+  padded?: { x?: boolean; y?: boolean } | boolean;
+  justify?: 'flex-start' | 'flex-end' | 'space-between';
 }>) {
-  const classes = [styles.HandleElement];
+  const classes = [styles.handleContainer];
 
-  if (altHandle) {
-    classes.push(styles.HandleElementAlternative);
+  if (padded) {
+    if (typeof padded === 'boolean') {
+      classes.push(styles.padded);
+    } else {
+      if (padded.x) {
+        classes.push(styles.paddedX);
+      }
+      if (padded.y) {
+        classes.push(styles.paddedY);
+      }
+    }
   }
 
   return (
-    <HandleContainer>
-      <Handle
-        id={id}
-        type="source"
-        position={Position.Right}
-        className={classes.join(' ')}
-      />
+    <Group className={classes.join(' ')} justify={justify}>
       {children}
-      {text && (
-        <Group justify="flex-end">
-          <HandleText text={text} />
-        </Group>
-      )}
-    </HandleContainer>
+    </Group>
   );
 }
 
-EditorNode.StartHandle = StartHandle;
+function InputHandle(props: Omit<HandleProps, 'type'>) {
+  return (
+    <Handle id="input" {...props} type="target" className={styles.handle} />
+  );
+}
+
+function OutputHandle(props: Omit<HandleProps, 'type'>) {
+  return (
+    <Handle id="output" {...props} type="source" className={styles.handle} />
+  );
+}
+
+EditorNode.Body = Body;
+EditorNode.HandleContainer = HandleContainer;
 EditorNode.InputHandle = InputHandle;
 EditorNode.OutputHandle = OutputHandle;
-EditorNode.HandleContainer = HandleContainer;
-EditorNode.HandleText = HandleText;
-EditorNode.BodyContainer = BodyContainer;
-EditorNode.BodyContent = BodyContent;
-EditorNode.Body = Body;
-
+EditorNode.Section = Section;
 export { EditorNode };

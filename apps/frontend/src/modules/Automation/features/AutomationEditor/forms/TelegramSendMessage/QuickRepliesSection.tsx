@@ -27,7 +27,7 @@ export function QuickRepliesSection({
   return (
     <TaskSection
       title="Quick replies"
-      description="Quick replies buttons will help the user to interact with the message"
+      description="Buttons will help the user to interact with the message"
     >
       {form.getValues().quickReplyButtons.map((item, index) => (
         <QuickReplyItem
