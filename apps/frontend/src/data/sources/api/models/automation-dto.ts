@@ -19,9 +19,6 @@ import type { AutomationConnection } from './automation-connection';
 // May contain unused imports in some cases
 // @ts-ignore
 import type { AutomationStep } from './automation-step';
-// May contain unused imports in some cases
-// @ts-ignore
-import type { AutomationVersionDto } from './automation-version-dto';
 
 /**
  * 
@@ -43,10 +40,22 @@ export interface AutomationDto {
     'connections': Array<AutomationConnection>;
     /**
      * 
-     * @type {AutomationVersionDto}
+     * @type {boolean}
      * @memberof AutomationDto
      */
-    'version': AutomationVersionDto;
+    'hasDraftVersion': boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof AutomationDto
+     */
+    'hasPublishedVersion': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof AutomationDto
+     */
+    'versionType': AutomationDtoVersionTypeEnum;
     /**
      * 
      * @type {string}
@@ -79,6 +88,13 @@ export interface AutomationDto {
     'updatedAt': string;
 }
 
+export const AutomationDtoVersionTypeEnum = {
+    Main: 'main',
+    Draft: 'draft',
+    Revision: 'revision'
+} as const;
+
+export type AutomationDtoVersionTypeEnum = typeof AutomationDtoVersionTypeEnum[keyof typeof AutomationDtoVersionTypeEnum];
 export const AutomationDtoStatusEnum = {
     Active: 'ACTIVE',
     Inactive: 'INACTIVE'

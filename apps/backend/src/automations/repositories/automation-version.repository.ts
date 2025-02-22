@@ -90,6 +90,7 @@ export class AutomationVersionRepository {
       automationId: existingVersion.automationId,
       steps: existingVersion.steps,
       connections: existingVersion.connections,
+      parentVersionId: existingVersion._id,
     });
 
     return clonedVersion.save({ session });

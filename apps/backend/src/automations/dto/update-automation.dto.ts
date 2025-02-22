@@ -1,6 +1,8 @@
-import { PickType } from '@nestjs/swagger';
-import { CreateAutomationDto } from './create-automation.dto';
+import { IsString } from 'class-validator';
 
-export class UpdateAutomationDto extends PickType(CreateAutomationDto, [
-  'name',
-] as const) {}
+import { Automation } from '../schemas/automation.schema';
+
+export class UpdateAutomationDto implements Pick<Automation, 'name'> {
+  @IsString()
+  name: string;
+}

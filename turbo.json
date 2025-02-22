@@ -4,12 +4,6 @@
     "dev": {
       "persistent": true,
       "cache": false
-    },
-    "gen": {
-      "dependsOn": [
-        "^gen:api-client",
-        "^gen:api-schema"
-      ]
     }
   }
 }

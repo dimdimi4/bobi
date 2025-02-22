@@ -485,6 +485,126 @@
         ]
       }
     },
+    "/api/v1/automations/{id}/discard-changes": {
+      "post": {
+        "operationId": "automationsDiscardChangesV1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AutomationDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Automations"
+        ]
+      }
+    },
+    "/api/v1/automations/{id}/publish": {
+      "post": {
+        "operationId": "automationsPublishChangesV1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AutomationDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Automations"
+        ]
+      }
+    },
+    "/api/v1/automations/{id}/activate": {
+      "post": {
+        "operationId": "automationsActivateV1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AutomationDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Automations"
+        ]
+      }
+    },
+    "/api/v1/automations/{id}/deactivate": {
+      "post": {
+        "operationId": "automationsDeactivateV1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AutomationDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Automations"
+        ]
+      }
+    },
     "/api/v1/automations/{id}/steps": {
       "post": {
         "operationId": "automationsCreateStepV1",
@@ -1018,31 +1138,6 @@
           "targetStepId"
         ]
       },
-      "AutomationVersionDto": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "publishedAt": {
-            "format": "date-time",
-            "type": "string"
-          },
-          "createdAt": {
-            "format": "date-time",
-            "type": "string"
-          },
-          "updatedAt": {
-            "format": "date-time",
-            "type": "string"
-          }
-        },
-        "required": [
-          "id",
-          "createdAt",
-          "updatedAt"
-        ]
-      },
       "AutomationDto": {
         "type": "object",
         "properties": {
@@ -1058,8 +1153,19 @@
               "$ref": "#/components/schemas/AutomationConnection"
             }
           },
-          "version": {
-            "$ref": "#/components/schemas/AutomationVersionDto"
+          "hasDraftVersion": {
+            "type": "boolean"
+          },
+          "hasPublishedVersion": {
+            "type": "boolean"
+          },
+          "versionType": {
+            "enum": [
+              "main",
+              "draft",
+              "revision"
+            ],
+            "type": "string"
           },
           "id": {
             "type": "string"
@@ -1086,7 +1192,9 @@
         "required": [
           "steps",
           "connections",
-          "version",
+          "hasDraftVersion",
+          "hasPublishedVersion",
+          "versionType",
           "id",
           "name",
           "status",

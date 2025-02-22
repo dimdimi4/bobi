@@ -8,7 +8,6 @@ import {
 
 import {
   AutomationConnection,
-  AutomationDto,
   AutomationStep,
   AutomationTask,
 } from '@/data/sources/api';
@@ -54,16 +53,20 @@ function mapConnectionsToEdges(connections: AutomationConnection[]): Edge[] {
 
 export type EditorStore = ReturnType<typeof createStore>;
 
-export function createStore(automation: AutomationDto) {
-  const { steps, connections, ...restAutomation } = automation;
-
-  const nodes = mapStepsToNodes(steps);
-  const edges = mapConnectionsToEdges(connections);
+export function createStore(
+  automationId: string,
+  initSteps?: AutomationStep[],
+  initConnections?: AutomationConnection[]
+) {
+  const steps = initSteps ? mapStepsToNodes(initSteps) : [];
+  const connections = initConnections
+    ? mapConnectionsToEdges(initConnections)
+    : [];
 
   return create<EditorState>((set, get) => ({
-    automation: restAutomation,
-    nodes: nodes,
-    edges,
+    automationId,
+    nodes: steps,
+    edges: connections,
     selectedNode: null,
     setSelectedNode: (node) => {
       set({

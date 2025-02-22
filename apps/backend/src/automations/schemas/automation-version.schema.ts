@@ -1,6 +1,5 @@
-import { IsString, ValidateNested } from 'class-validator';
-import { Exclude, Expose, Transform, Type } from 'class-transformer';
-import { ApiHideProperty, ApiProperty } from '@nestjs/swagger';
+import { ValidateNested } from 'class-validator';
+import { Type } from 'class-transformer';
 import { HydratedDocument } from 'mongoose';
 import { Prop as MongooseProp, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { v7 as uuidv7 } from 'uuid';
@@ -12,36 +11,31 @@ import { AutomationStep } from './automation-step.schema';
   timestamps: true,
   collection: 'automation-versions',
 })
-@Expose()
 export class AutomationVersion {
   @MongooseProp({
     default: () => uuidv7(),
     type: String,
     required: true,
   })
-  @ApiProperty({
-    name: 'id',
-  })
-  @Expose({ name: 'id' })
-  @Transform(({ obj }: { obj: AutomationVersion }) => obj._id)
   _id: string;
 
   @MongooseProp({
     type: String,
     required: true,
   })
-  @Exclude()
-  @ApiHideProperty()
   accountId: string;
 
   @MongooseProp({
     type: String,
     required: true,
   })
-  @Exclude()
-  @ApiHideProperty()
-  @IsString()
   automationId: string;
+
+  @MongooseProp({
+    type: String,
+    required: false,
+  })
+  parentVersionId?: string;
 
   @MongooseProp({
     type: [AutomationStep],

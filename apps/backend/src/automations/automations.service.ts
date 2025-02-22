@@ -11,7 +11,10 @@ import { ClientSession, Connection } from 'mongoose';
 import { AutomationsRepository } from './repositories/automation.repository';
 import { AutomationVersionRepository } from './repositories/automation-version.repository';
 
-import { AutomationDocument } from './schemas/automation.schema';
+import {
+  AutomationDocument,
+  AutomationStatus,
+} from './schemas/automation.schema';
 import { AutomationVersionDocument } from './schemas/automation-version.schema';
 
 import { AutomationTask } from './schemas/automation-tasks/automation-task.schema';
@@ -24,8 +27,7 @@ import { AutomationsPaginatedDto } from './dto/automations-paginated.dto';
 import { UpdateAutomationDto } from './dto/update-automation.dto';
 import { CreateStepDto } from './dto/create-step.dto';
 import { UpdateStepsPositionsDto } from './dto/bulk-update-step-positions.dto';
-import { AutomationDto } from './dto/automation.dto';
-import { AutomationVersionDto } from './dto/automation-version.dto';
+import { AutomationDto, AutomationVersionType } from './dto/automation.dto';
 import { AutomationBaseDto } from './dto/automation-base.dto';
 import {
   AutomationOverviewDto,
@@ -51,22 +53,6 @@ export class AutomationsService {
     @InjectConnection() private readonly connection: Connection,
   ) {}
 
-  private toAutomationVersionDto(
-    version: AutomationVersionDocument,
-  ): AutomationVersionDto {
-    const versionObj = version.toObject();
-    const versionDto: AutomationVersionDto = {
-      id: versionObj._id,
-      createdAt: versionObj.createdAt,
-      updatedAt: versionObj.updatedAt,
-      publishedAt: versionObj.publishedAt,
-    };
-
-    return plainToInstance(AutomationVersionDto, versionDto, {
-      enableCircularCheck: true,
-    });
-  }
-
   private toAutomationDto(
     automation: AutomationDocument,
     version: AutomationVersionDocument,
@@ -74,15 +60,24 @@ export class AutomationsService {
     const automationObj = automation.toObject();
     const versionObj = version.toObject();
 
+    const versionType =
+      automationObj.publishedVersionId === versionObj._id
+        ? AutomationVersionType.MAIN
+        : automationObj.draftVersionId === versionObj._id
+          ? AutomationVersionType.DRAFT
+          : AutomationVersionType.REVISION;
+
     const automationDto: AutomationDto = {
       id: automationObj._id,
       name: automationObj.name,
       status: automationObj.status,
       steps: versionObj.steps,
       connections: versionObj.connections,
-      version: this.toAutomationVersionDto(version),
+      versionType,
+      hasDraftVersion: Boolean(automationObj.draftVersionId),
+      hasPublishedVersion: Boolean(automationObj.publishedVersionId),
       createdAt: automation.createdAt,
-      updatedAt: automation.updatedAt,
+      updatedAt: versionObj.updatedAt || automation.updatedAt,
     };
 
     return plainToInstance(AutomationDto, automationDto, {
@@ -148,15 +143,6 @@ export class AutomationsService {
       throw new BadRequestException('No current version to clone');
     }
 
-    const updatedAutomation = await this.automationsRepository.setDraftVersion(
-      {
-        accountId: params.accountId,
-        automationId: params.automationId,
-        draftVersion: automation.publishedVersionId,
-      },
-      session,
-    );
-
     const draftVersion = await this.automationVersionRepository.clone(
       {
         accountId: params.accountId,
@@ -169,6 +155,15 @@ export class AutomationsService {
     if (!draftVersion) {
       throw new NotFoundException('Could not create draft version');
     }
+
+    const updatedAutomation = await this.automationsRepository.setDraftVersion(
+      {
+        accountId: params.accountId,
+        automationId: params.automationId,
+        draftVersion: draftVersion._id,
+      },
+      session,
+    );
 
     if (!updatedAutomation) {
       throw new NotFoundException(
@@ -385,6 +380,77 @@ export class AutomationsService {
     }
 
     return this.toAutomationBaseDto(automation);
+  }
+
+  private async returnPublishedAutomationDto({
+    accountId,
+    automation,
+  }: {
+    accountId: string;
+    automation?: AutomationDocument | null;
+  }): Promise<AutomationDto> {
+    if (!automation) {
+      throw new NotFoundException('Automation not found');
+    }
+
+    if (!automation.publishedVersionId) {
+      throw new BadRequestException('Automation has no published version');
+    }
+
+    const publishedVersion = await this.automationVersionRepository.findOne({
+      accountId,
+      versionId: automation.publishedVersionId,
+    });
+
+    if (!publishedVersion) {
+      throw new Error('Published version not found during activation');
+    }
+
+    return this.toAutomationDto(automation, publishedVersion);
+  }
+
+  async activate({
+    accountId,
+    automationId,
+  }: BaseAutomationParams): Promise<AutomationDto> {
+    const automation = await this.ensureAutomationExists({
+      accountId,
+      automationId,
+    });
+
+    if (!automation.publishedVersionId) {
+      await this.publishDraft({
+        accountId,
+        automationId,
+      });
+    }
+
+    const updatedAutomation = await this.automationsRepository.setStatus({
+      accountId,
+      automationId,
+      status: AutomationStatus.ACTIVE,
+    });
+
+    return this.returnPublishedAutomationDto({
+      accountId,
+      automation: updatedAutomation,
+    });
+  }
+
+  async deactivate({
+    accountId,
+    automationId,
+  }: BaseAutomationParams): Promise<AutomationDto> {
+    const updatedAutomation = await this.automationsRepository.setStatus({
+      accountId,
+      automationId,
+      status: AutomationStatus.INACTIVE,
+    });
+
+    return this.returnPublishedAutomationDto({
+      accountId,
+      automation: updatedAutomation,
+    });
   }
 
   async discardDraft(params: BaseAutomationParams): Promise<AutomationDto> {

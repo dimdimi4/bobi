@@ -5,8 +5,8 @@ import { useDeleteStepsMutation } from '@/data/repositories/automations-reposito
 import { EditorNode, useEditorStore } from '../store';
 
 export function useDeleteSteps() {
-  const automation = useEditorStore((s) => s.automation);
-  const { mutate: deleteSteps } = useDeleteStepsMutation(automation.id);
+  const automationId = useEditorStore((s) => s.automationId);
+  const { mutate: deleteSteps } = useDeleteStepsMutation(automationId);
 
   const handleDeleteSteps = useCallback(
     (nodes: EditorNode[]) => {

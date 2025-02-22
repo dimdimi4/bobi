@@ -5,7 +5,6 @@ export * from './automation-overview-dto';
 export * from './automation-position';
 export * from './automation-step';
 export * from './automation-task';
-export * from './automation-version-dto';
 export * from './automation-version-overview-dto';
 export * from './automations-paginated-dto';
 export * from './channel-dto';

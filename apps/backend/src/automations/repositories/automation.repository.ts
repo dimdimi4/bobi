@@ -148,7 +148,7 @@ export class AutomationsRepository {
         this.secureMatch(accountId, { _id: automationId }),
         {
           $set: { publishedVersionId },
-          $unset: { publishedVersionId: '' },
+          $unset: { draftVersionId: '' },
         },
         { new: true, session },
       )

@@ -6,6 +6,7 @@ import {
 
 import {
   AutomationConnection,
+  AutomationDto,
   AutomationsApi,
   AutomationTask,
   CreateAutomationDto,
@@ -150,4 +151,43 @@ export function useUpdateStepTaskMutation(
         queryKey: [KEY, automationId],
       }),
   });
+}
+
+function useUpdateMutation(
+  automationId: string,
+  mutationFn: () => Promise<AutomationDto>
+) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn,
+    onSuccess: () =>
+      queryClient.invalidateQueries({
+        queryKey: [KEY, automationId],
+      }),
+  });
+}
+
+export function useDiscardChangesMutation(automationId: string) {
+  return useUpdateMutation(automationId, async () =>
+    automationsApi.automationsDiscardChangesV1({ id: automationId })
+  );
+}
+
+export function usePublishChangesMutation(automationId: string) {
+  return useUpdateMutation(automationId, async () =>
+    automationsApi.automationsPublishChangesV1({ id: automationId })
+  );
+}
+
+export function useActivateMutation(automationId: string) {
+  return useUpdateMutation(automationId, async () =>
+    automationsApi.automationsActivateV1({ id: automationId })
+  );
+}
+
+export function useDeactivateMutation(automationId: string) {
+  return useUpdateMutation(automationId, async () =>
+    automationsApi.automationsDeactivateV1({ id: automationId })
+  );
 }

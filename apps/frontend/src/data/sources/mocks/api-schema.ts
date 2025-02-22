@@ -129,6 +129,78 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/automations/{id}/discard-changes": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["automationsDiscardChangesV1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/automations/{id}/publish": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["automationsPublishChangesV1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/automations/{id}/activate": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["automationsActivateV1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/automations/{id}/deactivate": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["automationsDeactivateV1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/automations/{id}/steps": {
         parameters: {
             query?: never;
@@ -279,19 +351,13 @@ export interface components {
             targetStepId: string;
             targetHandleId?: string;
         };
-        AutomationVersionDto: {
-            id: string;
-            /** Format: date-time */
-            publishedAt?: string;
-            /** Format: date-time */
-            createdAt: string;
-            /** Format: date-time */
-            updatedAt: string;
-        };
         AutomationDto: {
             steps: components["schemas"]["AutomationStep"][];
             connections: components["schemas"]["AutomationConnection"][];
-            version: components["schemas"]["AutomationVersionDto"];
+            hasDraftVersion: boolean;
+            hasPublishedVersion: boolean;
+            /** @enum {string} */
+            versionType: "main" | "draft" | "revision";
             id: string;
             name: string;
             /** @enum {string} */
@@ -730,6 +796,90 @@ export interface operations {
             };
         };
     };
+    automationsDiscardChangesV1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AutomationDto"];
+                };
+            };
+        };
+    };
+    automationsPublishChangesV1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AutomationDto"];
+                };
+            };
+        };
+    };
+    automationsActivateV1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AutomationDto"];
+                };
+            };
+        };
+    };
+    automationsDeactivateV1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AutomationDto"];
+                };
+            };
+        };
+    };
     automationsCreateStepV1: {
         parameters: {
             query?: never;
@@ -899,6 +1049,10 @@ export enum ApiPaths {
     automationsUpdateV1 = "/api/v1/automations/:id",
     automationsRemoveV1 = "/api/v1/automations/:id",
     automationsFindOneOverviewV1 = "/api/v1/automations/:id/overview",
+    automationsDiscardChangesV1 = "/api/v1/automations/:id/discard-changes",
+    automationsPublishChangesV1 = "/api/v1/automations/:id/publish",
+    automationsActivateV1 = "/api/v1/automations/:id/activate",
+    automationsDeactivateV1 = "/api/v1/automations/:id/deactivate",
     automationsCreateStepV1 = "/api/v1/automations/:id/steps",
     automationsDeleteStepsV1 = "/api/v1/automations/:id/steps",
     automationsUpdateStepsPositionsV1 = "/api/v1/automations/:id/update-steps-positions",

@@ -3,11 +3,10 @@ import { useUpdateStepTaskMutation } from '@/data/repositories/automations-repos
 import { AutomationStepTask } from '../types';
 
 export function useUpdateStateTask() {
-  const { automation, selectedNode, nodes, setNodes } = useEditorStore(
-    (s) => s
-  );
+  const automationId = useEditorStore((s) => s.automationId);
+  const { selectedNode, nodes, setNodes } = useEditorStore((s) => s);
   const { mutate: updateStepTask } = useUpdateStepTaskMutation(
-    automation.id,
+    automationId,
     selectedNode?.id ?? ''
   );
 

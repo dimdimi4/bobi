@@ -5,8 +5,9 @@ import { useCreateStepMutation } from '@/data/repositories/automations-repositor
 import { EditorNode, useEditorStore } from '../store';
 
 export function useCreateStep() {
-  const { automation, nodes, setNodes } = useEditorStore((s) => s);
-  const { mutate: createStep } = useCreateStepMutation(automation.id);
+  const automationId = useEditorStore((s) => s.automationId);
+  const { nodes, setNodes } = useEditorStore((s) => s);
+  const { mutate: createStep } = useCreateStepMutation(automationId);
 
   const handleAddStep = (step: EditorNode) => {
     setNodes([...nodes, step]);

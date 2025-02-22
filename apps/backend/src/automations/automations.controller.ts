@@ -81,6 +81,26 @@ export class AutomationsController {
     return this.automationsService.delete({ accountId, automationId });
   }
 
+  @Post(':id/discard-changes')
+  discardChanges(@Param('id') automationId: string): Promise<AutomationDto> {
+    return this.automationsService.discardDraft({ accountId, automationId });
+  }
+
+  @Post(':id/publish')
+  publishChanges(@Param('id') automationId: string): Promise<AutomationDto> {
+    return this.automationsService.publishDraft({ accountId, automationId });
+  }
+
+  @Post(':id/activate')
+  activate(@Param('id') automationId: string): Promise<AutomationDto> {
+    return this.automationsService.activate({ accountId, automationId });
+  }
+
+  @Post(':id/deactivate')
+  deactivate(@Param('id') automationId: string): Promise<AutomationDto> {
+    return this.automationsService.deactivate({ accountId, automationId });
+  }
+
   @Post(':id/steps')
   createStep(
     @Param('id') automationId: string,

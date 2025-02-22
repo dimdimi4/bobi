@@ -1,5 +1,3 @@
-import { Exclude, Expose, Transform } from 'class-transformer';
-import { ApiHideProperty, ApiProperty } from '@nestjs/swagger';
 import { HydratedDocument } from 'mongoose';
 import { Prop as MongooseProp, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { v7 as uuidv7 } from 'uuid';
@@ -12,23 +10,15 @@ export enum AutomationStatus {
 @Schema({
   timestamps: true,
 })
-@Expose()
 export class Automation {
   @MongooseProp({
     default: () => uuidv7(),
     type: String,
     required: true,
   })
-  @ApiProperty({
-    name: 'id',
-  })
-  @Expose({ name: 'id' })
-  @Transform(({ obj }: { obj: Automation }) => obj._id)
   _id: string;
 
   @MongooseProp({ type: String, required: true })
-  @ApiHideProperty()
-  @Exclude()
   accountId: string;
 
   @MongooseProp({

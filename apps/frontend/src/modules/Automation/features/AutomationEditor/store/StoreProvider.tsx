@@ -1,19 +1,26 @@
 // Provider wrapper
 import { useRef } from 'react';
 
-import { AutomationDto } from '@/data/sources/api';
+import { AutomationConnection, AutomationStep } from '@/data/sources/api';
 
 import { createStore, EditorStore } from './store';
 import { EditorStoreContext } from './context';
 
 type StoreProviderProps = React.PropsWithChildren<{
-  automation: AutomationDto;
+  automationId: string;
+  initSteps?: AutomationStep[];
+  initConnections?: AutomationConnection[];
 }>;
 
-export function StoreProvider({ children, automation }: StoreProviderProps) {
+export function StoreProvider({
+  children,
+  automationId,
+  initSteps,
+  initConnections,
+}: StoreProviderProps) {
   const storeRef = useRef<EditorStore>();
   if (!storeRef.current) {
-    storeRef.current = createStore(automation);
+    storeRef.current = createStore(automationId, initSteps, initConnections);
   }
 
   return (
