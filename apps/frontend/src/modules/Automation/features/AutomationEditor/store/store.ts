@@ -64,11 +64,13 @@ function mapConnectionsToEdges(connections: AutomationConnection[]): Edge[] {
 export type EditorStore = ReturnType<typeof createStore>;
 
 export function createStore(automation: AutomationDto) {
-  const nodes = mapStepsToNodes(automation.steps);
-  const edges = mapConnectionsToEdges(automation.connections);
+  const { steps, connections, ...restAutomation } = automation;
+
+  const nodes = mapStepsToNodes(steps);
+  const edges = mapConnectionsToEdges(connections);
 
   return create<EditorState>((set, get) => ({
-    automationId: automation.id,
+    automation: restAutomation,
     nodes: nodes,
     edges,
     selectedNode: null,

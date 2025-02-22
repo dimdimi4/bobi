@@ -6,9 +6,10 @@ import { useDeleteConnectionsMutation } from '@/data/repositories/automations-re
 import { useEditorStore } from '../store';
 
 export function useDeleteConnections() {
-  const { automationId } = useEditorStore((s) => s);
-  const { mutate: deleteConnections } =
-    useDeleteConnectionsMutation(automationId);
+  const automation = useEditorStore((s) => s.automation);
+  const { mutate: deleteConnections } = useDeleteConnectionsMutation(
+    automation.id
+  );
 
   const handleDeleteConnections = useCallback(
     (edges: Edge[]) => {

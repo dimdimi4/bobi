@@ -7,9 +7,11 @@ import { useEditorStore } from '../store';
 import { Connection } from '@xyflow/react';
 
 export function useCreateConnection() {
-  const { automationId, onConnect } = useEditorStore((s) => s);
-  const { mutate: createConnection } =
-    useCreateConnectionMutation(automationId);
+  const automation = useEditorStore((s) => s.automation);
+  const onConnect = useEditorStore((s) => s.onConnect);
+  const { mutate: createConnection } = useCreateConnectionMutation(
+    automation.id
+  );
 
   const handleCreateConnection = useCallback(
     (connection: Connection) => {

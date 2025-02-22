@@ -1,10 +1,13 @@
 import Markdown, { ReactRenderer } from 'marked-react';
-import { Anchor, Button, Code, Stack, Text } from '@mantine/core';
+import { Anchor, Code, Stack, Text, Tooltip } from '@mantine/core';
 import { Node, NodeProps, Position } from '@xyflow/react';
 import { v4 as uuidv4 } from 'uuid';
-import { AutomationTask } from '@/data/sources/api';
+import { AutomationTask, TelegramQuickReplyButton } from '@/data/sources/api';
+
+import styles from './MessageNode.module.css';
 
 import { EditorNode } from '../../ui/EditorNode';
+import { IconExternalLink } from '@tabler/icons-react';
 
 type ActionsTypes = Pick<AutomationTask, 'action_telegram_sendMessage'>;
 type MessageNode = Node<ActionsTypes, 'message'>;
@@ -51,10 +54,8 @@ export function MessageNode({
       </EditorNode.Section>
       <Stack gap="xs">
         {quickReplyButtons?.map((button) => (
-          <EditorNode.HandleContainer padded={{ x: true }} key={button.text}>
-            <Button variant="light" color="gray" size="xs" fullWidth>
-              {button.text}
-            </Button>
+          <EditorNode.HandleContainer padded={{ x: true }} key={button.id}>
+            <QuickReplyButton button={button} />
             <EditorNode.OutputHandle id={button.id} position={Position.Right} />
           </EditorNode.HandleContainer>
         ))}
@@ -68,5 +69,20 @@ export function MessageNode({
         <EditorNode.OutputHandle position={Position.Right} />
       </EditorNode.HandleContainer>
     </EditorNode>
+  );
+}
+
+function QuickReplyButton({ button }: { button: TelegramQuickReplyButton }) {
+  const prefix = button.url ? (
+    <Tooltip label={button.url} withArrow>
+      <IconExternalLink size={20} stroke={1.5} />
+    </Tooltip>
+  ) : null;
+
+  return (
+    <div className={styles.quickReplyButton}>
+      <div className={styles.quickReplyButtonPrefix}>{prefix}</div>
+      <div className={styles.quickReplyButtonText}>{button.text}</div>
+    </div>
   );
 }

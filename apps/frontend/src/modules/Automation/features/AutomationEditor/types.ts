@@ -16,7 +16,7 @@ export type AutomationStepTask = AutomationStep['task'] &
 export type EditorNode = Node<AutomationStepTask, EditorNodeTypes>;
 
 export type EditorState = {
-  automationId: string;
+  automation: Omit<AutomationDto, 'steps' | 'connections'>;
   nodes: EditorNode[];
   edges: Edge[];
   selectedNode: EditorNode | null;

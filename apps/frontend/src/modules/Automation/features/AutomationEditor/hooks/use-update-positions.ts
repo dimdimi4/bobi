@@ -4,9 +4,10 @@ import { EditorNode, useEditorStore } from '../store';
 import { useCallback } from 'react';
 
 export function useUpdateStepPositions() {
-  const { automationId } = useEditorStore((s) => s);
-  const { mutate: updateStepPositions } =
-    useUpdateStepPositionsMutation(automationId);
+  const automation = useEditorStore((s) => s.automation);
+  const { mutate: updateStepPositions } = useUpdateStepPositionsMutation(
+    automation.id
+  );
 
   const handleStepPositionChange = useCallback(
     (steps: EditorNode[]) => {

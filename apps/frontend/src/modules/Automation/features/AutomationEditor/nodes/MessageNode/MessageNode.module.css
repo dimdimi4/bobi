@@ -1,0 +1,23 @@
+.quickReplyButton {
+  border: 1px solid var(--mantine-color-gray-3);
+  border-radius: var(--mantine-radius-md);
+  width: 100%;
+  position: relative;
+  padding: 0 30px;
+}
+
+.quickReplyButtonPrefix {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  position: absolute;
+  left: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.quickReplyButtonText {
+  padding: 4px 8px;
+  text-align: center;
+}

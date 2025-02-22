@@ -81,6 +81,10 @@ function AutomationEditorInner({ onExit }: AutomationEditorProps) {
             onEdgesDelete={handleDeleteConnections}
             onNodesDelete={handleDeleteSteps}
             selectNodesOnDrag={false}
+            fitView
+            fitViewOptions={{
+              maxZoom: 1.2,
+            }}
             // snapToGrid
             // deleteKeyCode={null}
           >
