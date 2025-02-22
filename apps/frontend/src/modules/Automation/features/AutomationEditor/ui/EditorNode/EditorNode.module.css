@@ -44,8 +44,8 @@
   overflow: initial;
 
   &.paddedX {
-    padding-left: var(--mantine-spacing-sm);
-    padding-right: var(--mantine-spacing-sm);
+    padding-left: var(--mantine-spacing-md);
+    padding-right: var(--mantine-spacing-md);
   }
 
   &.paddedY {
@@ -54,22 +54,48 @@
   }
 
   &.padded {
-    padding-left: var(--mantine-spacing-sm);
-    padding-right: var(--mantine-spacing-sm);
+    padding-left: var(--mantine-spacing-md);
+    padding-right: var(--mantine-spacing-md);
     padding-top: 6px;
     padding-bottom: 6px;
+  }
+
+  &:before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 10px;
+    height: 18px;
+    background-color: var(--mantine-color-gray-4);
+    z-index: 1;
+    display: none;
+  }
+
+  &.input {
+    &:before {
+      border-radius: 0 10px 10px 0;
+      left: 0;
+      display: block;
+    }
+  }
+
+  &.output {
+    &:before {
+      border-radius: 10px 0 0 10px;
+      right: 0;
+      display: block;
+    }
   }
 }
 
 .handle {
-  --handle-width: 14px;
-  --handle-height: 14px;
-
-  width: var(--handle-width);
-  height: var(--handle-height);
+  width: 14px;
+  height: 14px;
   background: var(--mantine-primary-color-9);
   border-radius: 50%;
   border: 0;
+  z-index: 2;
 
   &:hover {
     background-color: var(--mantine-primary-color-7);

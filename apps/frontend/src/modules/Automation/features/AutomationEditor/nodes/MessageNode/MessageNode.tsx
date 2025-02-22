@@ -39,7 +39,7 @@ export function MessageNode({
 
   return (
     <EditorNode>
-      <EditorNode.HandleContainer padded>
+      <EditorNode.HandleContainer padded input>
         <EditorNode.InputHandle position={Position.Left} />
         <Text fw={500} size="sm" c="gray" component="div">
           Send message
@@ -54,13 +54,17 @@ export function MessageNode({
       </EditorNode.Section>
       <Stack gap="xs">
         {quickReplyButtons?.map((button) => (
-          <EditorNode.HandleContainer padded={{ x: true }} key={button.id}>
+          <EditorNode.HandleContainer
+            padded={{ x: true }}
+            key={button.id}
+            output
+          >
             <QuickReplyButton button={button} />
             <EditorNode.OutputHandle id={button.id} position={Position.Right} />
           </EditorNode.HandleContainer>
         ))}
       </Stack>
-      <EditorNode.HandleContainer padded justify="flex-end">
+      <EditorNode.HandleContainer padded justify="flex-end" output>
         <Text fw={600} size="sm" c="dimmed" component="div">
           {timeout
             ? `If no reply in ${timeout.duration} ${timeout.unit}`

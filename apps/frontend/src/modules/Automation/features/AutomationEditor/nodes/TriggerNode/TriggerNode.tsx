@@ -27,7 +27,7 @@ export function TriggerNode({ data }: NodeProps<TriggerNode>) {
           )}
         </EditorNode.Body>
       </EditorNode.Section>
-      <EditorNode.HandleContainer padded justify="flex-end">
+      <EditorNode.HandleContainer padded justify="flex-end" output>
         <Text fw={600} size="sm" c="dimmed" component="div">
           Then
         </Text>

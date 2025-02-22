@@ -3,6 +3,7 @@ import {
   Background,
   ReactFlow,
   ReactFlowProvider,
+  MarkerType,
 } from '@xyflow/react';
 
 import { AutomationEditorProps } from './types';
@@ -80,6 +81,23 @@ function AutomationEditorInner({ onExit }: AutomationEditorProps) {
             onPaneClick={() => handlePaneClick()}
             onEdgesDelete={handleDeleteConnections}
             onNodesDelete={handleDeleteSteps}
+            defaultEdgeOptions={{
+              style: {
+                stroke: 'var(--mantine-primary-color-9)',
+                strokeWidth: 2,
+              },
+              markerEnd: {
+                type: MarkerType.ArrowClosed,
+                strokeWidth: 2,
+                color: 'var(--mantine-primary-color-9)',
+                width: 8,
+                height: 8,
+              },
+            }}
+            connectionLineStyle={{
+              stroke: 'var(--mantine-primary-color-9)',
+              strokeWidth: 2,
+            }}
             selectNodesOnDrag={false}
             fitView
             fitViewOptions={{

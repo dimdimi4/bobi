@@ -4,7 +4,6 @@ import {
   applyNodeChanges,
   applyEdgeChanges,
   Edge,
-  MarkerType,
 } from '@xyflow/react';
 
 import {
@@ -49,14 +48,6 @@ function mapConnectionsToEdges(connections: AutomationConnection[]): Edge[] {
       target: connection.targetStepId,
       targetHandle: connection.targetHandleId,
       sourceHandle: connection.sourceHandleId,
-      style: { stroke: 'var(--mantine-primary-color-9)', strokeWidth: 2 },
-      markerEnd: {
-        type: MarkerType.ArrowClosed,
-        strokeWidth: 2,
-        color: 'var(--mantine-primary-color-9)',
-        width: 8,
-        height: 8,
-      },
     };
   });
 }

@@ -21,9 +21,13 @@ function HandleContainer({
   children,
   padded = false,
   justify = 'flex-start',
+  input = false,
+  output = false,
 }: PropsWithChildren<{
   padded?: { x?: boolean; y?: boolean } | boolean;
   justify?: 'flex-start' | 'flex-end' | 'space-between';
+  input?: boolean;
+  output?: boolean;
 }>) {
   const classes = [styles.handleContainer];
 
@@ -38,6 +42,14 @@ function HandleContainer({
         classes.push(styles.paddedY);
       }
     }
+  }
+
+  if (input) {
+    classes.push(styles.input);
+  }
+
+  if (output) {
+    classes.push(styles.output);
   }
 
   return (
