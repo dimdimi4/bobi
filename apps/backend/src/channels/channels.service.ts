@@ -1,4 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { Telegraf } from 'telegraf';
+
 import { ChannelsRepository } from './channels.repository';
 import { CreateChannelDto } from './dto/create-channel.dto';
 import { UpdateChannelDto } from './dto/update-channel.dto';
@@ -8,7 +10,17 @@ export class ChannelsService {
   constructor(private readonly channelsRepository: ChannelsRepository) {}
 
   async create(accountId: string, createChannelDto: CreateChannelDto) {
-    return this.channelsRepository.create(accountId, createChannelDto);
+    const channel = await this.channelsRepository.create(
+      accountId,
+      createChannelDto,
+    );
+
+    const bot = new Telegraf(createChannelDto.token);
+    await bot.telegram.setWebhook(
+      `${process.env.BACKEND_URL}/api/v1/channels-webhook/telegram/${channel.id}`,
+    );
+
+    return channel;
   }
 
   async findPaginated(accountId: string, offset = 0, limit = 10) {

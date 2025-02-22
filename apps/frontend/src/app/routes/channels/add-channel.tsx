@@ -8,7 +8,7 @@ import {
   TextInput,
   Title,
 } from '@mantine/core';
-import { useForm } from '@tanstack/react-form';
+import { useForm, zodResolver } from '@mantine/form';
 import { createFileRoute } from '@tanstack/react-router';
 import { z } from 'zod';
 
@@ -26,28 +26,19 @@ const formSchema = z.object({
 
 function RouteComponent() {
   const form = useForm({
-    defaultValues: {
+    mode: 'uncontrolled',
+    initialValues: {
       name: '',
       type: '',
       token: '',
     },
-    onSubmit: async ({ value }) => {
-      // Do something with form data
-      console.log(value);
-    },
-    validators: {
-      onChange: formSchema,
-    },
+    validateInputOnChange: true,
+    validate: zodResolver(formSchema),
   });
 
   return (
     <Container size="sm">
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          form.handleSubmit();
-        }}
-      >
+      <form onSubmit={form.onSubmit()}>
         <Stack gap="md">
           <Title order={3}>Add Channel</Title>
           <Card withBorder shadow="xs">
