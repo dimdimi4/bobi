@@ -1,5 +1,13 @@
-import { Badge, Button, Group, Loader, Text } from '@mantine/core';
-import { IconLogout2 } from '@tabler/icons-react';
+import {
+  Badge,
+  Box,
+  Button,
+  Group,
+  Loader,
+  Text,
+  TextInput,
+} from '@mantine/core';
+import { IconChecks, IconLogout2 } from '@tabler/icons-react';
 import { formatRelative } from 'date-fns';
 import { enGB } from 'date-fns/locale';
 
@@ -38,11 +46,20 @@ export function AutomationEditorHeader({ onExit }: { onExit: () => void }) {
           </Badge>
         )}
       </Group>
+      <AutomationEditorHeaderName />
       <Button variant="default" size="xs" onClick={handleCreateMessageStep}>
         Add message step
       </Button>
       <AutomationEditorHeaderActions />
     </Group>
+  );
+}
+
+function AutomationEditorHeaderName() {
+  return (
+    <Box style={{ flex: 1 }}>
+      <TextInput placeholder="Search" size="xs" variant="unstyled" />
+    </Box>
   );
 }
 
@@ -53,6 +70,7 @@ function AutomationEditorHeaderActions() {
     isDeactivatePending,
     isDiscardChangesPending,
     isPublishChangesPending,
+    updatingSteps,
     activate,
     deactivate,
     discardChanges,
@@ -65,6 +83,7 @@ function AutomationEditorHeaderActions() {
   ) {
     return (
       <Group justify="flex-end" gap="xs">
+        <AutomationEditorHeaderLoading updatingSteps={updatingSteps} />
         <Text size="xs" c="gray">
           Last changed{' '}
           {formatRelative(new Date(automation.updatedAt), new Date(), {
@@ -148,4 +167,28 @@ function AutomationEditorHeaderActions() {
   }
 
   return <></>;
+}
+
+function AutomationEditorHeaderLoading({
+  updatingSteps,
+}: {
+  updatingSteps?: boolean;
+}) {
+  if (updatingSteps) {
+    return (
+      <Group justify="flex-end" gap="xs">
+        <Loader size="xs" />
+        <Text size="xs" c="gray">
+          Saving...
+        </Text>
+      </Group>
+    );
+  }
+
+  return (
+    <Group justify="flex-end" gap="xs">
+      <IconChecks size={16} />
+      <Text size="xs">Saved</Text>
+    </Group>
+  );
 }

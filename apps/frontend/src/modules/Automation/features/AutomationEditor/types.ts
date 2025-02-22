@@ -20,12 +20,14 @@ export type EditorState = {
   nodes: EditorNode[];
   edges: Edge[];
   selectedNode: EditorNode | null;
+  updatingSteps?: boolean;
   setSelectedNode: (node?: EditorNode) => void;
   onNodesChange: OnNodesChange<EditorNode>;
   onEdgesChange: OnEdgesChange;
   onConnect: OnConnect;
   setNodes: (nodes: EditorNode[]) => void;
   setEdges: (edges: Edge[]) => void;
+  setUpdatingSteps: (updating: boolean) => void;
 };
 
 export type AutomationEditorProps = {

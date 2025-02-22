@@ -7,17 +7,24 @@ import { EditorNode, useEditorStore } from '../store';
 export function useCreateStep() {
   const automationId = useEditorStore((s) => s.automationId);
   const { nodes, setNodes } = useEditorStore((s) => s);
+  const setUpdatingSteps = useEditorStore((s) => s.setUpdatingSteps);
   const { mutate: createStep } = useCreateStepMutation(automationId);
 
   const handleAddStep = (step: EditorNode) => {
     setNodes([...nodes, step]);
-    createStep({
-      step: {
-        id: step.id,
-        task: step.data,
-        position: step.position,
+    setUpdatingSteps(true);
+    createStep(
+      {
+        step: {
+          id: step.id,
+          task: step.data,
+          position: step.position,
+        },
       },
-    });
+      {
+        onSettled: () => setUpdatingSteps(false),
+      }
+    );
   };
 
   const handleCreateMessageStep = () => {

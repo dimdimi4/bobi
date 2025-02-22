@@ -1,3 +1,4 @@
+import { useQuery } from '@tanstack/react-query';
 import {
   automationForUpdateQueryOptions,
   useActivateMutation,
@@ -7,10 +8,10 @@ import {
 } from '@/data/repositories/automations-repository';
 
 import { useEditorStore } from '../store';
-import { useQuery } from '@tanstack/react-query';
 
 export function useEditorHeader() {
   const automationId = useEditorStore((s) => s.automationId);
+  const updatingSteps = useEditorStore((s) => s.updatingSteps);
 
   const { data: automation, isFetched: isAutomationFetched } = useQuery(
     automationForUpdateQueryOptions(automationId)
@@ -27,6 +28,7 @@ export function useEditorHeader() {
 
   return {
     automation: automation!,
+    updatingSteps,
     isAutomationFetched,
     isActivatePending,
     isDeactivatePending,

@@ -68,6 +68,7 @@ export function createStore(
     nodes: steps,
     edges: connections,
     selectedNode: null,
+    updatingSteps: false,
     setSelectedNode: (node) => {
       set({
         selectedNode: node,
@@ -93,6 +94,9 @@ export function createStore(
     },
     setEdges: (edges) => {
       set({ edges });
+    },
+    setUpdatingSteps: (updating) => {
+      set({ updatingSteps: updating });
     },
   }));
 }

@@ -6,13 +6,20 @@ import { EditorNode, useEditorStore } from '../store';
 
 export function useDeleteSteps() {
   const automationId = useEditorStore((s) => s.automationId);
+  const setUpdatingSteps = useEditorStore((s) => s.setUpdatingSteps);
   const { mutate: deleteSteps } = useDeleteStepsMutation(automationId);
 
   const handleDeleteSteps = useCallback(
     (nodes: EditorNode[]) => {
-      deleteSteps(nodes.map((n) => n.id));
+      setUpdatingSteps(true);
+      deleteSteps(
+        nodes.map((n) => n.id),
+        {
+          onSettled: () => setUpdatingSteps(false),
+        }
+      );
     },
-    [deleteSteps]
+    [deleteSteps, setUpdatingSteps]
   );
 
   return { handleDeleteSteps };
