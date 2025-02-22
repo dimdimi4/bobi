@@ -1,6 +1,7 @@
-import { Group, Loader, Text } from '@mantine/core';
-import { Badge, Button } from '@mantine/core';
+import { Badge, Button, Group, Loader, Text } from '@mantine/core';
 import { IconLogout2 } from '@tabler/icons-react';
+import { formatRelative } from 'date-fns';
+import { enGB } from 'date-fns/locale';
 
 import {
   AutomationDtoStatusEnum,
@@ -9,6 +10,7 @@ import {
 
 import { useCreateStep } from './hooks/use-create-step';
 import { useEditorHeader } from './hooks/use-editor-header';
+import { modals } from '@mantine/modals';
 
 export function AutomationEditorHeader({ onExit }: { onExit: () => void }) {
   const { handleCreateMessageStep } = useCreateStep();
@@ -64,7 +66,10 @@ function AutomationEditorHeaderActions() {
     return (
       <Group justify="flex-end" gap="xs">
         <Text size="xs" c="gray">
-          Last changed on {new Date(automation.updatedAt).toLocaleDateString()}
+          Last changed{' '}
+          {formatRelative(new Date(automation.updatedAt), new Date(), {
+            locale: enGB,
+          })}
         </Text>
         <Button
           variant="default"
@@ -89,12 +94,24 @@ function AutomationEditorHeaderActions() {
   }
 
   if (automation.status === AutomationDtoStatusEnum.Inactive) {
+    const openConfirmModal = () =>
+      modals.openConfirmModal({
+        title: 'Activate Automation',
+        children: (
+          <Text size="sm">
+            Are you sure you want to activate this automation?
+          </Text>
+        ),
+        labels: { confirm: 'Activate', cancel: 'Cancel' },
+        onConfirm: () => activate(),
+      });
+
     return (
       <Button
         variant="filled"
         color="teal"
         size="xs"
-        onClick={() => activate()}
+        onClick={openConfirmModal}
         loading={isActivatePending}
       >
         Activate Automation
